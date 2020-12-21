@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		0EF083EEB469157953BC2E11 /* Pods_Assassin_Native.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5831C8DC7061E958B84B9C68 /* Pods_Assassin_Native.framework */; };
 		37CD3EBD258C48B10010EE87 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37CD3EBC258C48B10010EE87 /* AppDelegate.swift */; };
-		37CD3EBF258C48B10010EE87 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37CD3EBE258C48B10010EE87 /* SceneDelegate.swift */; };
 		37CD3EC1258C48B10010EE87 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37CD3EC0258C48B10010EE87 /* ViewController.swift */; };
 		37CD3EC4258C48B10010EE87 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 37CD3EC2258C48B10010EE87 /* Main.storyboard */; };
 		37CD3EC6258C48B40010EE87 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 37CD3EC5258C48B40010EE87 /* Assets.xcassets */; };
@@ -18,9 +17,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		37154F40259086E90066BA72 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		376E627D25907D820090DA34 /* BaseLibrary.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BaseLibrary.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		37CD3EB9258C48B10010EE87 /* Assassin-Native.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Assassin-Native.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		37CD3EBC258C48B10010EE87 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		37CD3EBE258C48B10010EE87 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		37CD3EC0258C48B10010EE87 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		37CD3EC3258C48B10010EE87 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		37CD3EC5258C48B40010EE87 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -67,7 +67,6 @@
 			children = (
 				37CD3ED1258C57FD0010EE87 /* Source */,
 				37CD3EBC258C48B10010EE87 /* AppDelegate.swift */,
-				37CD3EBE258C48B10010EE87 /* SceneDelegate.swift */,
 				37CD3EC0258C48B10010EE87 /* ViewController.swift */,
 				37CD3EC2258C48B10010EE87 /* Main.storyboard */,
 				37CD3EC5258C48B40010EE87 /* Assets.xcassets */,
@@ -97,6 +96,8 @@
 		D9F1EF69968AD58CE47E491D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				37154F40259086E90066BA72 /* Security.framework */,
+				376E627D25907D820090DA34 /* BaseLibrary.framework */,
 				5831C8DC7061E958B84B9C68 /* Pods_Assassin_Native.framework */,
 			);
 			name = Frameworks;
@@ -238,7 +239,6 @@
 				37CD3EC1258C48B10010EE87 /* ViewController.swift in Sources */,
 				37CD3ED5258C584E0010EE87 /* Template.swift in Sources */,
 				37CD3EBD258C48B10010EE87 /* AppDelegate.swift in Sources */,
-				37CD3EBF258C48B10010EE87 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -386,6 +386,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 3YJ9KM5KAS;
 				INFOPLIST_FILE = "Assassin-Native/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -405,6 +406,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 3YJ9KM5KAS;
 				INFOPLIST_FILE = "Assassin-Native/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
