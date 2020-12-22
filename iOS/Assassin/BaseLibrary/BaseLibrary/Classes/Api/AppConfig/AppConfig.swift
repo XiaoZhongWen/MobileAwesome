@@ -22,7 +22,7 @@ public class AppConfig {
     public func fetchConfig(domain: String,
                      bundleId: String,
                      productID: String,
-                     completionHandle: (_ response: [String:Any]) -> Void) {
+                     completionHandle: @escaping (_ response: [String:Any]) -> Void) {
         provider.request(.fetchConfig(domain: domain, bundleId: bundleId, productID: productID)) { result in
             print(result)
         }

@@ -13,8 +13,11 @@ import BaseLibrary
 class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
-        AppConfig.shared.fetchConfig(domain: "chinamye.com", bundleId: "com.mye.assassin", productID: "8e12d6b3bde4463391a267c7ac44c428") { (response) in
-            
+//        AppConfig.shared.fetchConfig(domain: "chinamye.com", bundleId: "com.mye.assassin", productID: "8e12d6b3bde4463391a267c7ac44c428") { (response) in
+//
+//        }
+        OpenApi.shared.fetchToken { (response) in
+            print(response)
         }
         
         return true
