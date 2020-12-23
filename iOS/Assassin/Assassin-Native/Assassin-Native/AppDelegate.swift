@@ -12,8 +12,9 @@ import BaseLibrary
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        
-        Test().test()
+        OpenApi.shared.fetchToken { (response) in
+            
+        }
         
         return true
     }

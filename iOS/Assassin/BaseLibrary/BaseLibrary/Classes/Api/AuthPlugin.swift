@@ -8,6 +8,7 @@
 import Foundation
 import Moya
 
+/// 认证插件
 struct AuthPlugin: PluginType {
     let tokenClosure: () -> String?
     func prepare(_ request: URLRequest, target: TargetType) -> URLRequest {

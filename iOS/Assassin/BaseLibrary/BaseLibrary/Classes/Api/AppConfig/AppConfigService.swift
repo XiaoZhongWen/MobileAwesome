@@ -15,7 +15,11 @@ enum AppConfigService {
     case fetchConfig(domain: String, bundleId: String, productID: String)
 }
 
-extension AppConfigService : TargetType {
+extension AppConfigService : AuthorizedTargetType {
+    var authType: AuthorizationType {
+        return .bearer
+    }
+    
     var baseURL: URL {
         return URL.init(string: BASE_URL)!
     }

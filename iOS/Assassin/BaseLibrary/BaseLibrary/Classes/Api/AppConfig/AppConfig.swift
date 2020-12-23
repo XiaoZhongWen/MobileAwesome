@@ -7,14 +7,13 @@
 
 import Foundation
 import Moya
+import RxSwift
 
 public class AppConfig {
     // 单例
     public static let shared = AppConfig()
-    let provider: MoyaProvider<AppConfigService>
     
     private init() {
-        provider = MoyaProvider<AppConfigService>()
     }
     
     /// 获取app配置数据
@@ -23,8 +22,35 @@ public class AppConfig {
                      bundleId: String,
                      productID: String,
                      completionHandle: @escaping (_ response: [String:Any]) -> Void) {
-        provider.request(.fetchConfig(domain: domain, bundleId: bundleId, productID: productID)) { result in
-            print(result)
+        let disposeBag = DisposeBag()
+        let sequenceThatErrors = Observable<Result<Moya.Response, MoyaError>>.create { (observer) -> Disposable in
+            let provider = MoyaProvider<AppConfigService>(
+                plugins: [
+                    AuthPlugin.init(tokenClosure: { () -> String? in
+                        return ""
+                    })
+                ]
+            )
+            provider.request(.fetchConfig(domain: domain, bundleId: bundleId, productID: productID)) { result in
+                switch result {
+                case let .success(response):
+                    if response.statusCode == 401 {
+                        OpenApi.shared.fetchToken { (result) in
+                            
+                        }
+                        observer.onError(ApiError.oAuthFailure)
+                    } else {
+                        observer.onNext(result)
+                    }
+                case .failure(_):
+                    observer.onNext(result)
+                }
+            }
+            return Disposables.create()
         }
+        
+        sequenceThatErrors.retry().subscribe { (result) in
+            
+        }.disposed(by: disposeBag)
     }
 }

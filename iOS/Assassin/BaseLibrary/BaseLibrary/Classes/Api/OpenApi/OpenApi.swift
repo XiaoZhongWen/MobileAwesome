@@ -14,10 +14,9 @@ public class OpenApi {
     private init() {}
     
     public func fetchToken(completionHandle: @escaping (_ response: [String: Any]) -> Void) {
-        let username = "13545118725@cike.com"
-        let password = "zhongwen912".md5
+        let (username, password) = UserDao().fetchAccount()
         let basicAuthCredentials = (username + ":" + password).data(using: .utf8)
-        let token = basicAuthCredentials?.base64EncodedString(options: .lineLength64Characters)
+        let token = basicAuthCredentials?.base64EncodedString(options: .lineLength76Characters)
         let provider = MoyaProvider<OpenApiService>(
             plugins: [
                 AuthPlugin(tokenClosure: { () -> String? in
@@ -26,7 +25,18 @@ public class OpenApi {
             ]
         )
         provider.request(.fetchToken) { (result) in
-            print(result)
+            switch result {
+            case let .success(response):
+                if response.statusCode == 200 {
+                    let data = response.data
+                    let json = String.init(data: data, encoding: .utf8)
+                    print(json)
+                } else {
+                    let error = MoyaError.stringMapping(response)
+                }
+            case let .failure(error):
+                print(error)
+            }
         }
     }
 }

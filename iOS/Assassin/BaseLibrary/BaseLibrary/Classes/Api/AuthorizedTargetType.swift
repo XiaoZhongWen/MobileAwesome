@@ -8,6 +8,7 @@
 import Foundation
 import Moya
 
+/// 添加认证
 protocol AuthorizedTargetType : TargetType {
     var authType:AuthorizationType {get}
 }
