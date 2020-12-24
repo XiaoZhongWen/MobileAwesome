@@ -8,16 +8,35 @@
 
 /* Begin PBXBuildFile section */
 		0EF083EEB469157953BC2E11 /* Pods_Assassin_Native.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5831C8DC7061E958B84B9C68 /* Pods_Assassin_Native.framework */; };
+		3718DFC125946B4C00B9F2A8 /* Assassin_NativeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3718DFC025946B4C00B9F2A8 /* Assassin_NativeTests.swift */; };
+		3734957025948DF500374CC0 /* AppConfigTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3734956F25948DF500374CC0 /* AppConfigTests.swift */; };
 		37CD3EBD258C48B10010EE87 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37CD3EBC258C48B10010EE87 /* AppDelegate.swift */; };
 		37CD3EC1258C48B10010EE87 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37CD3EC0258C48B10010EE87 /* ViewController.swift */; };
 		37CD3EC4258C48B10010EE87 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 37CD3EC2258C48B10010EE87 /* Main.storyboard */; };
 		37CD3EC6258C48B40010EE87 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 37CD3EC5258C48B40010EE87 /* Assets.xcassets */; };
 		37CD3EC9258C48B40010EE87 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 37CD3EC7258C48B40010EE87 /* LaunchScreen.storyboard */; };
 		37CD3ED5258C584E0010EE87 /* Template.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37CD3ED4258C584E0010EE87 /* Template.swift */; };
+		9A278A928555C2525F3F6695 /* Pods_Assassin_NativeTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 213FA129114A2B2BA37084AB /* Pods_Assassin_NativeTests.framework */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		3718DFC325946B4C00B9F2A8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 37CD3EB1258C48B10010EE87 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 37CD3EB8258C48B10010EE87;
+			remoteInfo = "Assassin-Native";
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
+		0AADB063851AF516DDAF688C /* Pods-Assassin-NativeTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Assassin-NativeTests.debug.xcconfig"; path = "Target Support Files/Pods-Assassin-NativeTests/Pods-Assassin-NativeTests.debug.xcconfig"; sourceTree = "<group>"; };
+		213FA129114A2B2BA37084AB /* Pods_Assassin_NativeTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Assassin_NativeTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		37154F40259086E90066BA72 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		3718DFBE25946B4C00B9F2A8 /* Assassin-NativeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Assassin-NativeTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		3718DFC025946B4C00B9F2A8 /* Assassin_NativeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Assassin_NativeTests.swift; sourceTree = "<group>"; };
+		3718DFC225946B4C00B9F2A8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3734956F25948DF500374CC0 /* AppConfigTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppConfigTests.swift; path = Api/AppConfigTests.swift; sourceTree = "<group>"; };
 		376E627D25907D820090DA34 /* BaseLibrary.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BaseLibrary.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		37CD3EB9258C48B10010EE87 /* Assassin-Native.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Assassin-Native.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		37CD3EBC258C48B10010EE87 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -30,9 +49,18 @@
 		5831C8DC7061E958B84B9C68 /* Pods_Assassin_Native.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Assassin_Native.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7623CB87654133E639310818 /* Pods-Assassin-Native.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Assassin-Native.debug.xcconfig"; path = "Target Support Files/Pods-Assassin-Native/Pods-Assassin-Native.debug.xcconfig"; sourceTree = "<group>"; };
 		A422D69925D15908D27E610D /* Pods-Assassin-Native.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Assassin-Native.release.xcconfig"; path = "Target Support Files/Pods-Assassin-Native/Pods-Assassin-Native.release.xcconfig"; sourceTree = "<group>"; };
+		BA193BBD48736300E420185F /* Pods-Assassin-NativeTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Assassin-NativeTests.release.xcconfig"; path = "Target Support Files/Pods-Assassin-NativeTests/Pods-Assassin-NativeTests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		3718DFBB25946B4C00B9F2A8 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9A278A928555C2525F3F6695 /* Pods_Assassin_NativeTests.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		37CD3EB6258C48B10010EE87 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -44,10 +72,21 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3718DFBF25946B4C00B9F2A8 /* Assassin-NativeTests */ = {
+			isa = PBXGroup;
+			children = (
+				3734956F25948DF500374CC0 /* AppConfigTests.swift */,
+				3718DFC025946B4C00B9F2A8 /* Assassin_NativeTests.swift */,
+				3718DFC225946B4C00B9F2A8 /* Info.plist */,
+			);
+			path = "Assassin-NativeTests";
+			sourceTree = "<group>";
+		};
 		37CD3EB0258C48B10010EE87 = {
 			isa = PBXGroup;
 			children = (
 				37CD3EBB258C48B10010EE87 /* Assassin-Native */,
+				3718DFBF25946B4C00B9F2A8 /* Assassin-NativeTests */,
 				37CD3EBA258C48B10010EE87 /* Products */,
 				4727E8E14C79AAAC40DE28FC /* Pods */,
 				D9F1EF69968AD58CE47E491D /* Frameworks */,
@@ -58,6 +97,7 @@
 			isa = PBXGroup;
 			children = (
 				37CD3EB9258C48B10010EE87 /* Assassin-Native.app */,
+				3718DFBE25946B4C00B9F2A8 /* Assassin-NativeTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -89,6 +129,8 @@
 			children = (
 				7623CB87654133E639310818 /* Pods-Assassin-Native.debug.xcconfig */,
 				A422D69925D15908D27E610D /* Pods-Assassin-Native.release.xcconfig */,
+				0AADB063851AF516DDAF688C /* Pods-Assassin-NativeTests.debug.xcconfig */,
+				BA193BBD48736300E420185F /* Pods-Assassin-NativeTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -99,6 +141,7 @@
 				37154F40259086E90066BA72 /* Security.framework */,
 				376E627D25907D820090DA34 /* BaseLibrary.framework */,
 				5831C8DC7061E958B84B9C68 /* Pods_Assassin_Native.framework */,
+				213FA129114A2B2BA37084AB /* Pods_Assassin_NativeTests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -106,6 +149,26 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		3718DFBD25946B4C00B9F2A8 /* Assassin-NativeTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3718DFC725946B4D00B9F2A8 /* Build configuration list for PBXNativeTarget "Assassin-NativeTests" */;
+			buildPhases = (
+				523D81B8018405E5AB973F42 /* [CP] Check Pods Manifest.lock */,
+				3718DFBA25946B4C00B9F2A8 /* Sources */,
+				3718DFBB25946B4C00B9F2A8 /* Frameworks */,
+				3718DFBC25946B4C00B9F2A8 /* Resources */,
+				590CDBEE117149BCD3BAEA41 /* [CP] Embed Pods Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				3718DFC425946B4C00B9F2A8 /* PBXTargetDependency */,
+			);
+			name = "Assassin-NativeTests";
+			productName = "Assassin-NativeTests";
+			productReference = 3718DFBE25946B4C00B9F2A8 /* Assassin-NativeTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		37CD3EB8258C48B10010EE87 /* Assassin-Native */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 37CD3ECD258C48B40010EE87 /* Build configuration list for PBXNativeTarget "Assassin-Native" */;
@@ -132,10 +195,15 @@
 		37CD3EB1258C48B10010EE87 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				DefaultBuildSystemTypeForWorkspace = Original;
 				LastSwiftUpdateCheck = 1150;
 				LastUpgradeCheck = 1150;
 				ORGANIZATIONNAME = "肖仲文";
 				TargetAttributes = {
+					3718DFBD25946B4C00B9F2A8 = {
+						CreatedOnToolsVersion = 11.5;
+						TestTargetID = 37CD3EB8258C48B10010EE87;
+					};
 					37CD3EB8258C48B10010EE87 = {
 						CreatedOnToolsVersion = 11.5;
 					};
@@ -155,11 +223,19 @@
 			projectRoot = "";
 			targets = (
 				37CD3EB8258C48B10010EE87 /* Assassin-Native */,
+				3718DFBD25946B4C00B9F2A8 /* Assassin-NativeTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		3718DFBC25946B4C00B9F2A8 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		37CD3EB7258C48B10010EE87 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -207,6 +283,45 @@
 			shellPath = /bin/sh;
 			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n\"${PODS_ROOT}/SwiftLint/swiftlint\"\n";
 		};
+		523D81B8018405E5AB973F42 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Assassin-NativeTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		590CDBEE117149BCD3BAEA41 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Assassin-NativeTests/Pods-Assassin-NativeTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Assassin-NativeTests/Pods-Assassin-NativeTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Assassin-NativeTests/Pods-Assassin-NativeTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		FFD9C13CEEB77FF6B50E628C /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -232,6 +347,15 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		3718DFBA25946B4C00B9F2A8 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3718DFC125946B4C00B9F2A8 /* Assassin_NativeTests.swift in Sources */,
+				3734957025948DF500374CC0 /* AppConfigTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		37CD3EB5258C48B10010EE87 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -243,6 +367,14 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		3718DFC425946B4C00B9F2A8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 37CD3EB8258C48B10010EE87 /* Assassin-Native */;
+			targetProxy = 3718DFC325946B4C00B9F2A8 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		37CD3EC2258C48B10010EE87 /* Main.storyboard */ = {
@@ -264,6 +396,48 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		3718DFC525946B4D00B9F2A8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0AADB063851AF516DDAF688C /* Pods-Assassin-NativeTests.debug.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 3YJ9KM5KAS;
+				INFOPLIST_FILE = "Assassin-NativeTests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "Julien.Assassin-NativeTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Assassin-Native.app/Assassin-Native";
+			};
+			name = Debug;
+		};
+		3718DFC625946B4D00B9F2A8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = BA193BBD48736300E420185F /* Pods-Assassin-NativeTests.release.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 3YJ9KM5KAS;
+				INFOPLIST_FILE = "Assassin-NativeTests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "Julien.Assassin-NativeTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Assassin-Native.app/Assassin-Native";
+			};
+			name = Release;
+		};
 		37CD3ECB258C48B40010EE87 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -298,6 +472,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEFINES_MODULE = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -358,6 +533,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -421,6 +597,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		3718DFC725946B4D00B9F2A8 /* Build configuration list for PBXNativeTarget "Assassin-NativeTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3718DFC525946B4D00B9F2A8 /* Debug */,
+				3718DFC625946B4D00B9F2A8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		37CD3EB4258C48B10010EE87 /* Build configuration list for PBXProject "Assassin-Native" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

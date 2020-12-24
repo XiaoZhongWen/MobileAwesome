@@ -21,7 +21,6 @@ extension OpenApiService : AuthorizedTargetType {
     }
     
     var baseURL: URL {
-        print(BASE_URL)
         return URL.init(string: BASE_URL)!
     }
     

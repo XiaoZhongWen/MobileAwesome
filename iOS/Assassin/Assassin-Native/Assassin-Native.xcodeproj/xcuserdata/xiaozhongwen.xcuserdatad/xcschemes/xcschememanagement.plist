@@ -6,8 +6,23 @@
 	<dict>
 		<key>Assassin-Native.xcscheme_^#shared#^_</key>
 		<dict>
+			<key>isShown</key>
+			<true/>
 			<key>orderHint</key>
-			<integer>6</integer>
+			<integer>13</integer>
+		</dict>
+	</dict>
+	<key>SuppressBuildableAutocreation</key>
+	<dict>
+		<key>3718DFBD25946B4C00B9F2A8</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>37CD3EB8258C48B10010EE87</key>
+		<dict>
+			<key>primary</key>
+			<true/>
 		</dict>
 	</dict>
 </dict>

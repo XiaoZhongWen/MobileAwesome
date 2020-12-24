@@ -13,7 +13,7 @@ public class OpenApi {
     
     private init() {}
     
-    public func fetchToken(completionHandle: @escaping (_ response: [String: Any]) -> Void) {
+    public func fetchToken(_ completion: @escaping ApiCompletion) {
         let (username, password) = UserDao().fetchAccount()
         let basicAuthCredentials = (username + ":" + password).data(using: .utf8)
         let token = basicAuthCredentials?.base64EncodedString(options: .lineLength76Characters)
@@ -30,9 +30,10 @@ public class OpenApi {
                 if response.statusCode == 200 {
                     let data = response.data
                     let json = String.init(data: data, encoding: .utf8)
-                    print(json)
+                    UserDefaults.init().set(json, forKey: TOKEN_KEY)
+                    completion(.success(data))
                 } else {
-                    let error = MoyaError.stringMapping(response)
+                    completion(.failure(MoyaError.statusCode(response)))
                 }
             case let .failure(error):
                 print(error)

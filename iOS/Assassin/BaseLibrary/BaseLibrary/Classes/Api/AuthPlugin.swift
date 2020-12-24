@@ -19,4 +19,8 @@ struct AuthPlugin: PluginType {
         request.addValue(target.authType.value + " " + token, forHTTPHeaderField: "Authorization")
         return request
     }
+    
+    func willSend(_ request: RequestType, target: TargetType) {
+//        print(request.request?.allHTTPHeaderFields)
+    }
 }

@@ -20,37 +20,21 @@ public class AppConfig {
     /// - Parameter completionHandle: 完成回调
     public func fetchConfig(domain: String,
                      bundleId: String,
-                     productID: String,
-                     completionHandle: @escaping (_ response: [String:Any]) -> Void) {
-        let disposeBag = DisposeBag()
-        let sequenceThatErrors = Observable<Result<Moya.Response, MoyaError>>.create { (observer) -> Disposable in
-            let provider = MoyaProvider<AppConfigService>(
-                plugins: [
-                    AuthPlugin.init(tokenClosure: { () -> String? in
-                        return ""
-                    })
-                ]
-            )
-            provider.request(.fetchConfig(domain: domain, bundleId: bundleId, productID: productID)) { result in
-                switch result {
-                case let .success(response):
-                    if response.statusCode == 401 {
-                        OpenApi.shared.fetchToken { (result) in
-                            
-                        }
-                        observer.onError(ApiError.oAuthFailure)
-                    } else {
-                        observer.onNext(result)
-                    }
-                case .failure(_):
-                    observer.onNext(result)
-                }
-            }
-            return Disposables.create()
-        }
+                     productId: String,
+                     completion: @escaping ApiCompletion) {
         
-        sequenceThatErrors.retry().subscribe { (result) in
-            
-        }.disposed(by: disposeBag)
+        let json = UserDefaults.init().value(forKey: TOKEN_KEY) as? String
+        let token = Token.deserialize(from: json)
+        
+        let provider = MoyaProvider<AppConfigService>(
+            plugins: [
+                AuthPlugin.init(tokenClosure: { () -> String? in
+                    return token?.access_token
+                })
+            ]
+        )
+        let target = AppConfigService.fetchConfig(domain: domain, bundleId: bundleId, productID: productId)
+        let command = RequestCommand.init(provider, target, completion)
+        command.execute()
     }
 }
