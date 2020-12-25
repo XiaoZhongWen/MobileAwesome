@@ -14,4 +14,8 @@ public enum ApiResult<Success, Failure> {
     case failure(Failure)
 }
 
+public enum ApiError : Swift.Error {
+    case parametersInvalid
+}
+
 public typealias ApiCompletion = (_ result: ApiResult<Data, MoyaError>) -> Void

@@ -23,6 +23,11 @@ public class AppConfig {
                      productId: String,
                      completion: @escaping ApiCompletion) {
         
+        if domain.count == 0 || bundleId.count == 0 || productId.count == 0 {
+            completion(.failure(MoyaError.parameterEncoding(ApiError.parametersInvalid)))
+            return
+        }
+        
         let json = UserDefaults.init().value(forKey: TOKEN_KEY) as? String
         let token = Token.deserialize(from: json)
         
