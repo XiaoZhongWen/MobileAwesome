@@ -10,12 +10,14 @@
 		0EF083EEB469157953BC2E11 /* Pods_Assassin_Native.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5831C8DC7061E958B84B9C68 /* Pods_Assassin_Native.framework */; };
 		3718DFC125946B4C00B9F2A8 /* Assassin_NativeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3718DFC025946B4C00B9F2A8 /* Assassin_NativeTests.swift */; };
 		3734957025948DF500374CC0 /* AppConfigTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3734956F25948DF500374CC0 /* AppConfigTests.swift */; };
+		377241902598D1AF0059F1A1 /* token.json in Resources */ = {isa = PBXBuildFile; fileRef = 3772418F2598D1AF0059F1A1 /* token.json */; };
 		37CD3EBD258C48B10010EE87 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37CD3EBC258C48B10010EE87 /* AppDelegate.swift */; };
 		37CD3EC1258C48B10010EE87 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37CD3EC0258C48B10010EE87 /* ViewController.swift */; };
 		37CD3EC4258C48B10010EE87 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 37CD3EC2258C48B10010EE87 /* Main.storyboard */; };
 		37CD3EC6258C48B40010EE87 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 37CD3EC5258C48B40010EE87 /* Assets.xcassets */; };
 		37CD3EC9258C48B40010EE87 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 37CD3EC7258C48B40010EE87 /* LaunchScreen.storyboard */; };
 		37CD3ED5258C584E0010EE87 /* Template.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37CD3ED4258C584E0010EE87 /* Template.swift */; };
+		37D77D8B2598311F00668436 /* app_config.json in Resources */ = {isa = PBXBuildFile; fileRef = 37D77D8A2598311F00668436 /* app_config.json */; };
 		9A278A928555C2525F3F6695 /* Pods_Assassin_NativeTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 213FA129114A2B2BA37084AB /* Pods_Assassin_NativeTests.framework */; };
 /* End PBXBuildFile section */
 
@@ -38,6 +40,7 @@
 		3718DFC225946B4C00B9F2A8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3734956F25948DF500374CC0 /* AppConfigTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppConfigTests.swift; path = Api/AppConfigTests.swift; sourceTree = "<group>"; };
 		376E627D25907D820090DA34 /* BaseLibrary.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BaseLibrary.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		3772418F2598D1AF0059F1A1 /* token.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = token.json; sourceTree = "<group>"; };
 		37CD3EB9258C48B10010EE87 /* Assassin-Native.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Assassin-Native.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		37CD3EBC258C48B10010EE87 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		37CD3EC0258C48B10010EE87 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -46,6 +49,7 @@
 		37CD3EC8258C48B40010EE87 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		37CD3ECA258C48B40010EE87 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		37CD3ED4258C584E0010EE87 /* Template.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Template.swift; sourceTree = "<group>"; };
+		37D77D8A2598311F00668436 /* app_config.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = app_config.json; sourceTree = "<group>"; };
 		5831C8DC7061E958B84B9C68 /* Pods_Assassin_Native.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Assassin_Native.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7623CB87654133E639310818 /* Pods-Assassin-Native.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Assassin-Native.debug.xcconfig"; path = "Target Support Files/Pods-Assassin-Native/Pods-Assassin-Native.debug.xcconfig"; sourceTree = "<group>"; };
 		A422D69925D15908D27E610D /* Pods-Assassin-Native.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Assassin-Native.release.xcconfig"; path = "Target Support Files/Pods-Assassin-Native/Pods-Assassin-Native.release.xcconfig"; sourceTree = "<group>"; };
@@ -75,6 +79,7 @@
 		3718DFBF25946B4C00B9F2A8 /* Assassin-NativeTests */ = {
 			isa = PBXGroup;
 			children = (
+				37D77D892598310600668436 /* res */,
 				3734956F25948DF500374CC0 /* AppConfigTests.swift */,
 				3718DFC025946B4C00B9F2A8 /* Assassin_NativeTests.swift */,
 				3718DFC225946B4C00B9F2A8 /* Info.plist */,
@@ -122,6 +127,15 @@
 				37CD3ED4258C584E0010EE87 /* Template.swift */,
 			);
 			path = Source;
+			sourceTree = "<group>";
+		};
+		37D77D892598310600668436 /* res */ = {
+			isa = PBXGroup;
+			children = (
+				37D77D8A2598311F00668436 /* app_config.json */,
+				3772418F2598D1AF0059F1A1 /* token.json */,
+			);
+			name = res;
 			sourceTree = "<group>";
 		};
 		4727E8E14C79AAAC40DE28FC /* Pods */ = {
@@ -233,6 +247,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				37D77D8B2598311F00668436 /* app_config.json in Resources */,
+				377241902598D1AF0059F1A1 /* token.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

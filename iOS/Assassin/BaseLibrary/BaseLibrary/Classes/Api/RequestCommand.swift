@@ -6,16 +6,15 @@
 //
 
 import Foundation
-
 import Moya
 
 class RequestCommand<Target: TargetType>: ApiCommand {
     
     let provider: MoyaProvider<Target>
     let target: Target
-    let completion: ApiCompletion
+    let completion: Completion
     
-    init(_ provider:MoyaProvider<Target>, _ target:Target, _ completion: @escaping ApiCompletion) {
+    init(_ provider:MoyaProvider<Target>, _ target:Target, _ completion: @escaping Completion) {
         self.provider = provider
         self.target = target
         self.completion = completion
@@ -36,11 +35,10 @@ class RequestCommand<Target: TargetType>: ApiCommand {
                         }
                     }
                 } else {
-                    print(String.init(data: response.data, encoding: .utf8))
-                    self.completion(.failure(MoyaError.stringMapping(response)))
+                    self.completion(.success(response))
                 }
             case let .failure(error):
-                self.completion(.failure(MoyaError.encodableMapping(error)))
+                self.completion(.failure(error))
             }
         }
     }

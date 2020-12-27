@@ -8,14 +8,3 @@
 import Moya
 
 public let TOKEN_KEY = "TOKEN"
-
-public enum ApiResult<Success, Failure> {
-    case success(Success)
-    case failure(Failure)
-}
-
-public enum ApiError : Swift.Error {
-    case parametersInvalid
-}
-
-public typealias ApiCompletion = (_ result: ApiResult<Data, MoyaError>) -> Void

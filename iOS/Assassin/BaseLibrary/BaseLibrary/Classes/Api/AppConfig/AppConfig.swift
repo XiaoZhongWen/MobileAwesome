@@ -21,10 +21,10 @@ public class AppConfig {
     public func fetchConfig(domain: String,
                      bundleId: String,
                      productId: String,
-                     completion: @escaping ApiCompletion) {
+                     completion: @escaping Completion) {
         
         if domain.count == 0 || bundleId.count == 0 || productId.count == 0 {
-            completion(.failure(MoyaError.parameterEncoding(ApiError.parametersInvalid)))
+            completion(.failure(MoyaError.requestMapping("parameters are invalid")))
             return
         }
         
