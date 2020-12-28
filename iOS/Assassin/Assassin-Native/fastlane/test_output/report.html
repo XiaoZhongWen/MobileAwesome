@@ -112,6 +112,8 @@
         <section id="counters">
           <h2 id="test-count"><span class="number">5</span> tests</h2>
           
+            <h2 id="fail-count"><span class="number">1</span> failures</h2>
+          
         </section>
         <section id="segment-bar">
           <a id="all-segment" onclick="selectSegment(this);" class="selected">All</a><a id="failing-segment" onclick="selectSegment(this);">Failing</a><a id="passing-segment" onclick="selectSegment(this);">Passing</a>
@@ -121,7 +123,7 @@
     <section id="test-suites">
       
         
-        <section class="test-suite passing" id="Assassin_NativeTests.AppConfigTests">
+        <section class="test-suite failing" id="Assassin_NativeTests.AppConfigTests">
           <section class="heading" onclick="toggleTests(this);">
             <h3 class="title">Assassin_NativeTests.AppConfigTests</h3>
           </section>
@@ -132,7 +134,7 @@
               <tr class="test passing "  onclick="toggleDetails('AppConfig_Unit_Tests__fetch_app_config__should_NOT_fetch_app_config_with_invalid_domain_or_bundleId_or_productId');">
                 <td>
                   
-                    <h3 class="time">0.006s</h3>
+                    <h3 class="time">0.005s</h3>
                   
                 </td>
                 <td><h3 class="title">AppConfig_Unit_Tests__fetch_app_config__should_NOT_fetch_app_config_with_invalid_domain_or_bundleId_or_productId</h3></td>
@@ -143,7 +145,7 @@
               <tr class="test passing odd"  onclick="toggleDetails('AppConfig_Unit_Tests__fetch_app_config__should_fetch_app_config_with_valid_domain_and_bundleId_and_productId');">
                 <td>
                   
-                    <h3 class="time">0.014s</h3>
+                    <h3 class="time">0.009s</h3>
                   
                 </td>
                 <td><h3 class="title">AppConfig_Unit_Tests__fetch_app_config__should_fetch_app_config_with_valid_domain_and_bundleId_and_productId</h3></td>
@@ -151,14 +153,29 @@
               
             
               
-              <tr class="test passing "  onclick="toggleDetails('AppConfig_Unit_Tests__fetch_oauth_token__should_fetch_oauth_token');">
+              <tr class="test failing "  onclick="toggleDetails('AppConfig_Unit_Tests__fetch_oauth_token__should_fetch_oauth_token');">
                 <td>
-                  
-                    <h3 class="time">0.005s</h3>
                   
                 </td>
                 <td><h3 class="title">AppConfig_Unit_Tests__fetch_oauth_token__should_fetch_oauth_token</h3></td>
               </tr>
+              
+                <tr class="details failing AppConfig_Unit_Tests__fetch_oauth_token__should_fetch_oauth_token">
+                  <td></td>
+                  <td>
+                    
+                      <section class="test-detail reason">expected to equal <cfdfe553-5893-4ccf-bc10-a8f533be5351-1>, got <cfdfe553-5893-4ccf-bc10-a8f533be5351-2></section>
+                    
+                    
+                      <section class="test-detail snippet">                                    <span class="k">let</span> <span class="nv">token</span> <span class="o">=</span> <span class="n">dict</span><span class="p">?[</span><span class="s">"access_token"</span><span class="p">]</span> <span class="k">as?</span> <span class="kt">String</span>
+                                    <span class="nf">expect</span><span class="p">(</span><span class="n">token</span><span class="p">)</span> <span class="o">==</span> <span class="s">"cfdfe553-5893-4ccf-bc10-a8f533be5351-1"</span>
+                                    <span class="nf">done</span><span class="p">()</span>
+</section>
+                      <section class="test-detail">/Volumes/Julien/Mine/MobileAwesome/iOS/Assassin/Assassin-Native/Assassin-NativeTests/Api/AppConfigTests.swift:77</section>
+                    
+                    
+                  </td>
+                </tr>
               
             
             </table>
@@ -188,7 +205,7 @@
               <tr class="test passing odd"  onclick="toggleDetails('testPerformanceExample');">
                 <td>
                   
-                    <h3 class="time">0.378s</h3>
+                    <h3 class="time">0.309s</h3>
                   
                 </td>
                 <td><h3 class="title">testPerformanceExample</h3></td>
