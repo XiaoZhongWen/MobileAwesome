@@ -23,6 +23,8 @@ jobs:
       - name: fastlane unit test
         run: |
           cd iOS/Assassin/Assassin-Native/
+          sudo gem install cocoapods
+          pod install
           fastlane tests
 
       # Runs a set of commands using the runners shell
