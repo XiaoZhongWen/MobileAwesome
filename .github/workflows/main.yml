@@ -18,7 +18,9 @@ jobs:
 
       # Runs a single command using the runners shell
       - name: fastlane unit test
-        run: fastlane tests
+        run: |
+          cd iOS/Assassin/Assassin-Native/
+          fastlane tests
 
       # Runs a set of commands using the runners shell
       - name: Run a multi-line script
