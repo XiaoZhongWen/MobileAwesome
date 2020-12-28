@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<testsuites name='Assassin-NativeTests.xctest' tests='5' failures='0'>
+  <testsuite name='Assassin_NativeTests.AppConfigTests' tests='3' failures='0'>
+    <testcase classname='Assassin_NativeTests.AppConfigTests' name='AppConfig_Unit_Tests__fetch_app_config__should_NOT_fetch_app_config_with_invalid_domain_or_bundleId_or_productId' time='0.006'/>
+    <testcase classname='Assassin_NativeTests.AppConfigTests' name='AppConfig_Unit_Tests__fetch_app_config__should_fetch_app_config_with_valid_domain_and_bundleId_and_productId' time='0.014'/>
+    <testcase classname='Assassin_NativeTests.AppConfigTests' name='AppConfig_Unit_Tests__fetch_oauth_token__should_fetch_oauth_token' time='0.005'/>
+  </testsuite>
+  <testsuite name='Assassin_NativeTests.Assassin_NativeTests' tests='2' failures='0'>
+    <testcase classname='Assassin_NativeTests.Assassin_NativeTests' name='testExample' time='0.001'/>
+    <testcase classname='Assassin_NativeTests.Assassin_NativeTests' name='testPerformanceExample' time='0.378'/>
+  </testsuite>
+</testsuites>
