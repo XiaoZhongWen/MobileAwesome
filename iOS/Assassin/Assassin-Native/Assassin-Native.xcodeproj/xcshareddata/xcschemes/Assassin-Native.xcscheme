@@ -20,6 +20,20 @@
                ReferencedContainer = "container:Assassin-Native.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "3718DFBD25946B4C00B9F2A8"
+               BuildableName = "Assassin-NativeTests.xctest"
+               BlueprintName = "Assassin-NativeTests"
+               ReferencedContainer = "container:Assassin-Native.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
