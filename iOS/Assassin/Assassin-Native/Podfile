@@ -1,12 +1,19 @@
 # Uncomment the next line to define a global platform for your project
 # platform :ios, '9.0'
 
+source 'https://mirrors.bfsu.edu.cn/git/CocoaPods/Specs.git'
+
 target 'Assassin-Native' do
   # Comment the next line if you don't want to use dynamic frameworks
   use_frameworks!
   pod 'SwiftLint'
+  pod 'RxSwift'
+  pod 'RxCocoa'
 
   pod 'BaseLibrary', :path => '../BaseLibrary'
+  pod 'Flutter', :path => '../products/FlutterEngine'
+  pod 'FlutterEngine', :path => '../products/FlutterEngine'
+  pod 'assassin_flutter_plugin', :path => '../products/assassin_flutter_plugin'
 
   target 'Assassin-NativeTests' do
     inherit! :search_paths

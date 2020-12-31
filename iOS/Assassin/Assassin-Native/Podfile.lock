@@ -1,5 +1,7 @@
 PODS:
   - Alamofire (5.4.0)
+  - assassin_flutter_plugin (0.0.1):
+    - Flutter
   - BaseLibrary (0.1.0):
     - HandyJSON
     - Moya/RxSwift
@@ -8,6 +10,8 @@ PODS:
   - FBSnapshotTestCase/Core (2.1.4)
   - FBSnapshotTestCase/SwiftSupport (2.1.4):
     - FBSnapshotTestCase/Core
+  - Flutter (1.0.0)
+  - FlutterEngine (0.1.0)
   - HandyJSON (5.0.2)
   - iOSSnapshotTestCase (6.2.0):
     - iOSSnapshotTestCase/SwiftSupport (= 6.2.0)
@@ -39,19 +43,32 @@ PODS:
   - OHHTTPStubs/Swift (9.1.0):
     - OHHTTPStubs/Default
   - Quick (2.2.1)
+  - RxCocoa (5.1.1):
+    - RxRelay (~> 5)
+    - RxSwift (~> 5)
+  - RxRelay (5.1.1):
+    - RxSwift (~> 5)
   - RxSwift (5.1.1)
   - SwiftLint (0.42.0)
 
 DEPENDENCIES:
+  - assassin_flutter_plugin (from `../products/assassin_flutter_plugin`)
   - BaseLibrary (from `../BaseLibrary`)
   - FBSnapshotTestCase (~> 2.1.4)
+  - Flutter (from `../products/FlutterEngine`)
+  - FlutterEngine (from `../products/FlutterEngine`)
   - Nimble (~> 8.0.7)
   - Nimble-Snapshots (~> 8.0.0)
   - OHHTTPStubs/Swift
   - Quick (~> 2.2.0)
+  - RxCocoa
+  - RxSwift
   - SwiftLint
 
 SPEC REPOS:
+  https://mirrors.bfsu.edu.cn/git/CocoaPods/Specs.git:
+    - RxCocoa
+    - RxRelay
   trunk:
     - Alamofire
     - FBSnapshotTestCase
@@ -66,13 +83,22 @@ SPEC REPOS:
     - SwiftLint
 
 EXTERNAL SOURCES:
+  assassin_flutter_plugin:
+    :path: "../products/assassin_flutter_plugin"
   BaseLibrary:
     :path: "../BaseLibrary"
+  Flutter:
+    :path: "../products/FlutterEngine"
+  FlutterEngine:
+    :path: "../products/FlutterEngine"
 
 SPEC CHECKSUMS:
   Alamofire: 3b6a534a3df22db367e4dedeeca73d1ddfcf0e2f
+  assassin_flutter_plugin: f0e27dccd431f24f6dddadfda556c5fa6c8d60a2
   BaseLibrary: 7731870c99a82bf87e6764e1c1dd54cbe7eea99e
   FBSnapshotTestCase: 094f9f314decbabe373b87cc339bea235a63e07a
+  Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
+  FlutterEngine: 7eed8bac2a76cfceb006b3be72ed4b8de33cc9bc
   HandyJSON: 9e4e236f5d2dbefad5155a77417bbea438201c03
   iOSSnapshotTestCase: 9ab44cb5aa62b84d31847f40680112e15ec579a6
   Moya: 5b45dacb75adb009f97fde91c204c1e565d31916
@@ -80,9 +106,11 @@ SPEC CHECKSUMS:
   Nimble-Snapshots: 8ec63f41ce6c7229a17be9a64edbc123b181f75b
   OHHTTPStubs: 90eac6d8f2c18317baeca36698523dc67c513831
   Quick: f5754d69b7013f5864c29aab9ae6f0c79c5bc200
+  RxCocoa: 32065309a38d29b5b0db858819b5bf9ef038b601
+  RxRelay: d77f7d771495f43c556cbc43eebd1bb54d01e8e9
   RxSwift: 81470a2074fa8780320ea5fe4102807cb7118178
   SwiftLint: 4fa9579c63416865179bc416f0a92d55f009600d
 
-PODFILE CHECKSUM: ecf3e353c78e8178a250c4f04138d8f5fcb9aaa1
+PODFILE CHECKSUM: 1d9ef9be2633ae2b9234e2214bff442ef51d180b
 
 COCOAPODS: 1.9.3

@@ -13,8 +13,7 @@ public class OpenApi {
     
     private init() {}
     
-    public func fetchToken(_ completion: @escaping Completion) {
-        let (username, password) = UserDao().fetchAccount()
+    public func fetchToken(_ username: String, _ password: String, _ completion: @escaping Completion) {
         let basicAuthCredentials = (username + ":" + password).data(using: .utf8)
         let token = basicAuthCredentials?.base64EncodedString(options: .lineLength76Characters)
         let provider = MoyaProvider<OpenApiService>(

@@ -21,12 +21,14 @@ class RequestCommand<Target: TargetType>: ApiCommand {
     }
     
     func execute() {
+        let userDao = UserDao.init()
+        let (username, password) = userDao.fetchAccount()
         self.provider.request(self.target) {
             result in
             switch result {
             case let .success(response):
                 if response.statusCode == 401 {
-                    OpenApi.shared.fetchToken { (result) in
+                    OpenApi.shared.fetchToken(username, password) { (result) in
                         switch result {
                         case .success(_):
                             self.execute()
