@@ -28,7 +28,7 @@ class RequestCommand<Target: TargetType>: ApiCommand {
             switch result {
             case let .success(response):
                 if response.statusCode == 401 {
-                    OpenApi.shared.fetchToken(username, password) { (result) in
+                    let _ = OpenApi.shared.fetchToken(username, password) { (result) in
                         switch result {
                         case .success(_):
                             self.execute()

@@ -10,8 +10,9 @@ import UIKit
 import RxCocoa
 import RxSwift
 import BaseLibrary
+import Moya
 
-class ZXLoginViewController: UIViewController {
+class ZXLoginViewController: ViewController {
     @IBOutlet private weak var headerView: UIImageView!
     @IBOutlet private weak var usernameTextfield: UITextField!
     @IBOutlet private weak var passwordTextfield: UITextField!
@@ -52,5 +53,22 @@ extension ZXLoginViewController {
         loginButton.layer.cornerRadius = Login_Btn_CornerRadius
         let headerSize = headerView.bounds.size.width
         headerView.roundCorners(.allCorners, headerSize / 2)
+
+        let loginViewModel = ZXLoginViewModel.init(input: (
+            username: usernameTextfield.rx.text.orEmpty.asObservable(),
+            password: passwordTextfield.rx.text.orEmpty.asObservable(),
+            loginTaps: loginButton.rx.tap.asObservable()), validationService: ZXValidationService.init())
+        loginViewModel.loginEnable.subscribe(onNext: { [weak self] isEnable in
+            self?.loginButton.isEnabled = isEnable
+            self?.loginButton.alpha = isEnable ? 1.0 : 0.5
+            }).disposed(by: disposeBag)
+
+        loginViewModel.loginStatus.subscribe { result in
+            print(result)
+        }
+
+//        loginViewModel.loginStatus.subscribe(onNext: { response in
+//            print(response.statusCode)
+//            }).disposed(by: disposeBag)
     }
 }

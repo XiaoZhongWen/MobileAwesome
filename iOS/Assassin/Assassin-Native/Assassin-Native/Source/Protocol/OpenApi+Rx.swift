@@ -9,19 +9,26 @@
 import Foundation
 import RxSwift
 import BaseLibrary
+import Moya
 
 extension OpenApi: ReactiveCompatible {
-    func fetchToken(_ username: String, _ password: String) -> Single<Bool> {
-        return Single.create { single -> Disposable in
-            self.fetchToken(username, password) { result in
-                switch result {
-                case .success:
-                    return single(.success(true))
-                case let .failure(error):
-                    return single(.error(error))
-                }
-            }
-            return Disposables.create()
-        }
-    }
+//    func fetchToken(_ username: String, _ password: String) -> Single<Bool> {
+//        return Single.create { [weak self] single -> Disposable in
+//            let token = self?.fetchToken(username, password) { result in
+//                switch result {
+//                case .success:
+//                    single(.success(true))
+//                case let .failure(error):
+//                    single(.error(error))
+//                }
+//            }
+//            return Disposables.create {
+//                token?.cancel()
+//            }
+//        }
+//    }
+//
+//    func fetchToken2(_ username: String, _ password: String) -> Single<Response> {
+//        return self.fetchToken1(username, password)
+//    }
 }

@@ -9,11 +9,11 @@
 import Foundation
 import RxSwift
 import BaseLibrary
+import Moya
 
 class ZXLoginViewModel {
     let loginEnable: Observable<Bool>
-    let loginStatus: Observable<Bool>
-    let validatedPassword: Observable<ZXValidationResult>
+    let loginStatus: Observable<Result<Moya.Response, MoyaError>>
 
     init(input: (
             username: Observable<String>,
@@ -21,10 +21,11 @@ class ZXLoginViewModel {
             loginTaps: Observable<Void>),
          validationService: ZXValidationService) {
         let validatedUsername = input.username.flatMapLatest { (username: String) -> Observable<Bool> in
-            let isValid = username.isEmpty
+            let isValid = !username.isEmpty
             return .just(isValid)
         }
-        validatedPassword = input.password.flatMapLatest({ password -> Observable<ZXValidationResult> in
+
+        let validatedPassword = input.password.flatMapLatest({ password -> Observable<ZXValidationResult> in
             return validationService.validatePassword(password: password)
         })
 
@@ -36,9 +37,26 @@ class ZXLoginViewModel {
             return (username, password)
         }
 
-        loginStatus = input.loginTaps.withLatestFrom(usernameAndPassword).flatMapLatest({ pair -> Single<Bool> in
-            let (username, password) = pair
-            return OpenApi.shared.fetchToken(username, password)
-            }).observeOn(MainScheduler.instance).share(replay: 1)
+//        loginStatus = input.loginTaps.withLatestFrom(usernameAndPassword).flatMapLatest({ pair -> Observable<Result<Moya.Response, MoyaError>> in
+//            let (username, password) = pair
+//            OpenApi.shared.fetchToken(username, password) { result in
+//                return Observable.just(result)
+//            }
+//        })
+
+//        loginStatus = input.loginTaps.withLatestFrom(usernameAndPassword).flatMapLatest({ pair -> Observable<Response> in
+//            let (username, password) = pair
+//            return OpenApi.shared.fetchToken_(username, password)
+//        })
+
+//        loginStatus = input.loginTaps.withLatestFrom(usernameAndPassword).asSingle().flatMap { pair -> Single<Response> in
+//            let (username, password) = pair
+//            return OpenApi.shared.fetchToken_(username, password)
+//        }
+
+//        loginStatus = input.loginTaps.withLatestFrom(usernameAndPassword).flatMapLatest({ pair -> Single<Response> in
+//            let (username, password) = pair
+//            return OpenApi.shared.fetchToken_(username, password)
+//            })
     }
 }

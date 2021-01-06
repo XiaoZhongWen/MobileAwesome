@@ -18,10 +18,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         window = UIWindow.init(frame: UIScreen.main.bounds)
-        let flutterVc = FlutterViewController.init()
+//        let flutterVc = FlutterViewController.init()
 //        flutterVc.setInitialRoute("defaultRoute")
-        let registrar = flutterVc.registrar(forPlugin: "SwiftAssassinFlutterPlugin")
-        SwiftAssassinFlutterPlugin.register(with: registrar!)
+//        let registrar = flutterVc.registrar(forPlugin: "SwiftAssassinFlutterPlugin")
+//        SwiftAssassinFlutterPlugin.register(with: registrar!)
 
         let loginVc = ZXLoginViewController.init(nibName: "ZXLoginViewController", bundle: .main)
 

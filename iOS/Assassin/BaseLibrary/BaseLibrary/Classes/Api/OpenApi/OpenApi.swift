@@ -7,13 +7,14 @@
 
 import Foundation
 import Moya
+import RxSwift
 
 public class OpenApi {
     public static let shared = OpenApi()
     
     private init() {}
-    
-    public func fetchToken(_ username: String, _ password: String, _ completion: @escaping Completion) {
+
+    public func fetchToken(_ username: String, _ password: String, _ completion: @escaping Completion) -> Cancellable {
         let basicAuthCredentials = (username + ":" + password).data(using: .utf8)
         let token = basicAuthCredentials?.base64EncodedString(options: .lineLength76Characters)
         let provider = MoyaProvider<OpenApiService>(
@@ -23,24 +24,7 @@ public class OpenApi {
                 })
             ]
         )
-        provider.request(.fetchToken) { (result) in
-            switch result {
-            case let .success(response):
-                if response.statusCode == 200 {
-                    do {
-                        let res = try response.mapString() as String
-                        print(res)
-                    } catch {}
-                    let data = response.data
-                    let json = String.init(data: data, encoding: .utf8)
-                    UserDefaults.init().set(json, forKey: TOKEN_KEY)
-                    completion(.success(response))
-                } else {
-                    completion(.failure(MoyaError.statusCode(response)))
-                }
-            case let .failure(error):
-                completion(.failure(error))
-            }
-        }
+        let cancellableToken = provider.request(.fetchToken, completion: completion)
+        return cancellableToken
     }
 }
