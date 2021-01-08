@@ -3,6 +3,7 @@ PODS:
   - assassin_flutter_plugin (0.0.1):
     - Flutter
   - BaseLibrary (0.1.0):
+    - FMDB
     - HandyJSON
     - Moya/RxSwift
   - FBSnapshotTestCase (2.1.4):
@@ -12,6 +13,9 @@ PODS:
     - FBSnapshotTestCase/Core
   - Flutter (1.0.0)
   - FlutterEngine (0.1.0)
+  - FMDB (2.7.5):
+    - FMDB/standard (= 2.7.5)
+  - FMDB/standard (2.7.5)
   - HandyJSON (5.0.2)
   - iOSSnapshotTestCase (6.2.0):
     - iOSSnapshotTestCase/SwiftSupport (= 6.2.0)
@@ -67,6 +71,7 @@ DEPENDENCIES:
 
 SPEC REPOS:
   https://mirrors.bfsu.edu.cn/git/CocoaPods/Specs.git:
+    - FMDB
     - RxCocoa
     - RxRelay
   trunk:
@@ -95,10 +100,11 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   Alamofire: 3b6a534a3df22db367e4dedeeca73d1ddfcf0e2f
   assassin_flutter_plugin: f0e27dccd431f24f6dddadfda556c5fa6c8d60a2
-  BaseLibrary: 7731870c99a82bf87e6764e1c1dd54cbe7eea99e
+  BaseLibrary: 649f76862506092732fc3faf367c09d9209b1929
   FBSnapshotTestCase: 094f9f314decbabe373b87cc339bea235a63e07a
   Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
   FlutterEngine: 7eed8bac2a76cfceb006b3be72ed4b8de33cc9bc
+  FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   HandyJSON: 9e4e236f5d2dbefad5155a77417bbea438201c03
   iOSSnapshotTestCase: 9ab44cb5aa62b84d31847f40680112e15ec579a6
   Moya: 5b45dacb75adb009f97fde91c204c1e565d31916

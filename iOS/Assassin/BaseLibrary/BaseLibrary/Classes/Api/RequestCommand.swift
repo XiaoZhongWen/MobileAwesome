@@ -21,8 +21,11 @@ class RequestCommand<Target: TargetType>: ApiCommand {
     }
     
     func execute() {
-        let userDao = UserDao.init()
-        let (username, password) = userDao.fetchAccount()
+        let userService = UserService.init()
+        let account = userService.activeAccount()
+        guard let username = account?.username, let password = account?.password else {
+            return
+        }
         self.provider.request(self.target) {
             result in
             switch result {

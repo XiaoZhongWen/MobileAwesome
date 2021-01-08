@@ -32,11 +32,12 @@ TODO: Add long description of the pod here.
 
   s.source_files = 'BaseLibrary/Classes/**/*'
   
-  # s.resource_bundles = {
-  #   'BaseLibrary' => ['BaseLibrary/Assets/*.png']
-  # }
+   s.resource_bundles = {
+     'BaseLibrary' => ['BaseLibrary/Assets/*']
+   }
   # s.frameworks = 'UIKit', 'MapKit'
   s.dependency 'Moya/RxSwift'
   s.dependency 'HandyJSON'
+  s.dependency 'FMDB'
   
 end

@@ -15,3 +15,5 @@ let Login_Btn_CornerRadius: CGFloat = 22.5
 let Login_Textfield_TextColor = UIColor.init(white: 142.0 / 255.0, alpha: 1.0)
 let Login_BorderColor = UIColor.init(white: 242.0 / 255.0, alpha: 1.0)
 let Login_BorderWidth: CGFloat = 1.0
+let Login_Status_Notification = "Login_Status_Notification"
+let Login_Status_Key = "Login_Status_Key"

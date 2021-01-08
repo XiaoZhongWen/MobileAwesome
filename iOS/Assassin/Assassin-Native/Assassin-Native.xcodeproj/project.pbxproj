@@ -8,16 +8,23 @@
 
 /* Begin PBXBuildFile section */
 		0EF083EEB469157953BC2E11 /* Pods_Assassin_Native.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5831C8DC7061E958B84B9C68 /* Pods_Assassin_Native.framework */; };
+		3705100425A83D8C003C31DC /* default_app_config.json in Resources */ = {isa = PBXBuildFile; fileRef = 3705100325A83D8C003C31DC /* default_app_config.json */; };
+		3705100D25A85011003C31DC /* RootViewControllerGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3705100C25A85011003C31DC /* RootViewControllerGenerator.swift */; };
+		3705100F25A85137003C31DC /* ApplicationConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3705100E25A85137003C31DC /* ApplicationConfiguration.swift */; };
+		3705101125A856BE003C31DC /* ApplicationConfigurationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3705101025A856BE003C31DC /* ApplicationConfigurationService.swift */; };
+		3705101325A85914003C31DC /* DefaultConfiguration.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3705101225A85914003C31DC /* DefaultConfiguration.plist */; };
+		3705101525A85BD1003C31DC /* DefaultConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3705101425A85BD1003C31DC /* DefaultConfiguration.swift */; };
 		37141A29259D9D90009415FC /* ZXValidationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37141A28259D9D90009415FC /* ZXValidationService.swift */; };
 		37141A2B259DB939009415FC /* OpenApi+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37141A2A259DB939009415FC /* OpenApi+Rx.swift */; };
 		3718DFC125946B4C00B9F2A8 /* Assassin_NativeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3718DFC025946B4C00B9F2A8 /* Assassin_NativeTests.swift */; };
+		3719832125A69E7C00DF3D29 /* String+Ex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3719832025A69E7C00DF3D29 /* String+Ex.swift */; };
 		3734957025948DF500374CC0 /* AppConfigTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3734956F25948DF500374CC0 /* AppConfigTests.swift */; };
 		374C15D9259B233300A6F84F /* ZXLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374C15D8259B233300A6F84F /* ZXLoginViewController.swift */; };
 		374C15DB259B236700A6F84F /* ZXLoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374C15DA259B236700A6F84F /* ZXLoginViewModel.swift */; };
 		374C15DD259B238E00A6F84F /* ZXLoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 374C15DC259B238E00A6F84F /* ZXLoginViewController.xib */; };
 		374C15DF259C28F000A6F84F /* LoginConstant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374C15DE259C28F000A6F84F /* LoginConstant.swift */; };
 		374C15E1259C2A3300A6F84F /* GlobalConstant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374C15E0259C2A3300A6F84F /* GlobalConstant.swift */; };
-		374C15E4259C33BD00A6F84F /* UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374C15E3259C33BD00A6F84F /* UIView.swift */; };
+		374C15E4259C33BD00A6F84F /* UIView+Ex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374C15E3259C33BD00A6F84F /* UIView+Ex.swift */; };
 		377241902598D1AF0059F1A1 /* token.json in Resources */ = {isa = PBXBuildFile; fileRef = 3772418F2598D1AF0059F1A1 /* token.json */; };
 		37CD3EBD258C48B10010EE87 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37CD3EBC258C48B10010EE87 /* AppDelegate.swift */; };
 		37CD3EC1258C48B10010EE87 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37CD3EC0258C48B10010EE87 /* ViewController.swift */; };
@@ -41,19 +48,26 @@
 /* Begin PBXFileReference section */
 		0AADB063851AF516DDAF688C /* Pods-Assassin-NativeTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Assassin-NativeTests.debug.xcconfig"; path = "Target Support Files/Pods-Assassin-NativeTests/Pods-Assassin-NativeTests.debug.xcconfig"; sourceTree = "<group>"; };
 		213FA129114A2B2BA37084AB /* Pods_Assassin_NativeTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Assassin_NativeTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		3705100325A83D8C003C31DC /* default_app_config.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = default_app_config.json; sourceTree = "<group>"; };
+		3705100C25A85011003C31DC /* RootViewControllerGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewControllerGenerator.swift; sourceTree = "<group>"; };
+		3705100E25A85137003C31DC /* ApplicationConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationConfiguration.swift; sourceTree = "<group>"; };
+		3705101025A856BE003C31DC /* ApplicationConfigurationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationConfigurationService.swift; sourceTree = "<group>"; };
+		3705101225A85914003C31DC /* DefaultConfiguration.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = DefaultConfiguration.plist; sourceTree = "<group>"; };
+		3705101425A85BD1003C31DC /* DefaultConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultConfiguration.swift; sourceTree = "<group>"; };
 		37141A28259D9D90009415FC /* ZXValidationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZXValidationService.swift; sourceTree = "<group>"; };
 		37141A2A259DB939009415FC /* OpenApi+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OpenApi+Rx.swift"; sourceTree = "<group>"; };
 		37154F40259086E90066BA72 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		3718DFBE25946B4C00B9F2A8 /* Assassin-NativeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Assassin-NativeTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3718DFC025946B4C00B9F2A8 /* Assassin_NativeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Assassin_NativeTests.swift; sourceTree = "<group>"; };
 		3718DFC225946B4C00B9F2A8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3719832025A69E7C00DF3D29 /* String+Ex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Ex.swift"; sourceTree = "<group>"; };
 		3734956F25948DF500374CC0 /* AppConfigTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppConfigTests.swift; path = Api/AppConfigTests.swift; sourceTree = "<group>"; };
 		374C15D8259B233300A6F84F /* ZXLoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZXLoginViewController.swift; sourceTree = "<group>"; };
 		374C15DA259B236700A6F84F /* ZXLoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZXLoginViewModel.swift; sourceTree = "<group>"; };
 		374C15DC259B238E00A6F84F /* ZXLoginViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ZXLoginViewController.xib; sourceTree = "<group>"; };
 		374C15DE259C28F000A6F84F /* LoginConstant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginConstant.swift; sourceTree = "<group>"; };
 		374C15E0259C2A3300A6F84F /* GlobalConstant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalConstant.swift; sourceTree = "<group>"; };
-		374C15E3259C33BD00A6F84F /* UIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIView.swift; sourceTree = "<group>"; };
+		374C15E3259C33BD00A6F84F /* UIView+Ex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Ex.swift"; sourceTree = "<group>"; };
 		376E627D25907D820090DA34 /* BaseLibrary.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BaseLibrary.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3772418F2598D1AF0059F1A1 /* token.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = token.json; sourceTree = "<group>"; };
 		37CD3EB9258C48B10010EE87 /* Assassin-Native.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Assassin-Native.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -90,6 +104,42 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3705100225A83D70003C31DC /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				3705101225A85914003C31DC /* DefaultConfiguration.plist */,
+				3705100325A83D8C003C31DC /* default_app_config.json */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		3705100525A84FDD003C31DC /* Initializer */ = {
+			isa = PBXGroup;
+			children = (
+				3705100625A84FDD003C31DC /* Model */,
+				3705100825A84FDD003C31DC /* Service */,
+			);
+			path = Initializer;
+			sourceTree = "<group>";
+		};
+		3705100625A84FDD003C31DC /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				3705100E25A85137003C31DC /* ApplicationConfiguration.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		3705100825A84FDD003C31DC /* Service */ = {
+			isa = PBXGroup;
+			children = (
+				3705100C25A85011003C31DC /* RootViewControllerGenerator.swift */,
+				3705101025A856BE003C31DC /* ApplicationConfigurationService.swift */,
+				3705101425A85BD1003C31DC /* DefaultConfiguration.swift */,
+			);
+			path = Service;
+			sourceTree = "<group>";
+		};
 		37141A26259D7460009415FC /* Protocol */ = {
 			isa = PBXGroup;
 			children = (
@@ -120,6 +170,7 @@
 		374C15D0259ADC5500A6F84F /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				3705100525A84FDD003C31DC /* Initializer */,
 				37141A26259D7460009415FC /* Protocol */,
 				374C15E2259C338D00A6F84F /* Extension */,
 				374C15D3259B10BD00A6F84F /* Login */,
@@ -167,7 +218,8 @@
 		374C15E2259C338D00A6F84F /* Extension */ = {
 			isa = PBXGroup;
 			children = (
-				374C15E3259C33BD00A6F84F /* UIView.swift */,
+				374C15E3259C33BD00A6F84F /* UIView+Ex.swift */,
+				3719832025A69E7C00DF3D29 /* String+Ex.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -198,6 +250,7 @@
 				374C15D0259ADC5500A6F84F /* Source */,
 				37CD3EBC258C48B10010EE87 /* AppDelegate.swift */,
 				37CD3EC0258C48B10010EE87 /* ViewController.swift */,
+				3705100225A83D70003C31DC /* Resources */,
 				37CD3EC2258C48B10010EE87 /* Main.storyboard */,
 				37CD3EC5258C48B40010EE87 /* Assets.xcassets */,
 				37CD3EC7258C48B40010EE87 /* LaunchScreen.storyboard */,
@@ -334,7 +387,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				374C15DD259B238E00A6F84F /* ZXLoginViewController.xib in Resources */,
+				3705101325A85914003C31DC /* DefaultConfiguration.plist in Resources */,
 				37CD3EC9258C48B40010EE87 /* LaunchScreen.storyboard in Resources */,
+				3705100425A83D8C003C31DC /* default_app_config.json in Resources */,
 				37CD3EC6258C48B40010EE87 /* Assets.xcassets in Resources */,
 				37CD3EC4258C48B10010EE87 /* Main.storyboard in Resources */,
 			);
@@ -454,11 +509,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3705101525A85BD1003C31DC /* DefaultConfiguration.swift in Sources */,
+				3705100F25A85137003C31DC /* ApplicationConfiguration.swift in Sources */,
 				374C15E1259C2A3300A6F84F /* GlobalConstant.swift in Sources */,
+				3719832125A69E7C00DF3D29 /* String+Ex.swift in Sources */,
+				3705100D25A85011003C31DC /* RootViewControllerGenerator.swift in Sources */,
 				374C15DB259B236700A6F84F /* ZXLoginViewModel.swift in Sources */,
 				37141A29259D9D90009415FC /* ZXValidationService.swift in Sources */,
+				3705101125A856BE003C31DC /* ApplicationConfigurationService.swift in Sources */,
 				374C15D9259B233300A6F84F /* ZXLoginViewController.swift in Sources */,
-				374C15E4259C33BD00A6F84F /* UIView.swift in Sources */,
+				374C15E4259C33BD00A6F84F /* UIView+Ex.swift in Sources */,
 				37CD3EC1258C48B10010EE87 /* ViewController.swift in Sources */,
 				37CD3EBD258C48B10010EE87 /* AppDelegate.swift in Sources */,
 				37141A2B259DB939009415FC /* OpenApi+Rx.swift in Sources */,

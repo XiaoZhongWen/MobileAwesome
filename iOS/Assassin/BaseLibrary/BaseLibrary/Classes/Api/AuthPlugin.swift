@@ -21,7 +21,5 @@ struct AuthPlugin: PluginType {
     }
     
     func willSend(_ request: RequestType, target: TargetType) {
-        print(request.request?.url?.absoluteString)
-//        print(request.request?.allHTTPHeaderFields)
     }
 }

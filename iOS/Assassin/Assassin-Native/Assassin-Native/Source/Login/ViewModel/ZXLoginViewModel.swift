@@ -11,9 +11,15 @@ import RxSwift
 import BaseLibrary
 import Moya
 
+enum LoginStatusType {
+    case loginSuccess
+    case loginFailure
+    case logining
+}
+
 class ZXLoginViewModel {
     let loginEnable: Observable<Bool>
-    let loginStatus: Observable<Result<Moya.Response, MoyaError>>
+    let loginStatus: Observable<LoginStatusType>
 
     init(input: (
             username: Observable<String>,
@@ -37,26 +43,13 @@ class ZXLoginViewModel {
             return (username, password)
         }
 
-//        loginStatus = input.loginTaps.withLatestFrom(usernameAndPassword).flatMapLatest({ pair -> Observable<Result<Moya.Response, MoyaError>> in
-//            let (username, password) = pair
-//            OpenApi.shared.fetchToken(username, password) { result in
-//                return Observable.just(result)
-//            }
-//        })
-
-//        loginStatus = input.loginTaps.withLatestFrom(usernameAndPassword).flatMapLatest({ pair -> Observable<Response> in
-//            let (username, password) = pair
-//            return OpenApi.shared.fetchToken_(username, password)
-//        })
-
-//        loginStatus = input.loginTaps.withLatestFrom(usernameAndPassword).asSingle().flatMap { pair -> Single<Response> in
-//            let (username, password) = pair
-//            return OpenApi.shared.fetchToken_(username, password)
-//        }
-
-//        loginStatus = input.loginTaps.withLatestFrom(usernameAndPassword).flatMapLatest({ pair -> Single<Response> in
-//            let (username, password) = pair
-//            return OpenApi.shared.fetchToken_(username, password)
-//            })
+        loginStatus = input.loginTaps.withLatestFrom(usernameAndPassword)
+            .flatMapLatest({ pair -> Observable<LoginStatusType> in
+            let (username, password) = pair
+            return OpenApi.shared.fetchToken(username + "@" + Global_Domain, password.md5)
+                .asObservable()
+                .observeOn(MainScheduler.instance)
+                .catchErrorJustReturn(LoginStatusType.loginFailure)
+        })
     }
 }

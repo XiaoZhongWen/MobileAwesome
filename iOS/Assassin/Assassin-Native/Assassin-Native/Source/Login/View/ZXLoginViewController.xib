@@ -10,6 +10,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ZXLoginViewController" customModule="Assassin_Native" customModuleProvider="target">
             <connections>
+                <outlet property="activityIndicator" destination="Bbd-vA-gd2" id="JT4-6w-dou"/>
                 <outlet property="headerView" destination="2jE-7T-Pgw" id="beJ-dd-YTn"/>
                 <outlet property="loginButton" destination="dpk-B6-FmW" id="fnY-mj-BqA"/>
                 <outlet property="passwordLeftButton" destination="QhH-zT-a1p" id="bQA-NS-dxB"/>
@@ -83,6 +84,9 @@
                     <color key="textColor" systemColor="systemPinkColor" red="1" green="0.1764705882" blue="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
+                <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="Bbd-vA-gd2">
+                    <rect key="frame" x="197" y="438" width="20" height="20"/>
+                </activityIndicatorView>
             </subviews>
             <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
             <constraints>
@@ -93,12 +97,14 @@
                 <constraint firstItem="2jE-7T-Pgw" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="70" id="Aj4-0i-IpH"/>
                 <constraint firstItem="2jE-7T-Pgw" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="BXm-1K-yv1"/>
                 <constraint firstItem="TzD-8t-kvT" firstAttribute="top" secondItem="0Nz-Qg-LAj" secondAttribute="bottom" constant="8" id="Bd6-gj-Zip"/>
+                <constraint firstItem="Bbd-vA-gd2" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="CTx-2S-x1W"/>
                 <constraint firstItem="fuu-Te-EzE" firstAttribute="centerY" secondItem="Rgx-Oc-1ak" secondAttribute="centerY" id="DPm-vH-eUp"/>
                 <constraint firstItem="dpk-B6-FmW" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="30" id="GsW-nr-Nnd"/>
                 <constraint firstItem="dpk-B6-FmW" firstAttribute="top" secondItem="TzD-8t-kvT" secondAttribute="bottom" constant="8" id="MMB-JJ-w6W"/>
                 <constraint firstItem="0Nz-Qg-LAj" firstAttribute="leading" secondItem="QhH-zT-a1p" secondAttribute="trailing" constant="-25" id="aWS-Zc-T8K"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="0Nz-Qg-LAj" secondAttribute="trailing" constant="30" id="blR-Xh-29H"/>
                 <constraint firstItem="dpk-B6-FmW" firstAttribute="top" secondItem="0Nz-Qg-LAj" secondAttribute="bottom" constant="30" id="cv2-Hb-dsC"/>
+                <constraint firstItem="Bbd-vA-gd2" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="dcr-6Z-eZ8"/>
                 <constraint firstItem="TzD-8t-kvT" firstAttribute="leading" secondItem="0Nz-Qg-LAj" secondAttribute="leading" id="fwm-wr-cvh"/>
                 <constraint firstItem="Rgx-Oc-1ak" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="30" id="oNo-iy-ks2"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="Rgx-Oc-1ak" secondAttribute="trailing" constant="30" id="p1c-wz-noU"/>

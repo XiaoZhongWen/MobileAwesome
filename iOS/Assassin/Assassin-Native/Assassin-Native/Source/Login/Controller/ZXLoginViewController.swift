@@ -20,6 +20,7 @@ class ZXLoginViewController: ViewController {
     @IBOutlet private weak var usernameLeftButton: UIButton!
     @IBOutlet private weak var passwordLeftButton: UIButton!
     @IBOutlet private weak var passwordValidationLabel: UILabel!
+    @IBOutlet private weak var activityIndicator: UIActivityIndicatorView!
 }
 
 extension ZXLoginViewController {
@@ -63,12 +64,19 @@ extension ZXLoginViewController {
             self?.loginButton.alpha = isEnable ? 1.0 : 0.5
             }).disposed(by: disposeBag)
 
-        loginViewModel.loginStatus.subscribe { result in
-            print(result)
-        }
+        self.activityIndicator.hidesWhenStopped = true
+        loginViewModel.loginStatus
+            .map { loginStatusType -> Bool in
+            return loginStatusType == LoginStatusType.logining
+            }
+        .bind(to: activityIndicator.rx.isAnimating)
+        .disposed(by: disposeBag)
 
-//        loginViewModel.loginStatus.subscribe(onNext: { response in
-//            print(response.statusCode)
-//            }).disposed(by: disposeBag)
+        loginViewModel.loginStatus.subscribe { loginStatusType in
+            NotificationCenter.default.post(
+                name: NSNotification.Name.init(Login_Status_Notification),
+                object: nil,
+                userInfo: [Login_Status_Key: loginStatusType.element ?? LoginStatusType.logining])
+        }.disposed(by: disposeBag)
     }
 }
