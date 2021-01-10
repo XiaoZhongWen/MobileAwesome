@@ -9,9 +9,28 @@
 import Foundation
 
 class ApplicationConfigurationService {
-    var appConfiguration: ApplicationConfiguration {
-        return ApplicationConfiguration.init()
+    static let shared = ApplicationConfigurationService.init()
+    
+    private var appConfiguration: ApplicationConfiguration?
+    
+    private init() {
+        let json = DefaultConfiguration.shared.applicationConfiguration
+        appConfiguration = ApplicationConfiguration.deserialize(from: json)
     }
 
-    func checkAndUpdate(configuration: ApplicationConfiguration) {}
+    func checkAndUpdate(configuration: [String: Any]?) {
+        let newConfiguration = ApplicationConfiguration.deserialize(from: configuration)
+        guard let newVersion = newConfiguration?.version, let version = appConfiguration?.version else {
+            return
+        }
+        if version != newVersion {
+            if let json = newConfiguration?.toJSON() {
+                DefaultConfiguration.shared.update(applicationConfiguration: json)
+            }
+        }
+    }
+    
+    func fetchAppTabs() -> [Tab]? {
+        return appConfiguration?.tabs
+    }
 }

@@ -11,7 +11,7 @@ import FMDB
 class DaoService {
     static let shared = DaoService()
 
-    var databaseQueue: FMDatabaseQueue?
+    private var databaseQueue: FMDatabaseQueue?
 
     private init() {
         let path = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
@@ -31,5 +31,15 @@ class DaoService {
         } else {
             databaseQueue = FMDatabaseQueue.init(path: dbPath)
         }
+        databaseQueue?.inDatabase({ (db) in
+            
+        })
+    }
+    
+    func inDatabase(_ closure: @escaping (FMDatabase) -> Void) {
+        databaseQueue?.inDatabase({ db in
+            closure(db)
+            db.closeOpenResultSets()
+        })
     }
 }

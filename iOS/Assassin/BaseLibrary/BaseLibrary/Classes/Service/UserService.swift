@@ -22,7 +22,7 @@ public class UserService {
             print("username or password is empty!")
             return
         }
-        DaoService.shared.databaseQueue?.inDatabase({ db in
+        DaoService.shared.inDatabase({ db in
             do {
                 try db.executeUpdate("INSERT INTO TB_ACCOUNT (userID, password, headUrl, nickname, isActive) VALUES (?, ?, ?, ?, ?)", values: [username, password, acc?.headUrl ?? "", acc?.cnname ?? "", true])
             } catch {
@@ -33,7 +33,8 @@ public class UserService {
 
     public func activeAccount() -> Account? {
         var account: Account?
-        DaoService.shared.databaseQueue?.inDatabase({ db in
+        
+        DaoService.shared.inDatabase({ db in
             do {
                 let resultSet = try db.executeQuery("SELECT * FROM TB_ACCOUNT WHERE isActive = ?", values: [true])
                 if resultSet.next() {

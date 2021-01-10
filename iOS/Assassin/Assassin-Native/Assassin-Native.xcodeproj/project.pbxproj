@@ -19,6 +19,13 @@
 		3718DFC125946B4C00B9F2A8 /* Assassin_NativeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3718DFC025946B4C00B9F2A8 /* Assassin_NativeTests.swift */; };
 		3719832125A69E7C00DF3D29 /* String+Ex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3719832025A69E7C00DF3D29 /* String+Ex.swift */; };
 		3734957025948DF500374CC0 /* AppConfigTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3734956F25948DF500374CC0 /* AppConfigTests.swift */; };
+		374635A325A949E800E00D34 /* ZXMeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374635A225A949E800E00D34 /* ZXMeController.swift */; };
+		374635A525A949FF00E00D34 /* ZXMessageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374635A425A949FF00E00D34 /* ZXMessageController.swift */; };
+		374635A725A94A1200E00D34 /* ZXShareController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374635A625A94A1200E00D34 /* ZXShareController.swift */; };
+		374635A925A94A3100E00D34 /* ZXWorkController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374635A825A94A3100E00D34 /* ZXWorkController.swift */; };
+		374635AE25A98CF800E00D34 /* ImageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374635AD25A98CF800E00D34 /* ImageService.swift */; };
+		374635B225A9A2E700E00D34 /* AssassinError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374635B125A9A2E700E00D34 /* AssassinError.swift */; };
+		374635B425A9A8F600E00D34 /* BaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374635B325A9A8F600E00D34 /* BaseService.swift */; };
 		374C15D9259B233300A6F84F /* ZXLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374C15D8259B233300A6F84F /* ZXLoginViewController.swift */; };
 		374C15DB259B236700A6F84F /* ZXLoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374C15DA259B236700A6F84F /* ZXLoginViewModel.swift */; };
 		374C15DD259B238E00A6F84F /* ZXLoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 374C15DC259B238E00A6F84F /* ZXLoginViewController.xib */; };
@@ -26,11 +33,13 @@
 		374C15E1259C2A3300A6F84F /* GlobalConstant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374C15E0259C2A3300A6F84F /* GlobalConstant.swift */; };
 		374C15E4259C33BD00A6F84F /* UIView+Ex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374C15E3259C33BD00A6F84F /* UIView+Ex.swift */; };
 		377241902598D1AF0059F1A1 /* token.json in Resources */ = {isa = PBXBuildFile; fileRef = 3772418F2598D1AF0059F1A1 /* token.json */; };
+		37CCA90125AA9FBE00ECF672 /* ZXTabViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37CCA90025AA9FBE00ECF672 /* ZXTabViewModel.swift */; };
 		37CD3EBD258C48B10010EE87 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37CD3EBC258C48B10010EE87 /* AppDelegate.swift */; };
 		37CD3EC1258C48B10010EE87 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37CD3EC0258C48B10010EE87 /* ViewController.swift */; };
 		37CD3EC4258C48B10010EE87 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 37CD3EC2258C48B10010EE87 /* Main.storyboard */; };
 		37CD3EC6258C48B40010EE87 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 37CD3EC5258C48B40010EE87 /* Assets.xcassets */; };
 		37CD3EC9258C48B40010EE87 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 37CD3EC7258C48B40010EE87 /* LaunchScreen.storyboard */; };
+		37D4C86925A89F3D0059E4AD /* TabsGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37D4C86825A89F3D0059E4AD /* TabsGenerator.swift */; };
 		37D77D8B2598311F00668436 /* app_config.json in Resources */ = {isa = PBXBuildFile; fileRef = 37D77D8A2598311F00668436 /* app_config.json */; };
 		9A278A928555C2525F3F6695 /* Pods_Assassin_NativeTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 213FA129114A2B2BA37084AB /* Pods_Assassin_NativeTests.framework */; };
 /* End PBXBuildFile section */
@@ -62,6 +71,13 @@
 		3718DFC225946B4C00B9F2A8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3719832025A69E7C00DF3D29 /* String+Ex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Ex.swift"; sourceTree = "<group>"; };
 		3734956F25948DF500374CC0 /* AppConfigTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppConfigTests.swift; path = Api/AppConfigTests.swift; sourceTree = "<group>"; };
+		374635A225A949E800E00D34 /* ZXMeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZXMeController.swift; sourceTree = "<group>"; };
+		374635A425A949FF00E00D34 /* ZXMessageController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZXMessageController.swift; sourceTree = "<group>"; };
+		374635A625A94A1200E00D34 /* ZXShareController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZXShareController.swift; sourceTree = "<group>"; };
+		374635A825A94A3100E00D34 /* ZXWorkController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZXWorkController.swift; sourceTree = "<group>"; };
+		374635AD25A98CF800E00D34 /* ImageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageService.swift; sourceTree = "<group>"; };
+		374635B125A9A2E700E00D34 /* AssassinError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssassinError.swift; sourceTree = "<group>"; };
+		374635B325A9A8F600E00D34 /* BaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseService.swift; sourceTree = "<group>"; };
 		374C15D8259B233300A6F84F /* ZXLoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZXLoginViewController.swift; sourceTree = "<group>"; };
 		374C15DA259B236700A6F84F /* ZXLoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZXLoginViewModel.swift; sourceTree = "<group>"; };
 		374C15DC259B238E00A6F84F /* ZXLoginViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ZXLoginViewController.xib; sourceTree = "<group>"; };
@@ -70,6 +86,7 @@
 		374C15E3259C33BD00A6F84F /* UIView+Ex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Ex.swift"; sourceTree = "<group>"; };
 		376E627D25907D820090DA34 /* BaseLibrary.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BaseLibrary.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3772418F2598D1AF0059F1A1 /* token.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = token.json; sourceTree = "<group>"; };
+		37CCA90025AA9FBE00ECF672 /* ZXTabViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZXTabViewModel.swift; sourceTree = "<group>"; };
 		37CD3EB9258C48B10010EE87 /* Assassin-Native.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Assassin-Native.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		37CD3EBC258C48B10010EE87 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		37CD3EC0258C48B10010EE87 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -77,6 +94,7 @@
 		37CD3EC5258C48B40010EE87 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		37CD3EC8258C48B40010EE87 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		37CD3ECA258C48B40010EE87 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		37D4C86825A89F3D0059E4AD /* TabsGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabsGenerator.swift; sourceTree = "<group>"; };
 		37D77D8A2598311F00668436 /* app_config.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = app_config.json; sourceTree = "<group>"; };
 		5831C8DC7061E958B84B9C68 /* Pods_Assassin_Native.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Assassin_Native.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7623CB87654133E639310818 /* Pods-Assassin-Native.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Assassin-Native.debug.xcconfig"; path = "Target Support Files/Pods-Assassin-Native/Pods-Assassin-Native.debug.xcconfig"; sourceTree = "<group>"; };
@@ -136,6 +154,9 @@
 				3705100C25A85011003C31DC /* RootViewControllerGenerator.swift */,
 				3705101025A856BE003C31DC /* ApplicationConfigurationService.swift */,
 				3705101425A85BD1003C31DC /* DefaultConfiguration.swift */,
+				37D4C86825A89F3D0059E4AD /* TabsGenerator.swift */,
+				374635AD25A98CF800E00D34 /* ImageService.swift */,
+				374635B325A9A8F600E00D34 /* BaseService.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -167,14 +188,84 @@
 			path = "Assassin-NativeTests";
 			sourceTree = "<group>";
 		};
+		3746359225A949AA00E00D34 /* Work */ = {
+			isa = PBXGroup;
+			children = (
+				3746359325A949AA00E00D34 /* Controller */,
+			);
+			path = Work;
+			sourceTree = "<group>";
+		};
+		3746359325A949AA00E00D34 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				374635A825A94A3100E00D34 /* ZXWorkController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		3746359525A949AA00E00D34 /* Share */ = {
+			isa = PBXGroup;
+			children = (
+				3746359625A949AA00E00D34 /* Controller */,
+			);
+			path = Share;
+			sourceTree = "<group>";
+		};
+		3746359625A949AA00E00D34 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				374635A625A94A1200E00D34 /* ZXShareController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		3746359825A949AA00E00D34 /* Message */ = {
+			isa = PBXGroup;
+			children = (
+				3746359925A949AA00E00D34 /* Controller */,
+			);
+			path = Message;
+			sourceTree = "<group>";
+		};
+		3746359925A949AA00E00D34 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				374635A425A949FF00E00D34 /* ZXMessageController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		3746359B25A949AA00E00D34 /* Me */ = {
+			isa = PBXGroup;
+			children = (
+				3746359C25A949AA00E00D34 /* Controller */,
+			);
+			path = Me;
+			sourceTree = "<group>";
+		};
+		3746359C25A949AA00E00D34 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				374635A225A949E800E00D34 /* ZXMeController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
 		374C15D0259ADC5500A6F84F /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				3746359B25A949AA00E00D34 /* Me */,
+				3746359825A949AA00E00D34 /* Message */,
+				3746359525A949AA00E00D34 /* Share */,
+				3746359225A949AA00E00D34 /* Work */,
 				3705100525A84FDD003C31DC /* Initializer */,
 				37141A26259D7460009415FC /* Protocol */,
 				374C15E2259C338D00A6F84F /* Extension */,
 				374C15D3259B10BD00A6F84F /* Login */,
 				374C15E0259C2A3300A6F84F /* GlobalConstant.swift */,
+				374635B125A9A2E700E00D34 /* AssassinError.swift */,
+				37CCA90025AA9FBE00ECF672 /* ZXTabViewModel.swift */,
 			);
 			path = Source;
 			sourceTree = "<group>";
@@ -510,12 +601,19 @@
 			buildActionMask = 2147483647;
 			files = (
 				3705101525A85BD1003C31DC /* DefaultConfiguration.swift in Sources */,
+				374635A925A94A3100E00D34 /* ZXWorkController.swift in Sources */,
 				3705100F25A85137003C31DC /* ApplicationConfiguration.swift in Sources */,
+				374635A725A94A1200E00D34 /* ZXShareController.swift in Sources */,
+				374635B425A9A8F600E00D34 /* BaseService.swift in Sources */,
+				374635A325A949E800E00D34 /* ZXMeController.swift in Sources */,
 				374C15E1259C2A3300A6F84F /* GlobalConstant.swift in Sources */,
 				3719832125A69E7C00DF3D29 /* String+Ex.swift in Sources */,
 				3705100D25A85011003C31DC /* RootViewControllerGenerator.swift in Sources */,
+				374635A525A949FF00E00D34 /* ZXMessageController.swift in Sources */,
 				374C15DB259B236700A6F84F /* ZXLoginViewModel.swift in Sources */,
+				37CCA90125AA9FBE00ECF672 /* ZXTabViewModel.swift in Sources */,
 				37141A29259D9D90009415FC /* ZXValidationService.swift in Sources */,
+				374635B225A9A2E700E00D34 /* AssassinError.swift in Sources */,
 				3705101125A856BE003C31DC /* ApplicationConfigurationService.swift in Sources */,
 				374C15D9259B233300A6F84F /* ZXLoginViewController.swift in Sources */,
 				374C15E4259C33BD00A6F84F /* UIView+Ex.swift in Sources */,
@@ -523,6 +621,8 @@
 				37CD3EBD258C48B10010EE87 /* AppDelegate.swift in Sources */,
 				37141A2B259DB939009415FC /* OpenApi+Rx.swift in Sources */,
 				374C15DF259C28F000A6F84F /* LoginConstant.swift in Sources */,
+				37D4C86925A89F3D0059E4AD /* TabsGenerator.swift in Sources */,
+				374635AE25A98CF800E00D34 /* ImageService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

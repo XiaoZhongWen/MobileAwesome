@@ -22,6 +22,7 @@ PODS:
   - iOSSnapshotTestCase/Core (6.2.0)
   - iOSSnapshotTestCase/SwiftSupport (6.2.0):
     - iOSSnapshotTestCase/Core
+  - Kingfisher (6.0.1)
   - Moya/Core (14.0.0):
     - Alamofire (~> 5.0)
   - Moya/RxSwift (14.0.0):
@@ -61,6 +62,7 @@ DEPENDENCIES:
   - FBSnapshotTestCase (~> 2.1.4)
   - Flutter (from `../products/FlutterEngine`)
   - FlutterEngine (from `../products/FlutterEngine`)
+  - Kingfisher
   - Nimble (~> 8.0.7)
   - Nimble-Snapshots (~> 8.0.0)
   - OHHTTPStubs/Swift
@@ -72,6 +74,7 @@ DEPENDENCIES:
 SPEC REPOS:
   https://mirrors.bfsu.edu.cn/git/CocoaPods/Specs.git:
     - FMDB
+    - Kingfisher
     - RxCocoa
     - RxRelay
   trunk:
@@ -107,6 +110,7 @@ SPEC CHECKSUMS:
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   HandyJSON: 9e4e236f5d2dbefad5155a77417bbea438201c03
   iOSSnapshotTestCase: 9ab44cb5aa62b84d31847f40680112e15ec579a6
+  Kingfisher: adde87a4f74f6a3845395769354efff593581740
   Moya: 5b45dacb75adb009f97fde91c204c1e565d31916
   Nimble: 98b888285a615fd34f20e61753cf58ea1402bde4
   Nimble-Snapshots: 8ec63f41ce6c7229a17be9a64edbc123b181f75b
@@ -117,6 +121,6 @@ SPEC CHECKSUMS:
   RxSwift: 81470a2074fa8780320ea5fe4102807cb7118178
   SwiftLint: 4fa9579c63416865179bc416f0a92d55f009600d
 
-PODFILE CHECKSUM: 1d9ef9be2633ae2b9234e2214bff442ef51d180b
+PODFILE CHECKSUM: e0530d3bdb12c73f1a91d2c7aa63c61a6ea752ad
 
 COCOAPODS: 1.9.3

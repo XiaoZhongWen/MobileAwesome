@@ -9,6 +9,7 @@ target 'Assassin-Native' do
   pod 'SwiftLint'
   pod 'RxSwift'
   pod 'RxCocoa'
+  pod 'Kingfisher'
 
   pod 'BaseLibrary', :path => '../BaseLibrary'
   pod 'Flutter', :path => '../products/FlutterEngine'
