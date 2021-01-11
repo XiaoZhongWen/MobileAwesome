@@ -68,7 +68,7 @@ class AppConfigTests: QuickSpec {
                 
                 it("should fetch oauth token") {
                     waitUntil(timeout: self.timeout) { (done) in
-                        OpenApi.shared.fetchToken { (result) in
+                        OpenApi.shared.fetchToken("13545118725@cike.com", "zhongwen912".md5) { result in
                             switch result {
                             case let .success(response):
                                 do {
