@@ -12,12 +12,11 @@ class AssassinFlutterPlugin {
     return version;
   }
 
-  static Future<String> doRequest(url, params) async {
-    String result = await _channel.invokeMethod("doRequest", {
-      "url": url,
+  static Future<T> doRequest<T>(actionName, params) async {
+    T result = await _channel.invokeMethod("doRequest", {
+      "actionName": actionName,
       "params": params
     });
     return result;
   }
-
 }

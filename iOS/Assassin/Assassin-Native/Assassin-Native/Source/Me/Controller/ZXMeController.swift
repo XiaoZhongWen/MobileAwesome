@@ -10,15 +10,23 @@ import UIKit
 import RxSwift
 import Flutter
 import assassin_flutter_plugin
+import image_picker
 
 class ZXMeController: FlutterViewController {
     var disposeBag = DisposeBag()
+    var channelService: ZXAppConfigurationChannelService?
     
     convenience init(tab: Tab) {
         self.init()
-        self.setInitialRoute("defaultRoute")
+        self.setInitialRoute(Global_Flutter_Me_Page_RouteName)
+
         let registrar = self.registrar(forPlugin: "SwiftAssassinFlutterPlugin")
         SwiftAssassinFlutterPlugin.register(with: registrar!)
+
+        let imagePickerRegister = self.registrar(forPlugin: "FLTImagePickerPlugin")
+        FLTImagePickerPlugin.register(with: imagePickerRegister!)
+
+        channelService = ZXAppConfigurationChannelService.init(with: self)
         self.navigationItem.title = tab.name
         self.navigationController?.hidesBottomBarWhenPushed = true
         let image = UIImage.init(named: "tab_me_normal")

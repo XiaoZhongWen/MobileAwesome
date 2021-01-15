@@ -9,8 +9,6 @@ public class SwiftAssassinFlutterPlugin: NSObject, FlutterPlugin {
   }
 
   public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
-    result("iOS " + UIDevice.current.systemVersion)
-//    print(call.method)
-//    print(call.arguments)
+    
   }
 }

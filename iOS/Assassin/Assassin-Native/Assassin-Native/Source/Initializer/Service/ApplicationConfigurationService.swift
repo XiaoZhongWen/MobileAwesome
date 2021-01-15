@@ -33,4 +33,17 @@ class ApplicationConfigurationService {
     func fetchAppTabs() -> [Tab]? {
         return appConfiguration?.tabs
     }
+
+    func fetchMineParams() -> String? {
+        if let tabs = fetchAppTabs() {
+            for tab in tabs {
+                if let type = tab.type {
+                    if type == TabType.meType.rawValue {
+                        return tab.param
+                    }
+                }
+            }
+        }
+        return nil
+    }
 }

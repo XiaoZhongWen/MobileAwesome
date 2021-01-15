@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Flutter
 
 enum TabType: Int {
     case messageType = 1
@@ -17,13 +18,13 @@ enum TabType: Int {
 
 class TabsGenerator {
     var tabVcs: [UIViewController]
-    
+
     init(tabs: [Tab]) {
         tabVcs = Array.init()
         for tab in tabs {
-            if let type = tab.type {
+            if let tabType = tab.type {
                 var viewController: UIViewController?
-                switch type {
+                switch tabType {
                 case TabType.messageType.rawValue:
                     viewController = ZXMessageController.init(tab: tab)
                 case TabType.shareType.rawValue:
@@ -36,11 +37,11 @@ class TabsGenerator {
                     print("type mismatch")
                 }
                 if let rootVc = viewController {
-                    var childVc = rootVc
-                    if type != TabType.meType.rawValue {
-                        childVc = UINavigationController.init(rootViewController: rootVc)
+                    if rootVc.isKind(of: FlutterViewController.self) {
+                        tabVcs.append(rootVc)
+                    } else {
+                        tabVcs.append(UINavigationController.init(rootViewController: rootVc))
                     }
-                    tabVcs.append(childVc)
                 }
             }
         }

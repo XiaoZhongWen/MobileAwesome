@@ -30,8 +30,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     self.window?.rootViewController = RootViewControllerGenerator.init().rootViewController
                 }
             }
-        }        
+        }
+
+        applyTheme()
+
         return true
+    }
+
+    func applyTheme() {
+        UINavigationBar.appearance().barTintColor = UIColor.init(hexString: Global_Theme_Color)
+        UINavigationBar.appearance().titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
     }
 }
 

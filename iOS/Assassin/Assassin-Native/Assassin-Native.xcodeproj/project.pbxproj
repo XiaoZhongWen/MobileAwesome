@@ -18,6 +18,8 @@
 		37141A2B259DB939009415FC /* OpenApi+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37141A2A259DB939009415FC /* OpenApi+Rx.swift */; };
 		3718DFC125946B4C00B9F2A8 /* Assassin_NativeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3718DFC025946B4C00B9F2A8 /* Assassin_NativeTests.swift */; };
 		3719832125A69E7C00DF3D29 /* String+Ex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3719832025A69E7C00DF3D29 /* String+Ex.swift */; };
+		371ACE6B25ABF4A90001B87D /* UIColor+Ex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 371ACE6A25ABF4A90001B87D /* UIColor+Ex.swift */; };
+		371ACE6E25AC34FD0001B87D /* ZXAppConfigurationChannelService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 371ACE6D25AC34FD0001B87D /* ZXAppConfigurationChannelService.swift */; };
 		3734957025948DF500374CC0 /* AppConfigTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3734956F25948DF500374CC0 /* AppConfigTests.swift */; };
 		374635A325A949E800E00D34 /* ZXMeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374635A225A949E800E00D34 /* ZXMeController.swift */; };
 		374635A525A949FF00E00D34 /* ZXMessageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374635A425A949FF00E00D34 /* ZXMessageController.swift */; };
@@ -70,6 +72,8 @@
 		3718DFC025946B4C00B9F2A8 /* Assassin_NativeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Assassin_NativeTests.swift; sourceTree = "<group>"; };
 		3718DFC225946B4C00B9F2A8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3719832025A69E7C00DF3D29 /* String+Ex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Ex.swift"; sourceTree = "<group>"; };
+		371ACE6A25ABF4A90001B87D /* UIColor+Ex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Ex.swift"; sourceTree = "<group>"; };
+		371ACE6D25AC34FD0001B87D /* ZXAppConfigurationChannelService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZXAppConfigurationChannelService.swift; sourceTree = "<group>"; };
 		3734956F25948DF500374CC0 /* AppConfigTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppConfigTests.swift; path = Api/AppConfigTests.swift; sourceTree = "<group>"; };
 		374635A225A949E800E00D34 /* ZXMeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZXMeController.swift; sourceTree = "<group>"; };
 		374635A425A949FF00E00D34 /* ZXMessageController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZXMessageController.swift; sourceTree = "<group>"; };
@@ -188,6 +192,14 @@
 			path = "Assassin-NativeTests";
 			sourceTree = "<group>";
 		};
+		371ACE6C25AC34D80001B87D /* Service */ = {
+			isa = PBXGroup;
+			children = (
+				371ACE6D25AC34FD0001B87D /* ZXAppConfigurationChannelService.swift */,
+			);
+			path = Service;
+			sourceTree = "<group>";
+		};
 		3746359225A949AA00E00D34 /* Work */ = {
 			isa = PBXGroup;
 			children = (
@@ -239,6 +251,7 @@
 		3746359B25A949AA00E00D34 /* Me */ = {
 			isa = PBXGroup;
 			children = (
+				371ACE6C25AC34D80001B87D /* Service */,
 				3746359C25A949AA00E00D34 /* Controller */,
 			);
 			path = Me;
@@ -311,6 +324,7 @@
 			children = (
 				374C15E3259C33BD00A6F84F /* UIView+Ex.swift */,
 				3719832025A69E7C00DF3D29 /* String+Ex.swift */,
+				371ACE6A25ABF4A90001B87D /* UIColor+Ex.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -600,12 +614,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				371ACE6B25ABF4A90001B87D /* UIColor+Ex.swift in Sources */,
 				3705101525A85BD1003C31DC /* DefaultConfiguration.swift in Sources */,
 				374635A925A94A3100E00D34 /* ZXWorkController.swift in Sources */,
 				3705100F25A85137003C31DC /* ApplicationConfiguration.swift in Sources */,
 				374635A725A94A1200E00D34 /* ZXShareController.swift in Sources */,
 				374635B425A9A8F600E00D34 /* BaseService.swift in Sources */,
 				374635A325A949E800E00D34 /* ZXMeController.swift in Sources */,
+				371ACE6E25AC34FD0001B87D /* ZXAppConfigurationChannelService.swift in Sources */,
 				374C15E1259C2A3300A6F84F /* GlobalConstant.swift in Sources */,
 				3719832125A69E7C00DF3D29 /* String+Ex.swift in Sources */,
 				3705100D25A85011003C31DC /* RootViewControllerGenerator.swift in Sources */,

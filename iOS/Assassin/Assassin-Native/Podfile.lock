@@ -17,6 +17,8 @@ PODS:
     - FMDB/standard (= 2.7.5)
   - FMDB/standard (2.7.5)
   - HandyJSON (5.0.2)
+  - image_picker (0.0.1):
+    - Flutter
   - iOSSnapshotTestCase (6.2.0):
     - iOSSnapshotTestCase/SwiftSupport (= 6.2.0)
   - iOSSnapshotTestCase/Core (6.2.0)
@@ -62,6 +64,7 @@ DEPENDENCIES:
   - FBSnapshotTestCase (~> 2.1.4)
   - Flutter (from `../products/FlutterEngine`)
   - FlutterEngine (from `../products/FlutterEngine`)
+  - image_picker (from `../products/image_picker`)
   - Kingfisher
   - Nimble (~> 8.0.7)
   - Nimble-Snapshots (~> 8.0.0)
@@ -99,6 +102,8 @@ EXTERNAL SOURCES:
     :path: "../products/FlutterEngine"
   FlutterEngine:
     :path: "../products/FlutterEngine"
+  image_picker:
+    :path: "../products/image_picker"
 
 SPEC CHECKSUMS:
   Alamofire: 3b6a534a3df22db367e4dedeeca73d1ddfcf0e2f
@@ -109,6 +114,7 @@ SPEC CHECKSUMS:
   FlutterEngine: 7eed8bac2a76cfceb006b3be72ed4b8de33cc9bc
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   HandyJSON: 9e4e236f5d2dbefad5155a77417bbea438201c03
+  image_picker: 9c3312491f862b28d21ecd8fdf0ee14e601b3f09
   iOSSnapshotTestCase: 9ab44cb5aa62b84d31847f40680112e15ec579a6
   Kingfisher: adde87a4f74f6a3845395769354efff593581740
   Moya: 5b45dacb75adb009f97fde91c204c1e565d31916
@@ -121,6 +127,6 @@ SPEC CHECKSUMS:
   RxSwift: 81470a2074fa8780320ea5fe4102807cb7118178
   SwiftLint: 4fa9579c63416865179bc416f0a92d55f009600d
 
-PODFILE CHECKSUM: e0530d3bdb12c73f1a91d2c7aa63c61a6ea752ad
+PODFILE CHECKSUM: 67ff62c1ec97289248f701845278ef7d8b1fb2e1
 
 COCOAPODS: 1.9.3
