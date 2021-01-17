@@ -31,6 +31,9 @@ dependencies:
   assassin_flutter_plugin:
     path: ../assassin_flutter_plugin
   image_picker: ^0.6.7+21
+  date_format: ^1.0.9
+  easy_rich_text: ^0.5.3
+  flutter_linkify: ^4.0.2
 
 dev_dependencies:
   flutter_test:

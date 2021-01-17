@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/cupertino.dart';
 
 /// route name
@@ -33,6 +35,8 @@ const double font_size_level_2 = 13.0;
 const double font_size_level_3 = 14.0;
 const double divide_height = 0.1;
 const double divide_indent = 15.0;
+const double share_publisher_time_max_width = 155.0;
+const double share_portrait_size = 24.0;
 const FontWeight font_weight_level_4 = FontWeight.w400;
 const FontWeight font_weight_level_5 = FontWeight.w500;
 const FontWeight action_sheet_font_weight = FontWeight.w300;
