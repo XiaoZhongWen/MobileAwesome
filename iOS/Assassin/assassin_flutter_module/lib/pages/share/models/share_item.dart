@@ -67,7 +67,7 @@ class ShareItem {
       comments: comments,
       showVisible: map["showVisible"],
       type: map["type"],
-      files: list,
+      files: files,
       publisher: map["publisher"],
       isPublicAccount: map["isPublicAccount"],
       publisherName: map["publisherName"],

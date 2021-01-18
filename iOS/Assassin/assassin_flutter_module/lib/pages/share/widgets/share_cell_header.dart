@@ -1,14 +1,11 @@
 import 'package:assassin_flutter_module/constants.dart';
+import 'package:assassin_flutter_module/pages/share/models/share_header_provider.dart';
 import 'package:assassin_flutter_module/tools/date_transformer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
 
 class ShareCellHeader extends StatefulWidget {
-  ShareCellHeader({Key key, this.publishTime, this.publisherName, this.headerUrl}): super(key: key);
-  final String headerUrl;
-  final String publisherName;
-  final int publishTime;
-
   @override
   _ShareCellHeaderState createState() => _ShareCellHeaderState();
 }
@@ -16,6 +13,7 @@ class ShareCellHeader extends StatefulWidget {
 class _ShareCellHeaderState extends State<ShareCellHeader> {
   @override
   Widget build(BuildContext context) {
+    ShareHeaderProvider shareHeaderProvider = Provider.of<ShareHeaderProvider>(context);
     return Container(
       child: Column(
         children: [
@@ -26,7 +24,7 @@ class _ShareCellHeaderState extends State<ShareCellHeader> {
                 margin: EdgeInsets.only(right: default_margin),
                 child: ClipOval(
                   child: Image.network(
-                    widget.headerUrl,
+                    shareHeaderProvider.headerUrl,
                     width: share_portrait_size,
                     height: share_portrait_size,
                     fit: BoxFit.fill,
@@ -36,7 +34,7 @@ class _ShareCellHeaderState extends State<ShareCellHeader> {
               Expanded(
                 flex: 1,
                 child: Text(
-                  widget.publisherName,
+                  shareHeaderProvider.publisherName,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                     fontSize: font_size_level_2,
@@ -48,7 +46,7 @@ class _ShareCellHeaderState extends State<ShareCellHeader> {
                 width: share_publisher_time_max_width,
                 margin: EdgeInsets.only(left: default_margin),
                 child: Text(
-                  DateTransformer.shared.sharePublishTime(widget.publishTime),
+                  DateTransformer.shared.sharePublishTime(shareHeaderProvider.publishTime),
                   textAlign: TextAlign.right, textWidthBasis: TextWidthBasis.parent,
                   style: TextStyle(
                     color: Colors.grey,

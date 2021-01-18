@@ -21,10 +21,12 @@ class MeTabIcon extends StatelessWidget {
               children: [
                 _iconButton(),
                 Container(
-                  child: Text(_tab.name, style: TextStyle(
-                      fontSize: font_size_level_2,
-                      fontWeight: font_weight_level_4
-                  ),),
+                  child: Text(
+                    _tab.name,
+                    style: TextStyle(
+                        fontSize: font_size_level_2,
+                        fontWeight: font_weight_level_4),
+                  ),
                 ),
               ],
             ),
@@ -36,7 +38,10 @@ class MeTabIcon extends StatelessWidget {
 
   Widget _iconButton() {
     if (_tab.iconUrl.isNotEmpty) {
-      return IconButton(icon: Image.network(_tab.iconUrl, width: me_tab_icon_size, height: me_tab_icon_size), onPressed: () => _actionCallBack(int.parse(_tab.type)));
+      return IconButton(
+          icon: Image.network(_tab.iconUrl,
+              width: me_tab_icon_size, height: me_tab_icon_size),
+          onPressed: () => _actionCallBack(int.parse(_tab.type)));
     } else {
       String imageName = "pic_null.png";
       if (_tab.type == "0") {
@@ -56,7 +61,13 @@ class MeTabIcon extends StatelessWidget {
       } else if (_tab.type == "7") {
         imageName = "images/icon_setting.png";
       }
-      return IconButton(icon: Image.asset(imageName, width: me_tab_icon_size, height: me_tab_icon_size,), onPressed: () => _actionCallBack(int.parse(_tab.type)));
+      return IconButton(
+          icon: Image.asset(
+            imageName,
+            width: me_tab_icon_size,
+            height: me_tab_icon_size,
+          ),
+          onPressed: () => _actionCallBack(int.parse(_tab.type)));
     }
   }
 }
