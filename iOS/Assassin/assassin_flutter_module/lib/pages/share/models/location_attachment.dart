@@ -1,7 +1,7 @@
 class LocationAttachment {
   String address;
-  String lat;
-  String lon;
+  double lat;
+  double lon;
   String url;
 
   LocationAttachment({this.url, this.address, this.lat, this.lon});

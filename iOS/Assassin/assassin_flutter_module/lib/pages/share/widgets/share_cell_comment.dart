@@ -1,12 +1,15 @@
 import 'package:assassin_flutter_module/pages/share/models/share_comment.dart';
+import 'package:assassin_flutter_module/pages/share/models/share_comments_provider.dart';
 import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
 
 class ShareCellComment extends StatelessWidget {
-  ShareCellComment({this.shareComment}): super(key: ValueKey(shareComment.id));
-
-  final ShareComment shareComment;
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Consumer(
+      builder: (context, ShareCommentsProvider commentsProvider, _) {
+        return Container();
+      },
+    );
   }
 }

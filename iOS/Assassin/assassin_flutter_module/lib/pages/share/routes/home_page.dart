@@ -4,8 +4,11 @@ import 'package:assassin_flutter_module/constants.dart';
 import 'package:assassin_flutter_module/pages/share/models/disk_attachment.dart';
 import 'package:assassin_flutter_module/pages/share/models/image_attachment.dart';
 import 'package:assassin_flutter_module/pages/share/models/location_attachment.dart';
+import 'package:assassin_flutter_module/pages/share/models/share_action_provider.dart';
+import 'package:assassin_flutter_module/pages/share/models/share_comments_provider.dart';
 import 'package:assassin_flutter_module/pages/share/models/share_content_provider.dart';
 import 'package:assassin_flutter_module/pages/share/models/share_file_attachment_provider.dart';
+import 'package:assassin_flutter_module/pages/share/models/share_goods_provider.dart';
 import 'package:assassin_flutter_module/pages/share/models/share_header_provider.dart';
 import 'package:assassin_flutter_module/pages/share/models/share_image_attachment_provider.dart';
 import 'package:assassin_flutter_module/pages/share/models/share_item.dart';
@@ -28,6 +31,9 @@ class _HomePageState extends State<HomePage> {
   List<ShareImageAttachmentProvider> _shareImageAttachmentProviderList = [];
   List<ShareLocationAttachmentProvider> _shareLocationAttachmentProviderList = [];
   List<ShareFileAttachmentProvider> _shareFileAttachmentProviderList = [];
+  List<ShareActionProvider> _shareActionProviderList = [];
+  List<ShareGoodsProvider> _shareGoodsProviderList = [];
+  List<ShareCommentsProvider> _shareCommentsProviderList = [];
 
   @override
   void initState() {
@@ -45,8 +51,11 @@ class _HomePageState extends State<HomePage> {
           List<ShareImageAttachmentProvider> shareImageAttachmentProviderList = [];
           List<ShareLocationAttachmentProvider> shareLocationAttachmentProviderList = [];
           List<ShareFileAttachmentProvider> shareFileAttachmentProviderList = [];
+          List<ShareActionProvider> shareActionProviderList = [];
+          List<ShareGoodsProvider> shareGoodsProviderList = [];
+          List<ShareCommentsProvider> shareCommentsProviderList = [];
           for (ShareItem item in shares) {
-            ShareHeaderProvider shareHeaderProvider = ShareHeaderProvider(item.headUrl, item.publisherName, item.publishTime);
+            ShareHeaderProvider shareHeaderProvider = ShareHeaderProvider(item.headUrl, item.publisherName, item.publisher, item.publishTime);
             ShareContentProvider shareContentProvider = ShareContentProvider(item.content);
             shareHeaderProviderList.add(shareHeaderProvider);
             shareContentProviderList.add(shareContentProvider);
@@ -65,6 +74,12 @@ class _HomePageState extends State<HomePage> {
             shareImageAttachmentProviderList.add(imageAttachmentProvider);
             shareLocationAttachmentProviderList.add(locationAttachmentProvider);
             shareFileAttachmentProviderList.add(fileAttachmentProvider);
+            ShareActionProvider shareActionProvider = ShareActionProvider(publisherId: item.publisher);
+            ShareGoodsProvider goodsProvider = ShareGoodsProvider(goods: item.goods);
+            ShareCommentsProvider commentsProvider = ShareCommentsProvider(comments: item.comments);
+            shareActionProviderList.add(shareActionProvider);
+            shareGoodsProviderList.add(goodsProvider);
+            shareCommentsProviderList.add(commentsProvider);
           }
           setState(() {
             _shareList = shares;
@@ -73,6 +88,9 @@ class _HomePageState extends State<HomePage> {
             _shareImageAttachmentProviderList = shareImageAttachmentProviderList;
             _shareLocationAttachmentProviderList = shareLocationAttachmentProviderList;
             _shareFileAttachmentProviderList = shareFileAttachmentProviderList;
+            _shareActionProviderList = shareActionProviderList;
+            _shareGoodsProviderList = shareGoodsProviderList;
+            _shareCommentsProviderList = shareCommentsProviderList;
           });
     })
         .catchError((e) {
@@ -96,7 +114,12 @@ class _HomePageState extends State<HomePage> {
                   item.id,
                   _shareHeaderProviderList[index],
                   _shareContentProviderList[index],
-                  _shareImageAttachmentProviderList[index]
+                  _shareImageAttachmentProviderList[index],
+                  _shareLocationAttachmentProviderList[index],
+                  _shareFileAttachmentProviderList[index],
+                  _shareActionProviderList[index],
+                  _shareGoodsProviderList[index],
+                  _shareCommentsProviderList[index]
               );
             },
             separatorBuilder: (context, index) {

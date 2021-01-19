@@ -1,3 +1,4 @@
+import 'package:assassin_flutter_module/channels/application_configuration_channel.dart';
 import 'package:assassin_flutter_module/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -27,7 +28,22 @@ class _FeedImageState extends State<FeedImage> {
         borderRadius: BorderRadius.all(
           Radius.circular(share_feed_image_radius),
         ),
-        child: Image.network(widget.url, fit: widget.isSingle? BoxFit.contain: BoxFit.cover),
+        child: Image.network(
+          widget.url,
+          fit: widget.isSingle? BoxFit.contain: BoxFit.cover,
+          loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent loadingProgress) {
+            if (loadingProgress == null) {
+              return child;
+            } else {
+              return Center(
+                child: CircularProgressIndicator(
+                  value: loadingProgress.expectedTotalBytes != null ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes : null,
+                  valueColor: AlwaysStoppedAnimation(ApplicationConfigurationChannel.shared.fetchThemeColorSync() ?? Colors.blue),
+                ),
+              );
+            }
+            },
+        ),
       )
     );
   }

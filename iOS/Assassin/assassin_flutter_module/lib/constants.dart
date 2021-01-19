@@ -42,6 +42,7 @@ const double divide_height = 0.1;
 const double divide_indent = 15.0;
 const double share_publisher_time_max_width = 155.0;
 const double share_portrait_size = 24.0;
+const double share_icon_size = 20.0;
 const double share_feed_image_radius = 5.0;
 const FontWeight font_weight_level_4 = FontWeight.w400;
 const FontWeight font_weight_level_5 = FontWeight.w500;

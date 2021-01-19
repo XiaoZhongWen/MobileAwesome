@@ -47,20 +47,25 @@ class ShareItem {
       goods.add(good);
     }
     list = map["files"] ?? List();
-    for(int i = 0; i < list.length; i++) {
-      String jsonStr = list[i];
-      Map attachment = json.decode(jsonStr);
-      if (attachment["imageAttachment"] != null) {
-        ImageAttachment imageAttachment = ImageAttachment.fromJson(attachment["imageAttachment"]);
+    Map<String, dynamic> filesMap = {};
+    if (list.length > 0) {
+      String jsonStr = list[0];
+      filesMap = json.decode(jsonStr);
+    }
+
+    for (String key in filesMap.keys) {
+      if (key == "imageAttachment") {
+        ImageAttachment imageAttachment = ImageAttachment.fromJson(filesMap[key]);
         files.add(imageAttachment);
-      } else if (attachment["locAttachment"] != null) {
-        LocationAttachment locationAttachment = LocationAttachment.fromJson(attachment["locAttachment"]);
+      } else if (key == "locAttachment") {
+        LocationAttachment locationAttachment = LocationAttachment.fromJson(filesMap[key]);
         files.add(locationAttachment);
-      } else if (attachment["diskAttachments"] != null) {
-        DiskAttachments diskAttachments = DiskAttachments.fromJson(attachment["diskAttachments"]);
+      } else if (key == "diskAttachments") {
+        DiskAttachments diskAttachments = DiskAttachments.fromJson(filesMap[key]);
         files.add(diskAttachments);
       }
     }
+
     return ShareItem(
       id: map["id"],
       headUrl: map["headUrl"],
