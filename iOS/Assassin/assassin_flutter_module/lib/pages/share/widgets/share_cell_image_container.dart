@@ -1,5 +1,6 @@
 import 'package:assassin_flutter_module/constants.dart';
 import 'package:assassin_flutter_module/pages/share/models/image_attachment.dart';
+import 'package:assassin_flutter_module/pages/share/models/share_callbacks_provider.dart';
 import 'package:assassin_flutter_module/pages/share/models/share_image_attachment_provider.dart';
 import 'package:assassin_flutter_module/widgets/FeedImage.dart';
 import 'package:flutter/material.dart';
@@ -14,8 +15,8 @@ class ShareCellImageContainer extends StatefulWidget {
 class _ShareCellImageContainerState extends State<ShareCellImageContainer> {
   @override
   Widget build(BuildContext context) {
-    return Consumer(
-      builder: (context, ShareImageAttachmentProvider attachmentProvider, _) {
+    return Consumer2<ShareImageAttachmentProvider, ShareCallbacksProvider>(
+      builder: (context, ShareImageAttachmentProvider attachmentProvider, ShareCallbacksProvider callbacksProvider, _) {
         int count =  attachmentProvider.attachment.originalImagePath.length;
         int crossAxisCount = count == four_gong_ge? cross_axis_count_1: cross_axis_count_2;
         double containerWidth = MediaQuery.of(context).size.width - share_portrait_size - 3 * default_margin;
@@ -26,11 +27,14 @@ class _ShareCellImageContainerState extends State<ShareCellImageContainer> {
             alignment: Alignment.centerLeft,
             child: Container(
               margin: EdgeInsets.only(right: default_margin, top: default_margin, bottom: default_margin),
-              child: FeedImage(
-                url: attachmentProvider.attachment.originalImagePath[0],
-                containerWidth: containerWidth,
-                isSingle: count == 1,
-                originalSize: Size(double.parse(attachmentProvider.attachment.originalImageWidth[0]), double.parse(attachmentProvider.attachment.originalImageHeight[0])),
+              child: GestureDetector(
+                child: FeedImage(
+                  url: attachmentProvider.attachment.originalImagePath[0],
+                  containerWidth: containerWidth,
+                  isSingle: count == 1,
+                  originalSize: Size(double.parse(attachmentProvider.attachment.originalImageWidth[0]), double.parse(attachmentProvider.attachment.originalImageHeight[0])),
+                ),
+                onTap: () => callbacksProvider.onTapImageAttachment(attachmentProvider.attachment.originalImagePath, attachmentProvider.index),
               ),
             ),
           )
@@ -52,11 +56,14 @@ class _ShareCellImageContainerState extends State<ShareCellImageContainer> {
                 if (index < count) {
                   height = double.parse(attachmentProvider.attachment.originalImageHeight[index]);
                 }
-                return FeedImage(
-                  url: url,
-                  containerWidth: containerWidth,
-                  isSingle: count == 1,
-                  originalSize: Size(width, height),
+                return GestureDetector(
+                  child: FeedImage(
+                    url: url,
+                    containerWidth: containerWidth,
+                    isSingle: count == 1,
+                    originalSize: Size(width, height),
+                  ),
+                  onTap: () => callbacksProvider.onTapImageAttachment(attachmentProvider.attachment.originalImagePath, attachmentProvider.index),
                 );
               }
           ),

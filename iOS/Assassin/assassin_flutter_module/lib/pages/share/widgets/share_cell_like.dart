@@ -1,3 +1,4 @@
+import 'package:assassin_flutter_module/channels/application_configuration_channel.dart';
 import 'package:assassin_flutter_module/constants.dart';
 import 'package:assassin_flutter_module/pages/share/models/share_good.dart';
 import 'package:assassin_flutter_module/pages/share/models/share_goods_provider.dart';
@@ -8,32 +9,58 @@ import 'package:provider/provider.dart';
 class ShareCellLike extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    Color themeColor = ApplicationConfigurationChannel.shared.fetchThemeColorSync();
     return Consumer(
       builder: (context, ShareGoodsProvider goodsProvider, _) {
-        int count = goodsProvider.numberOfNicknameDisplayed(
+        bool overflow = goodsProvider.isOverflow(
             context,
-            MediaQuery.of(context).size.width - share_portrait_size - 3 * default_margin,
+            MediaQuery.of(context).size.width - share_portrait_size - 3 * default_margin - share_icon_size * 4,
             TextStyle(fontSize: font_size_level_1));
         return Container(
-          child: goodsProvider.goods.length > 0
-              ?
-              Column(
+          child: Column(
+            children: [
+              Flex(
+                direction: Axis.horizontal,
                 children: [
-                  Flex(
-                    direction: Axis.horizontal,
-                    children: [
-                      Expanded(
-                        flex: 1,
-                        child: Row(
-                          children: listOfComponet(goodsProvider, count),
+                  Expanded(
+                    flex: 1,
+                    child: Row(
+                      children: [
+                        Container(
+                          margin: EdgeInsets.only(left:default_margin, right:default_margin, top: default_margin * 0.5, bottom: default_margin * 0.5),
+                          child: Icon(
+                            Icons.thumb_up_alt_outlined,
+                            size: share_icon_size,
+                            color: themeColor,
+                          ),
                         ),
-                      )
-                    ],
+                        Text.rich(
+                            TextSpan(
+                                children: [
+                                  TextSpan(
+                                      text: goodsProvider.nicknames,
+                                      style: TextStyle(
+                                          color: themeColor,
+                                          fontSize: font_size_level_1
+                                      )
+                                  ),
+                                  TextSpan(
+                                    text: goodsProvider.desc,
+                                    style: TextStyle(
+                                        color: Colors.grey,
+                                        fontSize: font_size_level_1
+                                    ),
+                                  ),
+                                ]
+                            )
+                        ),
+                      ],
+                    ),
                   )
                 ],
               )
-              :
-          null,
+            ],
+          )
         );
       },
     );

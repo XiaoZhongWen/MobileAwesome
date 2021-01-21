@@ -1,5 +1,6 @@
 import 'package:assassin_flutter_module/constants.dart';
 import 'package:assassin_flutter_module/pages/share/models/share_action_provider.dart';
+import 'package:assassin_flutter_module/pages/share/models/share_callbacks_provider.dart';
 import 'package:assassin_flutter_module/pages/share/models/share_comments_provider.dart';
 import 'package:assassin_flutter_module/pages/share/models/share_content_provider.dart';
 import 'package:assassin_flutter_module/pages/share/models/share_file_attachment_provider.dart';
@@ -26,6 +27,7 @@ class ShareCell extends StatefulWidget {
   ShareActionProvider _shareActionProvider;
   ShareGoodsProvider _shareGoodsProvider;
   ShareCommentsProvider _commentsProvider;
+  ShareCallbacksProvider _callbacksProvider;
 
   ShareCell(
       String id,
@@ -37,6 +39,7 @@ class ShareCell extends StatefulWidget {
       this._shareActionProvider,
       this._shareGoodsProvider,
       this._commentsProvider,
+      this._callbacksProvider
       ): super(key: ValueKey(id));
 
   @override
@@ -55,7 +58,8 @@ class _ShareCellState extends State<ShareCell> {
         Provider.value(value: widget._fileAttachmentProvider),
         Provider.value(value: widget._shareActionProvider),
         ChangeNotifierProvider.value(value: widget._shareGoodsProvider),
-        ChangeNotifierProvider.value(value: widget._commentsProvider,)
+        ChangeNotifierProvider.value(value: widget._commentsProvider,),
+        Provider.value(value: widget._callbacksProvider)
       ],
       child: Container(
         margin: EdgeInsets.all(default_margin),

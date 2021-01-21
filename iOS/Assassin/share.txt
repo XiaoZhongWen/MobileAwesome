@@ -22,6 +22,16 @@
         "replierTime" : 1610510567650
       }
     ],
+    "comments" : [
+      {
+        "cnname" : "兰于兰",
+        "id" : "dd9ce61a5fbf4b339276d747c430359a",
+        "content" : "立得了解下他们需要多少存储空间，他们对价格非常敏感，可以通过天翼云来解决",
+        "headUrl" : "https:\/\/ceph.chinamye.com\/M00\/01\/3B\/CgoD-FqmEvmAP6zsAAb8sSYPZcM484.png",
+        "replier" : "13971052020",
+        "replierTime" : 1610369704579
+      }
+    ],
     "content" : "拜访楚天云技术负责人\n拜访人:余敦凡 张宝 郭锋亮\n拜访目的:沟通短www.baidu.com信切量，13545118725确认短信平台部署。\n拜访结果:目前262804333@qq.com根据楚天云提出的负载均衡平台已部署完成，昨日提供的压测方案也已通过。\n仍有两个环节需要调整:\n①针对目前只有2台服务器，担心业务量突然增大撑不住造成业务影响。张宝给出建议再加3台服务器，由楚天云协调提供，按照图3来部署。等楚天云本周协调好新增的3台服务器，预计再花1－2个工作日可完成。\n②压测完以后，客户会全部切到部署好的平台，供应商迈异作为首选，会保留玄武到平台作为备用供应商，提供具体通道路由策略说明，完善好api接口协议。这块由我负责完成。今日可完成。\n"
   },
   {
@@ -134,6 +144,36 @@
     "publisherName" : "潘成林",
     "publishTime" : 1609835897217,
     "goods" : [
+      {
+        "cnname" : "李仪",
+        "headUrl" : "https:\/\/ceph.chinamye.com\/clouddisk\/d41de5eefbe949d892d89039e2f3d97a\/20200413\/184206\/cropped2758311986104127256.jpg",
+        "replier" : "18162666999",
+        "replierTime" : 1609845244914
+      },
+      {
+        "cnname" : "袁美莲",
+        "headUrl" : "https:\/\/ceph.chinamye.com\/clouddisk\/722a4f75e4ac42ad92add73487191ef7\/20200916\/093612\/headImage.png",
+        "replier" : "Uyi",
+        "replierTime" : 1609857459951
+      },
+      {
+        "cnname" : "余敦凡",
+        "headUrl" : "https:\/\/ceph.chinamye.com\/clouddisk\/c1322b6c402d48569fd298b00ef49f7b\/4c079e35ab5c408995878cbb63f550de.jpg",
+        "replier" : "13429818067",
+        "replierTime" : 1609858950643
+      },
+      {
+        "cnname" : "柯鑫",
+        "headUrl" : "",
+        "replier" : "15871165100",
+        "replierTime" : 1609904731780
+      },
+      {
+        "cnname" : "潘银花",
+        "headUrl" : "",
+        "replier" : "18357780656",
+        "replierTime" : 1609905982821
+      },
       {
         "cnname" : "李仪",
         "headUrl" : "https:\/\/ceph.chinamye.com\/clouddisk\/d41de5eefbe949d892d89039e2f3d97a\/20200413\/184206\/cropped2758311986104127256.jpg",

@@ -1,4 +1,5 @@
 import 'package:assassin_flutter_module/constants.dart';
+import 'package:assassin_flutter_module/pages/share/models/share_callbacks_provider.dart';
 import 'package:assassin_flutter_module/pages/share/models/share_content_provider.dart';
 import 'dart:ui';
 import 'package:assassin_flutter_module/tools/string_line_caculator.dart';
@@ -27,8 +28,8 @@ class ShareCellContent extends StatelessWidget {
             children: [
               Expanded(
                 flex: 1,
-                child: Consumer<ShareContentProvider>(
-                  builder: (context, ShareContentProvider shareContentProvider, _) => Linkify(
+                child: Consumer2<ShareContentProvider, ShareCallbacksProvider>(
+                  builder: (context, ShareContentProvider shareContentProvider, ShareCallbacksProvider callbacksProvider, _) => Linkify(
                     text: shareContentProvider.content ?? "",
                     maxLines: shareContentProvider.isShowDetail == false? share_content_maxline: share_content_line_infinite,
                     overflow: TextOverflow.ellipsis,
@@ -36,7 +37,7 @@ class ShareCellContent extends StatelessWidget {
                         decoration: TextDecoration.none
                     ),
                     style: style,
-                    onOpen: (link) => print("Clicked ${link.url}!"),
+                    onOpen: (link) => callbacksProvider.onTapWebLink(link.url),
                   ),
                 )
               ),
@@ -44,8 +45,8 @@ class ShareCellContent extends StatelessWidget {
           ),
           Align(
               alignment: Alignment.centerLeft,
-              child: Consumer<ShareContentProvider>(
-                  builder: (context, ShareContentProvider shareContentProvider, _) {
+              child: Consumer2<ShareContentProvider, ShareCallbacksProvider>(
+                  builder: (context, ShareContentProvider shareContentProvider, ShareCallbacksProvider callbacksProvider, _) {
                     String content = shareContentProvider.content;
                     bool isOverFlow = LineCaculator().isExceedMaxLines(content, style, share_content_maxline, MediaQuery.of(context).size.width - share_portrait_size - default_margin);
                     if (isOverFlow) {
@@ -55,7 +56,7 @@ class ShareCellContent extends StatelessWidget {
                           minWidth: 0,
                           padding: EdgeInsets.zero,
                           materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                          onPressed: () => shareContentProvider.switchContentDisplayState()
+                          onPressed: () => callbacksProvider.switchContentDisplayState(shareContentProvider.index)
                       );
                     } else {
                       return Container();

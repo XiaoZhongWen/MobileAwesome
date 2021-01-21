@@ -35,6 +35,7 @@ dependencies:
   easy_rich_text: ^0.5.3
   flutter_linkify: ^4.0.2
   provider: ^4.3.2+3
+  flutter_keyboard_visibility: ^4.0.0
 
 dev_dependencies:
   flutter_test:

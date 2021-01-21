@@ -5,6 +5,8 @@ import 'package:assassin_flutter_module/pages/share/models/disk_attachment.dart'
 import 'package:assassin_flutter_module/pages/share/models/image_attachment.dart';
 import 'package:assassin_flutter_module/pages/share/models/location_attachment.dart';
 import 'package:assassin_flutter_module/pages/share/models/share_action_provider.dart';
+import 'package:assassin_flutter_module/pages/share/models/share_callbacks_provider.dart';
+import 'package:assassin_flutter_module/pages/share/models/share_comment.dart';
 import 'package:assassin_flutter_module/pages/share/models/share_comments_provider.dart';
 import 'package:assassin_flutter_module/pages/share/models/share_content_provider.dart';
 import 'package:assassin_flutter_module/pages/share/models/share_file_attachment_provider.dart';
@@ -34,6 +36,7 @@ class _HomePageState extends State<HomePage> {
   List<ShareActionProvider> _shareActionProviderList = [];
   List<ShareGoodsProvider> _shareGoodsProviderList = [];
   List<ShareCommentsProvider> _shareCommentsProviderList = [];
+  ShareCallbacksProvider _callbacksProvider;
 
   @override
   void initState() {
@@ -43,6 +46,25 @@ class _HomePageState extends State<HomePage> {
         _themeColor = color;
       });
     });
+
+    _callbacksProvider = ShareCallbacksProvider(
+      giveLike: giveLike,
+      cancelLike: cancelLike,
+      publishComment: publishComment,
+      retransmit: retransmit,
+      switchContentDisplayState: switchContentDisplayState,
+      onTapImageAttachment: onTapImageAttachment,
+      onTapLocationAttachment: onTapLocationAttachment,
+      onTapDiskAttachment: onTapDiskAttachment,
+      onTapPhoneNumber: onTapPhoneNumber,
+      onTapWebLink: onTapWebLink,
+      onTapNickname: onTapNickname,
+      deleteComment: deleteComment,
+      saveToCloudDisk: saveToCloudDisk,
+      collect: collect,
+      copy: copy,
+      delete: delete
+    );
 
     ShareService.shared.fetchShares(0)
         .then((shares) {
@@ -54,9 +76,10 @@ class _HomePageState extends State<HomePage> {
           List<ShareActionProvider> shareActionProviderList = [];
           List<ShareGoodsProvider> shareGoodsProviderList = [];
           List<ShareCommentsProvider> shareCommentsProviderList = [];
+          int index = 0;
           for (ShareItem item in shares) {
-            ShareHeaderProvider shareHeaderProvider = ShareHeaderProvider(item.headUrl, item.publisherName, item.publisher, item.publishTime);
-            ShareContentProvider shareContentProvider = ShareContentProvider(item.content);
+            ShareHeaderProvider shareHeaderProvider = ShareHeaderProvider(index, item.headUrl, item.publisherName, item.publisher, item.publishTime);
+            ShareContentProvider shareContentProvider = ShareContentProvider(index, item.content);
             shareHeaderProviderList.add(shareHeaderProvider);
             shareContentProviderList.add(shareContentProvider);
             ShareImageAttachmentProvider imageAttachmentProvider = null;
@@ -64,22 +87,23 @@ class _HomePageState extends State<HomePage> {
             ShareFileAttachmentProvider fileAttachmentProvider = null;
             for (dynamic attachment in item.files) {
               if (attachment.runtimeType == ImageAttachment && (attachment as ImageAttachment).originalImagePath.length > 0) {
-                imageAttachmentProvider = ShareImageAttachmentProvider(attachment);
+                imageAttachmentProvider = ShareImageAttachmentProvider(index, attachment);
               } else if(attachment.runtimeType == LocationAttachment) {
-                locationAttachmentProvider = ShareLocationAttachmentProvider(attachment);
+                locationAttachmentProvider = ShareLocationAttachmentProvider(index, attachment);
               } else if(attachment.runtimeType == DiskAttachment) {
-                fileAttachmentProvider = ShareFileAttachmentProvider(attachment);
+                fileAttachmentProvider = ShareFileAttachmentProvider(index, attachment);
               }
             }
             shareImageAttachmentProviderList.add(imageAttachmentProvider);
             shareLocationAttachmentProviderList.add(locationAttachmentProvider);
             shareFileAttachmentProviderList.add(fileAttachmentProvider);
-            ShareActionProvider shareActionProvider = ShareActionProvider(publisherId: item.publisher);
-            ShareGoodsProvider goodsProvider = ShareGoodsProvider(goods: item.goods);
-            ShareCommentsProvider commentsProvider = ShareCommentsProvider(comments: item.comments);
+            ShareActionProvider shareActionProvider = ShareActionProvider(index, publisherId: item.publisher);
+            ShareGoodsProvider goodsProvider = ShareGoodsProvider(index, goods: item.goods);
+            ShareCommentsProvider commentsProvider = ShareCommentsProvider(index, comments: item.comments);
             shareActionProviderList.add(shareActionProvider);
             shareGoodsProviderList.add(goodsProvider);
             shareCommentsProviderList.add(commentsProvider);
+            index++;
           }
           setState(() {
             _shareList = shares;
@@ -110,16 +134,23 @@ class _HomePageState extends State<HomePage> {
         child: ListView.separated(
             itemBuilder: (context, index) {
               ShareItem item = _shareList[index];
-              return ShareCell(
-                  item.id,
-                  _shareHeaderProviderList[index],
-                  _shareContentProviderList[index],
-                  _shareImageAttachmentProviderList[index],
-                  _shareLocationAttachmentProviderList[index],
-                  _shareFileAttachmentProviderList[index],
-                  _shareActionProviderList[index],
-                  _shareGoodsProviderList[index],
-                  _shareCommentsProviderList[index]
+              return GestureDetector(
+                child: Container(
+                  color: Colors.white,
+                  child: ShareCell(
+                      item.id,
+                      _shareHeaderProviderList[index],
+                      _shareContentProviderList[index],
+                      _shareImageAttachmentProviderList[index],
+                      _shareLocationAttachmentProviderList[index],
+                      _shareFileAttachmentProviderList[index],
+                      _shareActionProviderList[index],
+                      _shareGoodsProviderList[index],
+                      _shareCommentsProviderList[index],
+                      _callbacksProvider
+                  ),
+                ),
+                onTap: () => onTapCell(index),
               );
             },
             separatorBuilder: (context, index) {
@@ -128,5 +159,74 @@ class _HomePageState extends State<HomePage> {
             itemCount: _shareList?.length ?? 0),
       ),
     );
+  }
+
+  void onTapCell(int index) {
+    print("onTapCell");
+  }
+
+  void giveLike(int index) {
+    print("giveLike");
+  }
+
+  void cancelLike(int index) {
+    print("cancelLike");
+  }
+
+  void publishComment(String content, int index) {
+    print("publishComment");
+  }
+
+  void retransmit(int index) {
+    print("retransmit");
+  }
+
+  void switchContentDisplayState(int index) {
+    ShareContentProvider contentProvider = _shareContentProviderList[index];
+    contentProvider.switchContentDisplayState();
+  }
+
+  void onTapImageAttachment(List urls, int index) {
+    print("onTapImageAttachment");
+  }
+
+  void onTapLocationAttachment(int index) {
+    print("onTapLocationAttachment");
+  }
+
+  void onTapDiskAttachment(int index) {
+    print("onTapDiskAttachment");
+  }
+
+  void onTapPhoneNumber(String phoneNumber) {
+    print("onTapPhoneNumber");
+  }
+
+  void onTapWebLink(String url) {
+    print("onTapWebLink");
+  }
+
+  void onTapNickname(String userId) {
+    print("onTapNickname");
+  }
+
+  void deleteComment(ShareComment comment, int index) {
+    print("deleteComment");
+  }
+
+  void saveToCloudDisk(String url) {
+    print("saveToCloudDisk");
+  }
+
+  void collect(dynamic value, int index) {
+    print("collect");
+  }
+
+  void copy(String text) {
+    print("copy");
+  }
+
+  void delete(int index) {
+    print("delete");
   }
 }
