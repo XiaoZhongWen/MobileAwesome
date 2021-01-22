@@ -47,6 +47,14 @@ class ShareCell extends StatefulWidget {
 }
 
 class _ShareCellState extends State<ShareCell> {
+  Key _key;
+  @override
+  void initState() {
+    // TODO: implement initState
+    _key = GlobalKey();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -59,7 +67,8 @@ class _ShareCellState extends State<ShareCell> {
         Provider.value(value: widget._shareActionProvider),
         ChangeNotifierProvider.value(value: widget._shareGoodsProvider),
         ChangeNotifierProvider.value(value: widget._commentsProvider,),
-        Provider.value(value: widget._callbacksProvider)
+        Provider.value(value: widget._callbacksProvider),
+        Provider.value(value: _key)
       ],
       child: Container(
         margin: EdgeInsets.all(default_margin),

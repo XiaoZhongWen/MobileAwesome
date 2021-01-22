@@ -13,6 +13,15 @@
       <excludeFolder url="file://$MODULE_DIR$/.ios/Flutter/.symlinks/assassin_flutter_plugin/example/.dart_tool" />
       <excludeFolder url="file://$MODULE_DIR$/.ios/Flutter/.symlinks/assassin_flutter_plugin/example/.pub" />
       <excludeFolder url="file://$MODULE_DIR$/.ios/Flutter/.symlinks/assassin_flutter_plugin/example/build" />
+      <excludeFolder url="file://$MODULE_DIR$/.ios/Flutter/.symlinks/flutter_keyboard_visibility/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/.ios/Flutter/.symlinks/flutter_keyboard_visibility/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/.ios/Flutter/.symlinks/flutter_keyboard_visibility/build" />
+      <excludeFolder url="file://$MODULE_DIR$/.ios/Flutter/.symlinks/flutter_keyboard_visibility/example/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/.ios/Flutter/.symlinks/flutter_keyboard_visibility/example/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/.ios/Flutter/.symlinks/flutter_keyboard_visibility/example/build" />
+      <excludeFolder url="file://$MODULE_DIR$/.ios/Flutter/.symlinks/flutter_keyboard_visibility/example_old/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/.ios/Flutter/.symlinks/flutter_keyboard_visibility/example_old/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/.ios/Flutter/.symlinks/flutter_keyboard_visibility/example_old/build" />
       <excludeFolder url="file://$MODULE_DIR$/.ios/Flutter/.symlinks/image_picker/.dart_tool" />
       <excludeFolder url="file://$MODULE_DIR$/.ios/Flutter/.symlinks/image_picker/.pub" />
       <excludeFolder url="file://$MODULE_DIR$/.ios/Flutter/.symlinks/image_picker/build" />

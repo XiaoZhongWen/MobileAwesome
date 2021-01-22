@@ -17,8 +17,10 @@ import 'package:assassin_flutter_module/pages/share/models/share_item.dart';
 import 'package:assassin_flutter_module/pages/share/models/share_location_attachment_provider.dart';
 import 'package:assassin_flutter_module/pages/share/services/share_service.dart';
 import 'package:assassin_flutter_module/pages/share/widgets/share_cell.dart';
+import 'package:assassin_flutter_module/pages/share/widgets/share_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -37,6 +39,10 @@ class _HomePageState extends State<HomePage> {
   List<ShareGoodsProvider> _shareGoodsProviderList = [];
   List<ShareCommentsProvider> _shareCommentsProviderList = [];
   ShareCallbacksProvider _callbacksProvider;
+  FocusNode _focusNode = FocusNode();
+  FocusScopeNode _focusScopeNode;
+  ScrollController _scrollController = ScrollController();
+  GlobalKey _activeKey;
 
   @override
   void initState() {
@@ -50,7 +56,7 @@ class _HomePageState extends State<HomePage> {
     _callbacksProvider = ShareCallbacksProvider(
       giveLike: giveLike,
       cancelLike: cancelLike,
-      publishComment: publishComment,
+      onTapComment: onTapComment,
       retransmit: retransmit,
       switchContentDisplayState: switchContentDisplayState,
       onTapImageAttachment: onTapImageAttachment,
@@ -63,7 +69,8 @@ class _HomePageState extends State<HomePage> {
       saveToCloudDisk: saveToCloudDisk,
       collect: collect,
       copy: copy,
-      delete: delete
+      delete: delete,
+      onTapCommentItem: onTapCommentItem
     );
 
     ShareService.shared.fetchShares(0)
@@ -121,6 +128,26 @@ class _HomePageState extends State<HomePage> {
           print(e);
     });
     super.initState();
+
+    // KeyboardVisibilityController visibilityController = KeyboardVisibilityController();
+    // visibilityController.onChange.listen((bool visible) {
+    //   print(visible);
+    //   if (visible) {
+    //     double keyboardHeight = 346.0;
+    //     double textFieldMinY = MediaQuery.of(context).size.height - keyboardHeight - share_text_field_height;
+    //
+    //     RenderBox box = _activeKey.currentContext.findRenderObject();
+    //     Offset offset = box.localToGlobal(Offset.zero);
+    //     double boxMaxY = offset.dy + box.size.height;
+    //
+    //     double scrollOffset = _scrollController.offset;
+    //
+    //     double delta = boxMaxY - textFieldMinY + scrollOffset;
+    //     if (delta > 0.0) {
+    //       // _scrollController.animateTo(delta, duration: Duration(milliseconds: 250), curve: Curves.ease);
+    //     }
+    //   }
+    // });
   }
 
   @override
@@ -130,39 +157,53 @@ class _HomePageState extends State<HomePage> {
         title: Text("分享"),
         backgroundColor: _themeColor,
       ),
-      body: Container(
-        child: ListView.separated(
-            itemBuilder: (context, index) {
-              ShareItem item = _shareList[index];
-              return GestureDetector(
-                child: Container(
-                  color: Colors.white,
-                  child: ShareCell(
-                      item.id,
-                      _shareHeaderProviderList[index],
-                      _shareContentProviderList[index],
-                      _shareImageAttachmentProviderList[index],
-                      _shareLocationAttachmentProviderList[index],
-                      _shareFileAttachmentProviderList[index],
-                      _shareActionProviderList[index],
-                      _shareGoodsProviderList[index],
-                      _shareCommentsProviderList[index],
-                      _callbacksProvider
-                  ),
-                ),
-                onTap: () => onTapCell(index),
-              );
-            },
-            separatorBuilder: (context, index) {
-              return Divider(height: divide_height, indent: divide_indent,);
-            },
-            itemCount: _shareList?.length ?? 0),
+      body: SafeArea(
+        child: ConstrainedBox(
+          constraints: BoxConstraints.expand(),
+          child: Stack(
+            children: [
+              Container(
+                child: ListView.separated(
+                    // controller: _scrollController,
+                    itemBuilder: (context, index) {
+                      ShareItem item = _shareList[index];
+                      return GestureDetector(
+                        child: Container(
+                          color: Colors.white,
+                          child: ShareCell(
+                              item.id,
+                              _shareHeaderProviderList[index],
+                              _shareContentProviderList[index],
+                              _shareImageAttachmentProviderList[index],
+                              _shareLocationAttachmentProviderList[index],
+                              _shareFileAttachmentProviderList[index],
+                              _shareActionProviderList[index],
+                              _shareGoodsProviderList[index],
+                              _shareCommentsProviderList[index],
+                              _callbacksProvider
+                          ),
+                        ),
+                        onTap: () => onTapCell(index),
+                      );
+                    },
+                    separatorBuilder: (context, index) {
+                      return Divider(height: divide_height, indent: divide_indent,);
+                    },
+                    itemCount: _shareList?.length ?? 0),
+              ),
+              Positioned(
+                bottom: -MediaQuery.of(context).padding.bottom,
+                child: ShareTextField(focusNode: _focusNode,),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
 
   void onTapCell(int index) {
-    print("onTapCell");
+
   }
 
   void giveLike(int index) {
@@ -228,5 +269,29 @@ class _HomePageState extends State<HomePage> {
 
   void delete(int index) {
     print("delete");
+  }
+
+  void onTapComment(int index, GlobalKey key) {
+    _activeKey = key;
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext context) {
+          if (null == _focusScopeNode) {
+            _focusScopeNode = FocusScope.of(context);
+          }
+          _focusScopeNode.requestFocus(_focusNode);
+          return Container(
+            height: 0,
+          );
+        }
+    );
+  }
+
+  void onTapCommentItem(int index, GlobalKey key) {
+    _activeKey = key;
+    if (null == _focusScopeNode) {
+      _focusScopeNode = FocusScope.of(context);
+    }
+    _focusScopeNode.requestFocus(_focusNode);
   }
 }

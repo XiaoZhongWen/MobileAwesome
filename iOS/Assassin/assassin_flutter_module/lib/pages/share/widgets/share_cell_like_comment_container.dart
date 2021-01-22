@@ -1,7 +1,5 @@
 import 'package:assassin_flutter_module/constants.dart';
-import 'package:assassin_flutter_module/pages/share/models/share_comment.dart';
 import 'package:assassin_flutter_module/pages/share/models/share_comments_provider.dart';
-import 'package:assassin_flutter_module/pages/share/models/share_good.dart';
 import 'package:assassin_flutter_module/pages/share/models/share_goods_provider.dart';
 import 'package:assassin_flutter_module/pages/share/widgets/share_cell_comment.dart';
 import 'package:assassin_flutter_module/pages/share/widgets/share_cell_like.dart';
@@ -17,7 +15,9 @@ class ShareCellLikeCommentContainer extends StatefulWidget {
 class _ShareCellLikeCommentContainerState extends State<ShareCellLikeCommentContainer> {
   @override
   Widget build(BuildContext context) {
+    Key key = Provider.of<Key>(context);
     return Container(
+      key: key,
       margin: EdgeInsets.only(left: share_portrait_size + default_margin),
       child: Consumer2<ShareGoodsProvider, ShareCommentsProvider>(
         builder: (context, ShareGoodsProvider goodsProvider, ShareCommentsProvider commentsProvider, _) {

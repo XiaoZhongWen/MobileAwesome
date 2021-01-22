@@ -24,25 +24,30 @@ class ShareCellComment extends StatelessWidget {
             itemCount: commentsProvider.comments.length,
             itemBuilder: (BuildContext context, int index) {
               ShareComment shareComment = commentsProvider.comments[index];
-              return Text.rich(
-                TextSpan(
-                    children: [
-                      TextSpan(
-                        text: shareComment.cnname + ": ",
-                        recognizer: _tapGestureRecognizer
-                        ..onTap = () => callbacksProvider.onTapNickname(shareComment.replier),
-                        style: TextStyle(
-                            color: themeColor,
-                            fontSize: font_size_level_1
+              GlobalKey key = GlobalKey();
+              return GestureDetector(
+                onTap: () => callbacksProvider.onTapCommentItem(commentsProvider.index, key),
+                child: Text.rich(
+                  TextSpan(
+                      children: [
+                        TextSpan(
+                          text: shareComment.cnname + ": ",
+                          recognizer: _tapGestureRecognizer
+                            ..onTap = () => callbacksProvider.onTapNickname(shareComment.replier),
+                          style: TextStyle(
+                              color: themeColor,
+                              fontSize: font_size_level_1
+                          ),
                         ),
-                      ),
-                      TextSpan(
-                        text: shareComment.content,
-                        style: TextStyle(
-                            fontSize: font_size_level_1
-                        ),
-                      )
-                    ]
+                        TextSpan(
+                          text: shareComment.content,
+                          style: TextStyle(
+                              fontSize: font_size_level_1
+                          ),
+                        )
+                      ]
+                  ),
+                  key: key,
                 ),
               );
             },
