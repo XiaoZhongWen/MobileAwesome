@@ -17,6 +17,37 @@ target 'Assassin-Native' do
   pod 'assassin_flutter_plugin', :path => '../products/assassin_flutter_plugin'
   pod 'image_picker', :path => '../products/image_picker'
 
+# The Pods which should be included in all projects
+  pod 'FBLazyVector', :path => "../Assassin_reactnative/node_modules/react-native/Libraries/FBLazyVector"
+  pod 'FBReactNativeSpec', :path => "../Assassin_reactnative/node_modules/react-native/Libraries/FBReactNativeSpec"
+  pod 'RCTRequired', :path => "../Assassin_reactnative/node_modules/react-native/Libraries/RCTRequired"
+  pod 'RCTTypeSafety', :path => "../Assassin_reactnative/node_modules/react-native/Libraries/TypeSafety"
+  pod 'React', :path => "../Assassin_reactnative/node_modules/react-native/"
+  pod 'React-Core', :path => "../Assassin_reactnative/node_modules/react-native/"
+  pod 'React-CoreModules', :path => "../Assassin_reactnative/node_modules/react-native/React/CoreModules"
+  pod 'React-RCTActionSheet', :path => "../Assassin_reactnative/node_modules/react-native/Libraries/ActionSheetIOS"
+  pod 'React-RCTAnimation', :path => "../Assassin_reactnative/node_modules/react-native/Libraries/NativeAnimation"
+  pod 'React-RCTBlob', :path => "../Assassin_reactnative/node_modules/react-native/Libraries/Blob"
+  pod 'React-RCTImage', :path => "../Assassin_reactnative/node_modules/react-native/Libraries/Image"
+  pod 'React-RCTLinking', :path => "../Assassin_reactnative/node_modules/react-native/Libraries/LinkingIOS"
+  pod 'React-RCTNetwork', :path => "../Assassin_reactnative/node_modules/react-native/Libraries/Network"
+  pod 'React-RCTSettings', :path => "../Assassin_reactnative/node_modules/react-native/Libraries/Settings"
+  pod 'React-RCTText', :path => "../Assassin_reactnative/node_modules/react-native/Libraries/Text"
+  pod 'React-RCTVibration', :path => "../Assassin_reactnative/node_modules/react-native/Libraries/Vibration"
+  pod 'React-Core/RCTWebSocket', :path => "../Assassin_reactnative/node_modules/react-native/"
+  pod 'React-Core/DevSupport', :path => "../Assassin_reactnative/node_modules/react-native/"
+  pod 'React-cxxreact', :path => "../Assassin_reactnative/node_modules/react-native/ReactCommon/cxxreact"
+  pod 'React-jsi', :path => "../Assassin_reactnative/node_modules/react-native/ReactCommon/jsi"
+  pod 'React-jsiexecutor', :path => "../Assassin_reactnative/node_modules/react-native/ReactCommon/jsiexecutor"
+  pod 'React-jsinspector', :path => "../Assassin_reactnative/node_modules/react-native/ReactCommon/jsinspector"
+  pod 'React-callinvoker', :path => "../Assassin_reactnative/node_modules/react-native/ReactCommon/callinvoker"
+  pod 'ReactCommon/turbomodule/core', :path => "../Assassin_reactnative/node_modules/react-native/ReactCommon"
+  pod 'Yoga', :path => "../Assassin_reactnative/node_modules/react-native/ReactCommon/yoga", :modular_headers => true
+  
+  pod 'DoubleConversion', :podspec => "../Assassin_reactnative/node_modules/react-native/third-party-podspecs/DoubleConversion.podspec"
+  pod 'glog', :podspec => "../Assassin_reactnative/node_modules/react-native/third-party-podspecs/glog.podspec"
+  pod 'Folly', :podspec => "../Assassin_reactnative/node_modules/react-native/third-party-podspecs/Folly.podspec"
+
   target 'Assassin-NativeTests' do
     inherit! :search_paths
 

@@ -194,7 +194,6 @@
 				ECA701275B0163C10DD80E00 /* Pods-Assassin_reactnative-tvOSTests.debug.xcconfig */,
 				AC41B84C102ECCCDE18DCA56 /* Pods-Assassin_reactnative-tvOSTests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -375,7 +374,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
+			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
 		};
 		272E3838191F4EC1162DABFC /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;

@@ -37,7 +37,8 @@ class TabsGenerator {
                     print("type mismatch")
                 }
                 if let rootVc = viewController {
-                    if rootVc.isKind(of: FlutterViewController.self) {
+                    if rootVc.isKind(of: FlutterViewController.self) ||
+                        tabType == TabType.messageType.rawValue {
                         tabVcs.append(rootVc)
                     } else {
                         tabVcs.append(UINavigationController.init(rootViewController: rootVc))
