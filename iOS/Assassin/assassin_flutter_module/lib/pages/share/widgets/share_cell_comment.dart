@@ -26,7 +26,7 @@ class ShareCellComment extends StatelessWidget {
               ShareComment shareComment = commentsProvider.comments[index];
               GlobalKey key = GlobalKey();
               return GestureDetector(
-                onTap: () => callbacksProvider.onTapCommentItem(commentsProvider.index, key),
+                onTap: () => callbacksProvider.onTapCommentItem(context, commentsProvider.index, key),
                 child: Text.rich(
                   TextSpan(
                       children: [

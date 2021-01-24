@@ -6,8 +6,8 @@ typedef SingleTapTriggered<T> = void Function(T value, int index);
 class ShareCallbacksProvider {
   final void Function(int index) giveLike;
   final void Function(int index) cancelLike;
-  final void Function(int index, GlobalKey key) onTapComment;
-  final void Function(int index, GlobalKey key) onTapCommentItem;
+  final void Function(BuildContext context, int index, GlobalKey key) onTapComment;
+  final void Function(BuildContext context, int index, GlobalKey key) onTapCommentItem;
   final void Function(int index) retransmit;
   final void Function(int index) switchContentDisplayState;
   final SingleTapTriggered<List> onTapImageAttachment;

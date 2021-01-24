@@ -1,4 +1,5 @@
 import 'package:assassin_flutter_module/pages/share/routes/home_page.dart';
+import 'package:assassin_flutter_module/widgets/transparent_page.dart';
 import 'package:flutter/material.dart';
 import 'package:assassin_flutter_plugin/assassin_flutter_plugin.dart';
 
@@ -8,7 +9,7 @@ class SharePage extends StatelessWidget {
     return MaterialApp(
       initialRoute: "/",
       routes: {
-        "/": (context) => HomePage()
+        "/": (context) => HomePage(),
       },
     );
   }

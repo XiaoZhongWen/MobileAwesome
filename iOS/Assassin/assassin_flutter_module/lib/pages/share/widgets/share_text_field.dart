@@ -4,10 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 class ShareTextField extends StatelessWidget {
-  ShareTextField({this.focusNode});
-
-  final FocusNode focusNode;
-
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
@@ -29,7 +25,7 @@ class ShareTextField extends StatelessWidget {
                 padding: EdgeInsets.only(left: default_margin, right: default_margin),
                 color: Colors.grey.shade200,
                 child: TextField(
-                  focusNode: focusNode,
+                  autofocus: true,
                   cursorColor: themeColor,
                   decoration: InputDecoration.collapsed (),
                 ),
@@ -43,7 +39,9 @@ class ShareTextField extends StatelessWidget {
               color: Colors.grey.shade800,
               textColor: Colors.white,
               child: Text("发送"),
-              onPressed: () => {focusNode.unfocus()},
+              onPressed: () {
+                Navigator.pop(context);
+              },
             )
           ),
         ],

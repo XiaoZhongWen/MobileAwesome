@@ -14,7 +14,7 @@ class ShareCellAction extends StatelessWidget {
     int index = actionProvider.index;
     List<IconButton> list = [
       IconButton(icon: Icon(Icons.thumb_up_alt_outlined, size: share_icon_size,), onPressed: () => callbacksProvider.giveLike(index)),
-      IconButton(icon: Icon(Icons.insert_comment_outlined, size: share_icon_size,), onPressed: () => callbacksProvider.onTapComment(index, key)),
+      IconButton(icon: Icon(Icons.insert_comment_outlined, size: share_icon_size,), onPressed: () => callbacksProvider.onTapComment(context, index, key)),
       IconButton(icon: Icon(Icons.play_arrow_sharp, size: share_icon_size,), onPressed: () => callbacksProvider.retransmit(index))
     ];
     if (actionProvider.isPublisher()) {

@@ -39,8 +39,6 @@ class _HomePageState extends State<HomePage> {
   List<ShareGoodsProvider> _shareGoodsProviderList = [];
   List<ShareCommentsProvider> _shareCommentsProviderList = [];
   ShareCallbacksProvider _callbacksProvider;
-  FocusNode _focusNode = FocusNode();
-  FocusScopeNode _focusScopeNode;
   ScrollController _scrollController = ScrollController();
   GlobalKey _activeKey;
 
@@ -129,25 +127,24 @@ class _HomePageState extends State<HomePage> {
     });
     super.initState();
 
-    // KeyboardVisibilityController visibilityController = KeyboardVisibilityController();
-    // visibilityController.onChange.listen((bool visible) {
-    //   print(visible);
-    //   if (visible) {
-    //     double keyboardHeight = 346.0;
-    //     double textFieldMinY = MediaQuery.of(context).size.height - keyboardHeight - share_text_field_height;
-    //
-    //     RenderBox box = _activeKey.currentContext.findRenderObject();
-    //     Offset offset = box.localToGlobal(Offset.zero);
-    //     double boxMaxY = offset.dy + box.size.height;
-    //
-    //     double scrollOffset = _scrollController.offset;
-    //
-    //     double delta = boxMaxY - textFieldMinY + scrollOffset;
-    //     if (delta > 0.0) {
-    //       // _scrollController.animateTo(delta, duration: Duration(milliseconds: 250), curve: Curves.ease);
-    //     }
-    //   }
-    // });
+    KeyboardVisibilityController visibilityController = KeyboardVisibilityController();
+    visibilityController.onChange.listen((bool visible) {
+      if (visible) {
+        double keyboardHeight = 260.0;
+        double textFieldMinY = 667.0 - keyboardHeight - share_text_field_height;
+
+        RenderBox box = _activeKey.currentContext.findRenderObject();
+        Offset offset = box.localToGlobal(Offset.zero);
+        double boxMaxY = offset.dy + box.size.height;
+
+        double scrollOffset = _scrollController.offset;
+
+        double delta = boxMaxY - textFieldMinY + scrollOffset;
+        if (delta > 0.0) {
+          _scrollController.animateTo(delta, duration: Duration(milliseconds: 250), curve: Curves.ease);
+        }
+      }
+    });
   }
 
   @override
@@ -158,46 +155,33 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: _themeColor,
       ),
       body: SafeArea(
-        child: ConstrainedBox(
-          constraints: BoxConstraints.expand(),
-          child: Stack(
-            children: [
-              Container(
-                child: ListView.separated(
-                    // controller: _scrollController,
-                    itemBuilder: (context, index) {
-                      ShareItem item = _shareList[index];
-                      return GestureDetector(
-                        child: Container(
-                          color: Colors.white,
-                          child: ShareCell(
-                              item.id,
-                              _shareHeaderProviderList[index],
-                              _shareContentProviderList[index],
-                              _shareImageAttachmentProviderList[index],
-                              _shareLocationAttachmentProviderList[index],
-                              _shareFileAttachmentProviderList[index],
-                              _shareActionProviderList[index],
-                              _shareGoodsProviderList[index],
-                              _shareCommentsProviderList[index],
-                              _callbacksProvider
-                          ),
-                        ),
-                        onTap: () => onTapCell(index),
-                      );
-                    },
-                    separatorBuilder: (context, index) {
-                      return Divider(height: divide_height, indent: divide_indent,);
-                    },
-                    itemCount: _shareList?.length ?? 0),
-              ),
-              Positioned(
-                bottom: -MediaQuery.of(context).padding.bottom,
-                child: ShareTextField(focusNode: _focusNode,),
-              ),
-            ],
-          ),
-        ),
+        child: ListView.separated(
+            controller: _scrollController,
+            itemBuilder: (context, index) {
+              ShareItem item = _shareList[index];
+              return GestureDetector(
+                child: Container(
+                  color: Colors.white,
+                  child: ShareCell(
+                      item.id,
+                      _shareHeaderProviderList[index],
+                      _shareContentProviderList[index],
+                      _shareImageAttachmentProviderList[index],
+                      _shareLocationAttachmentProviderList[index],
+                      _shareFileAttachmentProviderList[index],
+                      _shareActionProviderList[index],
+                      _shareGoodsProviderList[index],
+                      _shareCommentsProviderList[index],
+                      _callbacksProvider
+                  ),
+                ),
+                onTap: () => onTapCell(index),
+              );
+            },
+            separatorBuilder: (context, index) {
+              return Divider(height: divide_height, indent: divide_indent,);
+            },
+            itemCount: _shareList?.length ?? 0),
       ),
     );
   }
@@ -271,27 +255,23 @@ class _HomePageState extends State<HomePage> {
     print("delete");
   }
 
-  void onTapComment(int index, GlobalKey key) {
+  void onTapComment(BuildContext context, int index, GlobalKey key) {
     _activeKey = key;
-    showModalBottomSheet(
+    showBottomSheet(
         context: context,
-        builder: (BuildContext context) {
-          if (null == _focusScopeNode) {
-            _focusScopeNode = FocusScope.of(context);
-          }
-          _focusScopeNode.requestFocus(_focusNode);
-          return Container(
-            height: 0,
-          );
+        builder: (context) {
+          return ShareTextField();
         }
     );
   }
 
-  void onTapCommentItem(int index, GlobalKey key) {
+  void onTapCommentItem(BuildContext context, int index, GlobalKey key) {
     _activeKey = key;
-    if (null == _focusScopeNode) {
-      _focusScopeNode = FocusScope.of(context);
-    }
-    _focusScopeNode.requestFocus(_focusNode);
+    showBottomSheet(
+        context: context,
+        builder: (context) {
+          return ShareTextField();
+        }
+    );
   }
 }
