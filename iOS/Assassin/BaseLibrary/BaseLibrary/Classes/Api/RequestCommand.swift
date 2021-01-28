@@ -33,8 +33,13 @@ class RequestCommand<Target: TargetType>: ApiCommand {
                 if response.statusCode == 401 {
                     let _ = OpenApi.shared.fetchToken(username, password) { (result) in
                         switch result {
-                        case .success(_):
-                            self.execute()
+                        case let .success(response):
+                            if let jsonStr = try? response.mapString() {
+                                userService.save(authentication: jsonStr)
+                                self.execute()
+                            } else {
+                                self.completion(.failure(MoyaError.stringMapping(response)))
+                            }
                         case .failure(_):
                             self.completion(.failure(MoyaError.stringMapping(response)))
                         }

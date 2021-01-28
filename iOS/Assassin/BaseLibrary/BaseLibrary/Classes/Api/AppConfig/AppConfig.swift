@@ -28,12 +28,11 @@ public class AppConfig {
             return
         }
         
-        let json = UserDefaults.init().value(forKey: TOKEN_KEY) as? String
-        let token = Token.deserialize(from: json)
-        
         let provider = MoyaProvider<AppConfigService>(
             plugins: [
                 AuthPlugin.init(tokenClosure: { () -> String? in
+                    let json = UserDefaults.init().value(forKey: TOKEN_KEY) as? String
+                    let token = Token.deserialize(from: json)
                     return token?.access_token
                 })
             ]

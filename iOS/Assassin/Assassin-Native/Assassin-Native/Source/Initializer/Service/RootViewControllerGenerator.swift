@@ -19,6 +19,7 @@ class RootViewControllerGenerator {
                 if let tabs = appConfigurationService.fetchAppTabs() {
                     let tabGenerator = TabsGenerator.init(tabs: tabs)
                     let tabBarVc = UITabBarController.init()
+                    tabBarVc.hidesBottomBarWhenPushed = true
                     tabBarVc.setViewControllers(tabGenerator.tabVcs, animated: true)
                     rootVc = tabBarVc
                 }

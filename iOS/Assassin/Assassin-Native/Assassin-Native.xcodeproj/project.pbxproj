@@ -20,6 +20,8 @@
 		3719832125A69E7C00DF3D29 /* String+Ex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3719832025A69E7C00DF3D29 /* String+Ex.swift */; };
 		371ACE6B25ABF4A90001B87D /* UIColor+Ex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 371ACE6A25ABF4A90001B87D /* UIColor+Ex.swift */; };
 		371ACE6E25AC34FD0001B87D /* ZXAppConfigurationChannelService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 371ACE6D25AC34FD0001B87D /* ZXAppConfigurationChannelService.swift */; };
+		371E061D25C10DE300934326 /* ContactsBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 371E061C25C10DE300934326 /* ContactsBridge.m */; };
+		371E061F25C10FBC00934326 /* ContactsDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 371E061E25C10FBC00934326 /* ContactsDataProvider.swift */; };
 		3734957025948DF500374CC0 /* AppConfigTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3734956F25948DF500374CC0 /* AppConfigTests.swift */; };
 		374635A325A949E800E00D34 /* ZXMeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374635A225A949E800E00D34 /* ZXMeController.swift */; };
 		374635A525A949FF00E00D34 /* ZXMessageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374635A425A949FF00E00D34 /* ZXMessageController.swift */; };
@@ -34,7 +36,27 @@
 		374C15DF259C28F000A6F84F /* LoginConstant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374C15DE259C28F000A6F84F /* LoginConstant.swift */; };
 		374C15E1259C2A3300A6F84F /* GlobalConstant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374C15E0259C2A3300A6F84F /* GlobalConstant.swift */; };
 		374C15E4259C33BD00A6F84F /* UIView+Ex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374C15E3259C33BD00A6F84F /* UIView+Ex.swift */; };
+		374C3C0725C0158E0043EB30 /* SystemInterfaceProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374C3C0625C0158E0043EB30 /* SystemInterfaceProvider.swift */; };
+		374C3C0925C015DB0043EB30 /* SystemInterfaceBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 374C3C0825C015DB0043EB30 /* SystemInterfaceBridge.m */; };
 		377241902598D1AF0059F1A1 /* token.json in Resources */ = {isa = PBXBuildFile; fileRef = 3772418F2598D1AF0059F1A1 /* token.json */; };
+		37BC4E3D25BE9B99004CEC1E /* CommonDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37BC4E3C25BE9B99004CEC1E /* CommonDataProvider.swift */; };
+		37BC4E4025BE9C5A004CEC1E /* CommonDataProviderBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 37BC4E3F25BE9C5A004CEC1E /* CommonDataProviderBridge.m */; };
+		37BC4E8825BEAEE7004CEC1E /* Fontisto.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 37BC4E7825BEAEE7004CEC1E /* Fontisto.ttf */; };
+		37BC4E8925BEAEE7004CEC1E /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 37BC4E7925BEAEE7004CEC1E /* Octicons.ttf */; };
+		37BC4E8A25BEAEE7004CEC1E /* Feather.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 37BC4E7A25BEAEE7004CEC1E /* Feather.ttf */; };
+		37BC4E8B25BEAEE7004CEC1E /* Entypo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 37BC4E7B25BEAEE7004CEC1E /* Entypo.ttf */; };
+		37BC4E8C25BEAEE7004CEC1E /* FontAwesome5_Brands.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 37BC4E7C25BEAEE7004CEC1E /* FontAwesome5_Brands.ttf */; };
+		37BC4E8D25BEAEE7004CEC1E /* MaterialCommunityIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 37BC4E7D25BEAEE7004CEC1E /* MaterialCommunityIcons.ttf */; };
+		37BC4E8E25BEAEE7004CEC1E /* AntDesign.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 37BC4E7E25BEAEE7004CEC1E /* AntDesign.ttf */; };
+		37BC4E8F25BEAEE7004CEC1E /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 37BC4E7F25BEAEE7004CEC1E /* Foundation.ttf */; };
+		37BC4E9025BEAEE7004CEC1E /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 37BC4E8025BEAEE7004CEC1E /* Ionicons.ttf */; };
+		37BC4E9125BEAEE7004CEC1E /* FontAwesome5_Solid.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 37BC4E8125BEAEE7004CEC1E /* FontAwesome5_Solid.ttf */; };
+		37BC4E9225BEAEE7004CEC1E /* FontAwesome5_Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 37BC4E8225BEAEE7004CEC1E /* FontAwesome5_Regular.ttf */; };
+		37BC4E9325BEAEE7004CEC1E /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 37BC4E8325BEAEE7004CEC1E /* FontAwesome.ttf */; };
+		37BC4E9425BEAEE7004CEC1E /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 37BC4E8425BEAEE7004CEC1E /* Zocial.ttf */; };
+		37BC4E9525BEAEE7004CEC1E /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 37BC4E8525BEAEE7004CEC1E /* EvilIcons.ttf */; };
+		37BC4E9625BEAEE7004CEC1E /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 37BC4E8625BEAEE7004CEC1E /* SimpleLineIcons.ttf */; };
+		37BC4E9725BEAEE7004CEC1E /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 37BC4E8725BEAEE7004CEC1E /* MaterialIcons.ttf */; };
 		37CCA90125AA9FBE00ECF672 /* ZXTabViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37CCA90025AA9FBE00ECF672 /* ZXTabViewModel.swift */; };
 		37CD3EBD258C48B10010EE87 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37CD3EBC258C48B10010EE87 /* AppDelegate.swift */; };
 		37CD3EC1258C48B10010EE87 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37CD3EC0258C48B10010EE87 /* ViewController.swift */; };
@@ -74,6 +96,8 @@
 		3719832025A69E7C00DF3D29 /* String+Ex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Ex.swift"; sourceTree = "<group>"; };
 		371ACE6A25ABF4A90001B87D /* UIColor+Ex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Ex.swift"; sourceTree = "<group>"; };
 		371ACE6D25AC34FD0001B87D /* ZXAppConfigurationChannelService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZXAppConfigurationChannelService.swift; sourceTree = "<group>"; };
+		371E061C25C10DE300934326 /* ContactsBridge.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ContactsBridge.m; sourceTree = "<group>"; };
+		371E061E25C10FBC00934326 /* ContactsDataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsDataProvider.swift; sourceTree = "<group>"; };
 		3734956F25948DF500374CC0 /* AppConfigTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppConfigTests.swift; path = Api/AppConfigTests.swift; sourceTree = "<group>"; };
 		374635A225A949E800E00D34 /* ZXMeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZXMeController.swift; sourceTree = "<group>"; };
 		374635A425A949FF00E00D34 /* ZXMessageController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZXMessageController.swift; sourceTree = "<group>"; };
@@ -88,8 +112,29 @@
 		374C15DE259C28F000A6F84F /* LoginConstant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginConstant.swift; sourceTree = "<group>"; };
 		374C15E0259C2A3300A6F84F /* GlobalConstant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalConstant.swift; sourceTree = "<group>"; };
 		374C15E3259C33BD00A6F84F /* UIView+Ex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Ex.swift"; sourceTree = "<group>"; };
+		374C3C0625C0158E0043EB30 /* SystemInterfaceProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemInterfaceProvider.swift; sourceTree = "<group>"; };
+		374C3C0825C015DB0043EB30 /* SystemInterfaceBridge.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SystemInterfaceBridge.m; sourceTree = "<group>"; };
 		376E627D25907D820090DA34 /* BaseLibrary.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BaseLibrary.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3772418F2598D1AF0059F1A1 /* token.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = token.json; sourceTree = "<group>"; };
+		37BC4E3C25BE9B99004CEC1E /* CommonDataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonDataProvider.swift; sourceTree = "<group>"; };
+		37BC4E3E25BE9C5A004CEC1E /* Assassin-Native-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Assassin-Native-Bridging-Header.h"; sourceTree = "<group>"; };
+		37BC4E3F25BE9C5A004CEC1E /* CommonDataProviderBridge.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CommonDataProviderBridge.m; sourceTree = "<group>"; };
+		37BC4E7825BEAEE7004CEC1E /* Fontisto.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Fontisto.ttf; sourceTree = "<group>"; };
+		37BC4E7925BEAEE7004CEC1E /* Octicons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Octicons.ttf; sourceTree = "<group>"; };
+		37BC4E7A25BEAEE7004CEC1E /* Feather.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Feather.ttf; sourceTree = "<group>"; };
+		37BC4E7B25BEAEE7004CEC1E /* Entypo.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Entypo.ttf; sourceTree = "<group>"; };
+		37BC4E7C25BEAEE7004CEC1E /* FontAwesome5_Brands.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = FontAwesome5_Brands.ttf; sourceTree = "<group>"; };
+		37BC4E7D25BEAEE7004CEC1E /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = MaterialCommunityIcons.ttf; sourceTree = "<group>"; };
+		37BC4E7E25BEAEE7004CEC1E /* AntDesign.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = AntDesign.ttf; sourceTree = "<group>"; };
+		37BC4E7F25BEAEE7004CEC1E /* Foundation.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Foundation.ttf; sourceTree = "<group>"; };
+		37BC4E8025BEAEE7004CEC1E /* Ionicons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Ionicons.ttf; sourceTree = "<group>"; };
+		37BC4E8125BEAEE7004CEC1E /* FontAwesome5_Solid.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = FontAwesome5_Solid.ttf; sourceTree = "<group>"; };
+		37BC4E8225BEAEE7004CEC1E /* FontAwesome5_Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = FontAwesome5_Regular.ttf; sourceTree = "<group>"; };
+		37BC4E8325BEAEE7004CEC1E /* FontAwesome.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = FontAwesome.ttf; sourceTree = "<group>"; };
+		37BC4E8425BEAEE7004CEC1E /* Zocial.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Zocial.ttf; sourceTree = "<group>"; };
+		37BC4E8525BEAEE7004CEC1E /* EvilIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = EvilIcons.ttf; sourceTree = "<group>"; };
+		37BC4E8625BEAEE7004CEC1E /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = SimpleLineIcons.ttf; sourceTree = "<group>"; };
+		37BC4E8725BEAEE7004CEC1E /* MaterialIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = MaterialIcons.ttf; sourceTree = "<group>"; };
 		37CCA90025AA9FBE00ECF672 /* ZXTabViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZXTabViewModel.swift; sourceTree = "<group>"; };
 		37CD3EB9258C48B10010EE87 /* Assassin-Native.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Assassin-Native.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		37CD3EBC258C48B10010EE87 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -200,6 +245,15 @@
 			path = Service;
 			sourceTree = "<group>";
 		};
+		371E061B25C10DB800934326 /* Bridge */ = {
+			isa = PBXGroup;
+			children = (
+				371E061C25C10DE300934326 /* ContactsBridge.m */,
+				371E061E25C10FBC00934326 /* ContactsDataProvider.swift */,
+			);
+			path = Bridge;
+			sourceTree = "<group>";
+		};
 		3746359225A949AA00E00D34 /* Work */ = {
 			isa = PBXGroup;
 			children = (
@@ -235,6 +289,8 @@
 		3746359825A949AA00E00D34 /* Message */ = {
 			isa = PBXGroup;
 			children = (
+				371E061B25C10DB800934326 /* Bridge */,
+				37BC4E3825BE84D4004CEC1E /* Service */,
 				3746359925A949AA00E00D34 /* Controller */,
 			);
 			path = Message;
@@ -268,6 +324,7 @@
 		374C15D0259ADC5500A6F84F /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				37BC4E3B25BE9B32004CEC1E /* Common */,
 				3746359B25A949AA00E00D34 /* Me */,
 				3746359825A949AA00E00D34 /* Message */,
 				3746359525A949AA00E00D34 /* Share */,
@@ -329,6 +386,48 @@
 			path = Extension;
 			sourceTree = "<group>";
 		};
+		37BC4E3825BE84D4004CEC1E /* Service */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Service;
+			sourceTree = "<group>";
+		};
+		37BC4E3B25BE9B32004CEC1E /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				37BC4E3C25BE9B99004CEC1E /* CommonDataProvider.swift */,
+				37BC4E3F25BE9C5A004CEC1E /* CommonDataProviderBridge.m */,
+				374C3C0625C0158E0043EB30 /* SystemInterfaceProvider.swift */,
+				374C3C0825C015DB0043EB30 /* SystemInterfaceBridge.m */,
+				37BC4E3E25BE9C5A004CEC1E /* Assassin-Native-Bridging-Header.h */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		37BC4E7725BEAEE7004CEC1E /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				37BC4E7825BEAEE7004CEC1E /* Fontisto.ttf */,
+				37BC4E7925BEAEE7004CEC1E /* Octicons.ttf */,
+				37BC4E7A25BEAEE7004CEC1E /* Feather.ttf */,
+				37BC4E7B25BEAEE7004CEC1E /* Entypo.ttf */,
+				37BC4E7C25BEAEE7004CEC1E /* FontAwesome5_Brands.ttf */,
+				37BC4E7D25BEAEE7004CEC1E /* MaterialCommunityIcons.ttf */,
+				37BC4E7E25BEAEE7004CEC1E /* AntDesign.ttf */,
+				37BC4E7F25BEAEE7004CEC1E /* Foundation.ttf */,
+				37BC4E8025BEAEE7004CEC1E /* Ionicons.ttf */,
+				37BC4E8125BEAEE7004CEC1E /* FontAwesome5_Solid.ttf */,
+				37BC4E8225BEAEE7004CEC1E /* FontAwesome5_Regular.ttf */,
+				37BC4E8325BEAEE7004CEC1E /* FontAwesome.ttf */,
+				37BC4E8425BEAEE7004CEC1E /* Zocial.ttf */,
+				37BC4E8525BEAEE7004CEC1E /* EvilIcons.ttf */,
+				37BC4E8625BEAEE7004CEC1E /* SimpleLineIcons.ttf */,
+				37BC4E8725BEAEE7004CEC1E /* MaterialIcons.ttf */,
+			);
+			path = Fonts;
+			sourceTree = "<group>";
+		};
 		37CD3EB0258C48B10010EE87 = {
 			isa = PBXGroup;
 			children = (
@@ -352,6 +451,7 @@
 		37CD3EBB258C48B10010EE87 /* Assassin-Native */ = {
 			isa = PBXGroup;
 			children = (
+				37BC4E7725BEAEE7004CEC1E /* Fonts */,
 				374C15D0259ADC5500A6F84F /* Source */,
 				37CD3EBC258C48B10010EE87 /* AppDelegate.swift */,
 				37CD3EC0258C48B10010EE87 /* ViewController.swift */,
@@ -455,6 +555,7 @@
 					};
 					37CD3EB8258C48B10010EE87 = {
 						CreatedOnToolsVersion = 11.5;
+						LastSwiftMigration = 1230;
 					};
 				};
 			};
@@ -491,12 +592,28 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				37BC4E8E25BEAEE7004CEC1E /* AntDesign.ttf in Resources */,
+				37BC4E8F25BEAEE7004CEC1E /* Foundation.ttf in Resources */,
+				37BC4E9425BEAEE7004CEC1E /* Zocial.ttf in Resources */,
 				374C15DD259B238E00A6F84F /* ZXLoginViewController.xib in Resources */,
 				3705101325A85914003C31DC /* DefaultConfiguration.plist in Resources */,
+				37BC4E9625BEAEE7004CEC1E /* SimpleLineIcons.ttf in Resources */,
+				37BC4E9725BEAEE7004CEC1E /* MaterialIcons.ttf in Resources */,
+				37BC4E8925BEAEE7004CEC1E /* Octicons.ttf in Resources */,
+				37BC4E9325BEAEE7004CEC1E /* FontAwesome.ttf in Resources */,
+				37BC4E9025BEAEE7004CEC1E /* Ionicons.ttf in Resources */,
+				37BC4E8B25BEAEE7004CEC1E /* Entypo.ttf in Resources */,
 				37CD3EC9258C48B40010EE87 /* LaunchScreen.storyboard in Resources */,
+				37BC4E8C25BEAEE7004CEC1E /* FontAwesome5_Brands.ttf in Resources */,
+				37BC4E9125BEAEE7004CEC1E /* FontAwesome5_Solid.ttf in Resources */,
 				3705100425A83D8C003C31DC /* default_app_config.json in Resources */,
+				37BC4E9525BEAEE7004CEC1E /* EvilIcons.ttf in Resources */,
 				37CD3EC6258C48B40010EE87 /* Assets.xcassets in Resources */,
 				37CD3EC4258C48B10010EE87 /* Main.storyboard in Resources */,
+				37BC4E8825BEAEE7004CEC1E /* Fontisto.ttf in Resources */,
+				37BC4E8D25BEAEE7004CEC1E /* MaterialCommunityIcons.ttf in Resources */,
+				37BC4E9225BEAEE7004CEC1E /* FontAwesome5_Regular.ttf in Resources */,
+				37BC4E8A25BEAEE7004CEC1E /* Feather.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -616,13 +733,17 @@
 			files = (
 				371ACE6B25ABF4A90001B87D /* UIColor+Ex.swift in Sources */,
 				3705101525A85BD1003C31DC /* DefaultConfiguration.swift in Sources */,
+				37BC4E4025BE9C5A004CEC1E /* CommonDataProviderBridge.m in Sources */,
 				374635A925A94A3100E00D34 /* ZXWorkController.swift in Sources */,
 				3705100F25A85137003C31DC /* ApplicationConfiguration.swift in Sources */,
 				374635A725A94A1200E00D34 /* ZXShareController.swift in Sources */,
 				374635B425A9A8F600E00D34 /* BaseService.swift in Sources */,
 				374635A325A949E800E00D34 /* ZXMeController.swift in Sources */,
 				371ACE6E25AC34FD0001B87D /* ZXAppConfigurationChannelService.swift in Sources */,
+				374C3C0725C0158E0043EB30 /* SystemInterfaceProvider.swift in Sources */,
+				371E061F25C10FBC00934326 /* ContactsDataProvider.swift in Sources */,
 				374C15E1259C2A3300A6F84F /* GlobalConstant.swift in Sources */,
+				37BC4E3D25BE9B99004CEC1E /* CommonDataProvider.swift in Sources */,
 				3719832125A69E7C00DF3D29 /* String+Ex.swift in Sources */,
 				3705100D25A85011003C31DC /* RootViewControllerGenerator.swift in Sources */,
 				374635A525A949FF00E00D34 /* ZXMessageController.swift in Sources */,
@@ -630,6 +751,7 @@
 				37CCA90125AA9FBE00ECF672 /* ZXTabViewModel.swift in Sources */,
 				37141A29259D9D90009415FC /* ZXValidationService.swift in Sources */,
 				374635B225A9A2E700E00D34 /* AssassinError.swift in Sources */,
+				371E061D25C10DE300934326 /* ContactsBridge.m in Sources */,
 				3705101125A856BE003C31DC /* ApplicationConfigurationService.swift in Sources */,
 				374C15D9259B233300A6F84F /* ZXLoginViewController.swift in Sources */,
 				374C15E4259C33BD00A6F84F /* UIView+Ex.swift in Sources */,
@@ -639,6 +761,7 @@
 				374C15DF259C28F000A6F84F /* LoginConstant.swift in Sources */,
 				37D4C86925A89F3D0059E4AD /* TabsGenerator.swift in Sources */,
 				374635AE25A98CF800E00D34 /* ImageService.swift in Sources */,
+				374C3C0925C015DB0043EB30 /* SystemInterfaceBridge.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -839,6 +962,7 @@
 			baseConfigurationReference = 7623CB87654133E639310818 /* Pods-Assassin-Native.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer: YanGuo Xu (8UXJLEW4C3)";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = XYKLGP5W62;
@@ -851,6 +975,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.mye.assassin;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = development_assassin_2021;
+				SWIFT_OBJC_BRIDGING_HEADER = "Assassin-Native/Source/Common/Assassin-Native-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -861,6 +987,7 @@
 			baseConfigurationReference = A422D69925D15908D27E610D /* Pods-Assassin-Native.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Wuhan Mye Information Techology Co.,ltd (XYKLGP5W62)";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = XYKLGP5W62;
@@ -873,6 +1000,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.mye.assassin;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = AdHoc_assassin_2021;
+				SWIFT_OBJC_BRIDGING_HEADER = "Assassin-Native/Source/Common/Assassin-Native-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

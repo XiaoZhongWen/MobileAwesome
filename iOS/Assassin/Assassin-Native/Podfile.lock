@@ -236,6 +236,8 @@ PODS:
     - React-cxxreact (= 0.63.4)
     - React-jsi (= 0.63.4)
   - React-jsinspector (0.63.4)
+  - react-native-safe-area-context (3.1.9):
+    - React-Core
   - React-RCTActionSheet (0.63.4):
     - React-Core/RCTActionSheetHeaders (= 0.63.4)
   - React-RCTAnimation (0.63.4):
@@ -296,6 +298,16 @@ PODS:
     - React-Core (= 0.63.4)
     - React-cxxreact (= 0.63.4)
     - React-jsi (= 0.63.4)
+  - RNCMaskedView (0.1.10):
+    - React
+  - RNGestureHandler (1.9.0):
+    - React-Core
+  - RNReanimated (1.13.2):
+    - React-Core
+  - RNScreens (2.15.2):
+    - React-Core
+  - RNVectorIcons (8.0.0):
+    - React-Core
   - RxCocoa (5.1.1):
     - RxRelay (~> 5)
     - RxSwift (~> 5)
@@ -308,46 +320,52 @@ PODS:
 DEPENDENCIES:
   - assassin_flutter_plugin (from `../products/assassin_flutter_plugin`)
   - BaseLibrary (from `../BaseLibrary`)
-  - DoubleConversion (from `../Assassin_reactnative/node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
-  - FBLazyVector (from `../Assassin_reactnative/node_modules/react-native/Libraries/FBLazyVector`)
-  - FBReactNativeSpec (from `../Assassin_reactnative/node_modules/react-native/Libraries/FBReactNativeSpec`)
+  - DoubleConversion (from `../assassin_reactnative_module/node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
+  - FBLazyVector (from `../assassin_reactnative_module/node_modules/react-native/Libraries/FBLazyVector`)
+  - FBReactNativeSpec (from `../assassin_reactnative_module/node_modules/react-native/Libraries/FBReactNativeSpec`)
   - FBSnapshotTestCase (~> 2.1.4)
   - Flutter (from `../products/FlutterEngine`)
   - FlutterEngine (from `../products/FlutterEngine`)
-  - Folly (from `../Assassin_reactnative/node_modules/react-native/third-party-podspecs/Folly.podspec`)
-  - glog (from `../Assassin_reactnative/node_modules/react-native/third-party-podspecs/glog.podspec`)
+  - Folly (from `../assassin_reactnative_module/node_modules/react-native/third-party-podspecs/Folly.podspec`)
+  - glog (from `../assassin_reactnative_module/node_modules/react-native/third-party-podspecs/glog.podspec`)
   - image_picker (from `../products/image_picker`)
   - Kingfisher
   - Nimble (~> 8.0.7)
   - Nimble-Snapshots (~> 8.0.0)
   - OHHTTPStubs/Swift
   - Quick (~> 2.2.0)
-  - RCTRequired (from `../Assassin_reactnative/node_modules/react-native/Libraries/RCTRequired`)
-  - RCTTypeSafety (from `../Assassin_reactnative/node_modules/react-native/Libraries/TypeSafety`)
-  - React (from `../Assassin_reactnative/node_modules/react-native/`)
-  - React-callinvoker (from `../Assassin_reactnative/node_modules/react-native/ReactCommon/callinvoker`)
-  - React-Core (from `../Assassin_reactnative/node_modules/react-native/`)
-  - React-Core/DevSupport (from `../Assassin_reactnative/node_modules/react-native/`)
-  - React-Core/RCTWebSocket (from `../Assassin_reactnative/node_modules/react-native/`)
-  - React-CoreModules (from `../Assassin_reactnative/node_modules/react-native/React/CoreModules`)
-  - React-cxxreact (from `../Assassin_reactnative/node_modules/react-native/ReactCommon/cxxreact`)
-  - React-jsi (from `../Assassin_reactnative/node_modules/react-native/ReactCommon/jsi`)
-  - React-jsiexecutor (from `../Assassin_reactnative/node_modules/react-native/ReactCommon/jsiexecutor`)
-  - React-jsinspector (from `../Assassin_reactnative/node_modules/react-native/ReactCommon/jsinspector`)
-  - React-RCTActionSheet (from `../Assassin_reactnative/node_modules/react-native/Libraries/ActionSheetIOS`)
-  - React-RCTAnimation (from `../Assassin_reactnative/node_modules/react-native/Libraries/NativeAnimation`)
-  - React-RCTBlob (from `../Assassin_reactnative/node_modules/react-native/Libraries/Blob`)
-  - React-RCTImage (from `../Assassin_reactnative/node_modules/react-native/Libraries/Image`)
-  - React-RCTLinking (from `../Assassin_reactnative/node_modules/react-native/Libraries/LinkingIOS`)
-  - React-RCTNetwork (from `../Assassin_reactnative/node_modules/react-native/Libraries/Network`)
-  - React-RCTSettings (from `../Assassin_reactnative/node_modules/react-native/Libraries/Settings`)
-  - React-RCTText (from `../Assassin_reactnative/node_modules/react-native/Libraries/Text`)
-  - React-RCTVibration (from `../Assassin_reactnative/node_modules/react-native/Libraries/Vibration`)
-  - ReactCommon/turbomodule/core (from `../Assassin_reactnative/node_modules/react-native/ReactCommon`)
+  - RCTRequired (from `../assassin_reactnative_module/node_modules/react-native/Libraries/RCTRequired`)
+  - RCTTypeSafety (from `../assassin_reactnative_module/node_modules/react-native/Libraries/TypeSafety`)
+  - React (from `../assassin_reactnative_module/node_modules/react-native/`)
+  - React-callinvoker (from `../assassin_reactnative_module/node_modules/react-native/ReactCommon/callinvoker`)
+  - React-Core (from `../assassin_reactnative_module/node_modules/react-native/`)
+  - React-Core/DevSupport (from `../assassin_reactnative_module/node_modules/react-native/`)
+  - React-Core/RCTWebSocket (from `../assassin_reactnative_module/node_modules/react-native/`)
+  - React-CoreModules (from `../assassin_reactnative_module/node_modules/react-native/React/CoreModules`)
+  - React-cxxreact (from `../assassin_reactnative_module/node_modules/react-native/ReactCommon/cxxreact`)
+  - React-jsi (from `../assassin_reactnative_module/node_modules/react-native/ReactCommon/jsi`)
+  - React-jsiexecutor (from `../assassin_reactnative_module/node_modules/react-native/ReactCommon/jsiexecutor`)
+  - React-jsinspector (from `../assassin_reactnative_module/node_modules/react-native/ReactCommon/jsinspector`)
+  - react-native-safe-area-context (from `../assassin_reactnative_module/node_modules/react-native-safe-area-context`)
+  - React-RCTActionSheet (from `../assassin_reactnative_module/node_modules/react-native/Libraries/ActionSheetIOS`)
+  - React-RCTAnimation (from `../assassin_reactnative_module/node_modules/react-native/Libraries/NativeAnimation`)
+  - React-RCTBlob (from `../assassin_reactnative_module/node_modules/react-native/Libraries/Blob`)
+  - React-RCTImage (from `../assassin_reactnative_module/node_modules/react-native/Libraries/Image`)
+  - React-RCTLinking (from `../assassin_reactnative_module/node_modules/react-native/Libraries/LinkingIOS`)
+  - React-RCTNetwork (from `../assassin_reactnative_module/node_modules/react-native/Libraries/Network`)
+  - React-RCTSettings (from `../assassin_reactnative_module/node_modules/react-native/Libraries/Settings`)
+  - React-RCTText (from `../assassin_reactnative_module/node_modules/react-native/Libraries/Text`)
+  - React-RCTVibration (from `../assassin_reactnative_module/node_modules/react-native/Libraries/Vibration`)
+  - ReactCommon/turbomodule/core (from `../assassin_reactnative_module/node_modules/react-native/ReactCommon`)
+  - "RNCMaskedView (from `../assassin_reactnative_module/node_modules/@react-native-community/masked-view`)"
+  - RNGestureHandler (from `../assassin_reactnative_module/node_modules/react-native-gesture-handler`)
+  - RNReanimated (from `../assassin_reactnative_module/node_modules/react-native-reanimated`)
+  - RNScreens (from `../assassin_reactnative_module/node_modules/react-native-screens`)
+  - RNVectorIcons (from `../assassin_reactnative_module/node_modules/react-native-vector-icons`)
   - RxCocoa
   - RxSwift
   - SwiftLint
-  - Yoga (from `../Assassin_reactnative/node_modules/react-native/ReactCommon/yoga`)
+  - Yoga (from `../assassin_reactnative_module/node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
   https://mirrors.bfsu.edu.cn/git/CocoaPods/Specs.git:
@@ -375,63 +393,75 @@ EXTERNAL SOURCES:
   BaseLibrary:
     :path: "../BaseLibrary"
   DoubleConversion:
-    :podspec: "../Assassin_reactnative/node_modules/react-native/third-party-podspecs/DoubleConversion.podspec"
+    :podspec: "../assassin_reactnative_module/node_modules/react-native/third-party-podspecs/DoubleConversion.podspec"
   FBLazyVector:
-    :path: "../Assassin_reactnative/node_modules/react-native/Libraries/FBLazyVector"
+    :path: "../assassin_reactnative_module/node_modules/react-native/Libraries/FBLazyVector"
   FBReactNativeSpec:
-    :path: "../Assassin_reactnative/node_modules/react-native/Libraries/FBReactNativeSpec"
+    :path: "../assassin_reactnative_module/node_modules/react-native/Libraries/FBReactNativeSpec"
   Flutter:
     :path: "../products/FlutterEngine"
   FlutterEngine:
     :path: "../products/FlutterEngine"
   Folly:
-    :podspec: "../Assassin_reactnative/node_modules/react-native/third-party-podspecs/Folly.podspec"
+    :podspec: "../assassin_reactnative_module/node_modules/react-native/third-party-podspecs/Folly.podspec"
   glog:
-    :podspec: "../Assassin_reactnative/node_modules/react-native/third-party-podspecs/glog.podspec"
+    :podspec: "../assassin_reactnative_module/node_modules/react-native/third-party-podspecs/glog.podspec"
   image_picker:
     :path: "../products/image_picker"
   RCTRequired:
-    :path: "../Assassin_reactnative/node_modules/react-native/Libraries/RCTRequired"
+    :path: "../assassin_reactnative_module/node_modules/react-native/Libraries/RCTRequired"
   RCTTypeSafety:
-    :path: "../Assassin_reactnative/node_modules/react-native/Libraries/TypeSafety"
+    :path: "../assassin_reactnative_module/node_modules/react-native/Libraries/TypeSafety"
   React:
-    :path: "../Assassin_reactnative/node_modules/react-native/"
+    :path: "../assassin_reactnative_module/node_modules/react-native/"
   React-callinvoker:
-    :path: "../Assassin_reactnative/node_modules/react-native/ReactCommon/callinvoker"
+    :path: "../assassin_reactnative_module/node_modules/react-native/ReactCommon/callinvoker"
   React-Core:
-    :path: "../Assassin_reactnative/node_modules/react-native/"
+    :path: "../assassin_reactnative_module/node_modules/react-native/"
   React-CoreModules:
-    :path: "../Assassin_reactnative/node_modules/react-native/React/CoreModules"
+    :path: "../assassin_reactnative_module/node_modules/react-native/React/CoreModules"
   React-cxxreact:
-    :path: "../Assassin_reactnative/node_modules/react-native/ReactCommon/cxxreact"
+    :path: "../assassin_reactnative_module/node_modules/react-native/ReactCommon/cxxreact"
   React-jsi:
-    :path: "../Assassin_reactnative/node_modules/react-native/ReactCommon/jsi"
+    :path: "../assassin_reactnative_module/node_modules/react-native/ReactCommon/jsi"
   React-jsiexecutor:
-    :path: "../Assassin_reactnative/node_modules/react-native/ReactCommon/jsiexecutor"
+    :path: "../assassin_reactnative_module/node_modules/react-native/ReactCommon/jsiexecutor"
   React-jsinspector:
-    :path: "../Assassin_reactnative/node_modules/react-native/ReactCommon/jsinspector"
+    :path: "../assassin_reactnative_module/node_modules/react-native/ReactCommon/jsinspector"
+  react-native-safe-area-context:
+    :path: "../assassin_reactnative_module/node_modules/react-native-safe-area-context"
   React-RCTActionSheet:
-    :path: "../Assassin_reactnative/node_modules/react-native/Libraries/ActionSheetIOS"
+    :path: "../assassin_reactnative_module/node_modules/react-native/Libraries/ActionSheetIOS"
   React-RCTAnimation:
-    :path: "../Assassin_reactnative/node_modules/react-native/Libraries/NativeAnimation"
+    :path: "../assassin_reactnative_module/node_modules/react-native/Libraries/NativeAnimation"
   React-RCTBlob:
-    :path: "../Assassin_reactnative/node_modules/react-native/Libraries/Blob"
+    :path: "../assassin_reactnative_module/node_modules/react-native/Libraries/Blob"
   React-RCTImage:
-    :path: "../Assassin_reactnative/node_modules/react-native/Libraries/Image"
+    :path: "../assassin_reactnative_module/node_modules/react-native/Libraries/Image"
   React-RCTLinking:
-    :path: "../Assassin_reactnative/node_modules/react-native/Libraries/LinkingIOS"
+    :path: "../assassin_reactnative_module/node_modules/react-native/Libraries/LinkingIOS"
   React-RCTNetwork:
-    :path: "../Assassin_reactnative/node_modules/react-native/Libraries/Network"
+    :path: "../assassin_reactnative_module/node_modules/react-native/Libraries/Network"
   React-RCTSettings:
-    :path: "../Assassin_reactnative/node_modules/react-native/Libraries/Settings"
+    :path: "../assassin_reactnative_module/node_modules/react-native/Libraries/Settings"
   React-RCTText:
-    :path: "../Assassin_reactnative/node_modules/react-native/Libraries/Text"
+    :path: "../assassin_reactnative_module/node_modules/react-native/Libraries/Text"
   React-RCTVibration:
-    :path: "../Assassin_reactnative/node_modules/react-native/Libraries/Vibration"
+    :path: "../assassin_reactnative_module/node_modules/react-native/Libraries/Vibration"
   ReactCommon:
-    :path: "../Assassin_reactnative/node_modules/react-native/ReactCommon"
+    :path: "../assassin_reactnative_module/node_modules/react-native/ReactCommon"
+  RNCMaskedView:
+    :path: "../assassin_reactnative_module/node_modules/@react-native-community/masked-view"
+  RNGestureHandler:
+    :path: "../assassin_reactnative_module/node_modules/react-native-gesture-handler"
+  RNReanimated:
+    :path: "../assassin_reactnative_module/node_modules/react-native-reanimated"
+  RNScreens:
+    :path: "../assassin_reactnative_module/node_modules/react-native-screens"
+  RNVectorIcons:
+    :path: "../assassin_reactnative_module/node_modules/react-native-vector-icons"
   Yoga:
-    :path: "../Assassin_reactnative/node_modules/react-native/ReactCommon/yoga"
+    :path: "../assassin_reactnative_module/node_modules/react-native/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
   Alamofire: 3b6a534a3df22db367e4dedeeca73d1ddfcf0e2f
@@ -466,6 +496,7 @@ SPEC CHECKSUMS:
   React-jsi: a0418934cf48f25b485631deb27c64dc40fb4c31
   React-jsiexecutor: 93bd528844ad21dc07aab1c67cb10abae6df6949
   React-jsinspector: 58aef7155bc9a9683f5b60b35eccea8722a4f53a
+  react-native-safe-area-context: b6e0e284002381d2ff29fa4fff42b4d8282e3c94
   React-RCTActionSheet: 89a0ca9f4a06c1f93c26067af074ccdce0f40336
   React-RCTAnimation: 1bde3ecc0c104c55df246eda516e0deb03c4e49b
   React-RCTBlob: a97d378b527740cc667e03ebfa183a75231ab0f0
@@ -476,12 +507,17 @@ SPEC CHECKSUMS:
   React-RCTText: 5c51df3f08cb9dedc6e790161195d12bac06101c
   React-RCTVibration: ae4f914cfe8de7d4de95ae1ea6cc8f6315d73d9d
   ReactCommon: 73d79c7039f473b76db6ff7c6b159c478acbbb3b
+  RNCMaskedView: 5a8ec07677aa885546a0d98da336457e2bea557f
+  RNGestureHandler: 9b7e605a741412e20e13c512738a31bd1611759b
+  RNReanimated: e03f7425cb7a38dcf1b644d680d1bfc91c3337ad
+  RNScreens: 3d682bcaba69a4f8e55543d90818704f34338db1
+  RNVectorIcons: f67a1abce2ec73e62fe4606e8110e95a832bc859
   RxCocoa: 32065309a38d29b5b0db858819b5bf9ef038b601
   RxRelay: d77f7d771495f43c556cbc43eebd1bb54d01e8e9
   RxSwift: 81470a2074fa8780320ea5fe4102807cb7118178
   SwiftLint: 4fa9579c63416865179bc416f0a92d55f009600d
   Yoga: 4bd86afe9883422a7c4028c00e34790f560923d6
 
-PODFILE CHECKSUM: ddefec430b5b894b44df695db517880610e30fc2
+PODFILE CHECKSUM: 91e2190fff178b04aa5ddebd5c868fe9153d3c6e
 
 COCOAPODS: 1.9.3

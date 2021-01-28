@@ -12,8 +12,8 @@ public class UserService {
 
     public init() {}
 
-    public func save(basicAuthentication: String) {
-        UserDefaults.init().set(basicAuthentication, forKey: TOKEN_KEY)
+    public func save(authentication: String) {
+        UserDefaults.init().set(authentication, forKey: TOKEN_KEY)
     }
 
     public func save(account: NSDictionary) {

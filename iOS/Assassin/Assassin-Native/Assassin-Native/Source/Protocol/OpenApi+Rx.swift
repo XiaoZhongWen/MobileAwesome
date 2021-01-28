@@ -26,7 +26,7 @@ extension OpenApi: ReactiveCompatible {
                             account.setObject(username, forKey: "username" as NSCopying)
                             account.setObject(password, forKey: "password" as NSCopying)
                             let userService = UserService.init()
-                            userService.save(basicAuthentication: jsonStr)
+                            userService.save(authentication: jsonStr)
                             userService.save(account: account)
                             observer.onNext(.loginSuccess)
                         } catch {

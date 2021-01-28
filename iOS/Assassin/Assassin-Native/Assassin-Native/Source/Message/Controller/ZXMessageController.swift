@@ -42,7 +42,7 @@ extension ZXMessageController {
     func initRCTRootView() {
         let jsCodeLocation = URL.init(string: "http://localhost:8081/index.bundle?platform=ios")
         let rootView = RCTRootView.init(bundleURL: jsCodeLocation!,
-                                        moduleName: "Assassin_reactnative",
+                                        moduleName: "assassin_reactnative_module",
                                         initialProperties: nil,
                                         launchOptions: nil)
         self.view = rootView
