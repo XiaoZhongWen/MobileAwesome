@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-01-25 11:04:45
- * @LastEditTime: 2021-01-27 09:27:01
+ * @LastEditTime: 2021-01-29 11:03:57
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /assassin_reactnative_module/src/message/MessagePage.js
@@ -19,6 +19,8 @@ import {
 } from '../../common/constants';
 import withProvider from '../../withProvider';
 import navigationManager from '../../common/navigator/NavigationManager';
+
+import NBContainer from '../../nativebase/NBContainer';
 
 export default class MessagePage extends Component {
     static navigationOptions = {
@@ -42,17 +44,32 @@ export default class MessagePage extends Component {
     }
 
     render() {
-        return <View style={styles.container}></View>;
+        return (
+            <View style={styles.container}>
+                <View style={styles.nb_container}>
+                    <NBContainer title={'Anatomy'} onClick={this.onNBClick} />
+                    <NBContainer title={'Accordion'} onClick={this.onNBClick} />
+                </View>
+            </View>
+        );
+    }
+
+    onNBClick(routeName) {
+        navigationManager.push(routeName);
     }
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
     },
     left: {
         marginLeft: COMMOM_MARGIN,
+    },
+    nb_container: {
+        flexDirection: 'row',
+        padding: COMMOM_MARGIN,
+        justifyContent: 'space-between',
+        alignItems: 'center',
     },
 });
