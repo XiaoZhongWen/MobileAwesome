@@ -7,8 +7,8 @@ import 'dart:ui';
 import 'package:assassin_flutter_module/pages/me/me_page.dart';
 import 'package:assassin_flutter_module/pages/share/share_page.dart';
 
-// void main() => runApp(_widgetForRoute(window.defaultRouteName));//独立运行传入默认路由
-void main() => runApp(_widgetForRoute(route_name_share_page));//独立运行传入默认路由
+void main() => runApp(_widgetForRoute(window.defaultRouteName));//独立运行传入默认路由
+// void main() => runApp(_widgetForRoute(route_name_share_page));//独立运行传入默认路由
 // void main() => runApp(_widgetForRoute("transparent_page"));//独立运行传入默认路由
 
 Widget _widgetForRoute(String routeName) {

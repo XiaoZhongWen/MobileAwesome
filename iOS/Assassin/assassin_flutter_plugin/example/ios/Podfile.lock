@@ -1,0 +1,59 @@
+PODS:
+  - Alamofire (4.9.1)
+  - assassin_flutter_plugin (0.0.1):
+    - BaseLibrary
+    - Flutter
+  - BaseLibrary (0.1.0):
+    - FMDB
+    - HandyJSON
+    - Moya/RxSwift
+  - Flutter (1.0.0)
+  - FMDB (2.7.5):
+    - FMDB/standard (= 2.7.5)
+  - FMDB/standard (2.7.5)
+  - HandyJSON (5.0.2)
+  - Moya/Core (13.0.1):
+    - Alamofire (~> 4.1)
+    - Result (~> 4.1)
+  - Moya/RxSwift (13.0.1):
+    - Moya/Core
+    - RxSwift (~> 4.0)
+  - Result (4.1.0)
+  - RxSwift (4.5.0)
+
+DEPENDENCIES:
+  - assassin_flutter_plugin (from `.symlinks/plugins/assassin_flutter_plugin/ios`)
+  - BaseLibrary (from `../../../BaseLibrary`)
+  - Flutter (from `Flutter`)
+
+SPEC REPOS:
+  trunk:
+    - Alamofire
+    - FMDB
+    - HandyJSON
+    - Moya
+    - Result
+    - RxSwift
+
+EXTERNAL SOURCES:
+  assassin_flutter_plugin:
+    :path: ".symlinks/plugins/assassin_flutter_plugin/ios"
+  BaseLibrary:
+    :path: "../../../BaseLibrary"
+  Flutter:
+    :path: Flutter
+
+SPEC CHECKSUMS:
+  Alamofire: 85e8a02c69d6020a0d734f6054870d7ecb75cf18
+  assassin_flutter_plugin: fabeb0e0780f27ca05c6d04f26adcb057fd7043a
+  BaseLibrary: 649f76862506092732fc3faf367c09d9209b1929
+  Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
+  FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
+  HandyJSON: 9e4e236f5d2dbefad5155a77417bbea438201c03
+  Moya: f4a4b80ff2f8a4ffc208dfb31cd91636622fee6e
+  Result: bd966fac789cc6c1563440b348ab2598cc24d5c7
+  RxSwift: f172070dfd1a93d70a9ab97a5a01166206e1c575
+
+PODFILE CHECKSUM: 2b66542517921ad0ddedb5e6291835e78229d03f
+
+COCOAPODS: 1.9.3

@@ -38,6 +38,8 @@
 		374C15E4259C33BD00A6F84F /* UIView+Ex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374C15E3259C33BD00A6F84F /* UIView+Ex.swift */; };
 		374C3C0725C0158E0043EB30 /* SystemInterfaceProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374C3C0625C0158E0043EB30 /* SystemInterfaceProvider.swift */; };
 		374C3C0925C015DB0043EB30 /* SystemInterfaceBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 374C3C0825C015DB0043EB30 /* SystemInterfaceBridge.m */; };
+		375061E625CBDB6D0000DADC /* MessageDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 375061E525CBDB6C0000DADC /* MessageDataProvider.swift */; };
+		375061E825CBDCFE0000DADC /* MessageBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 375061E725CBDCFE0000DADC /* MessageBridge.m */; };
 		377241902598D1AF0059F1A1 /* token.json in Resources */ = {isa = PBXBuildFile; fileRef = 3772418F2598D1AF0059F1A1 /* token.json */; };
 		37BC4E3D25BE9B99004CEC1E /* CommonDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37BC4E3C25BE9B99004CEC1E /* CommonDataProvider.swift */; };
 		37BC4E4025BE9C5A004CEC1E /* CommonDataProviderBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 37BC4E3F25BE9C5A004CEC1E /* CommonDataProviderBridge.m */; };
@@ -114,6 +116,8 @@
 		374C15E3259C33BD00A6F84F /* UIView+Ex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Ex.swift"; sourceTree = "<group>"; };
 		374C3C0625C0158E0043EB30 /* SystemInterfaceProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemInterfaceProvider.swift; sourceTree = "<group>"; };
 		374C3C0825C015DB0043EB30 /* SystemInterfaceBridge.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SystemInterfaceBridge.m; sourceTree = "<group>"; };
+		375061E525CBDB6C0000DADC /* MessageDataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageDataProvider.swift; sourceTree = "<group>"; };
+		375061E725CBDCFE0000DADC /* MessageBridge.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MessageBridge.m; sourceTree = "<group>"; };
 		376E627D25907D820090DA34 /* BaseLibrary.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BaseLibrary.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3772418F2598D1AF0059F1A1 /* token.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = token.json; sourceTree = "<group>"; };
 		37BC4E3C25BE9B99004CEC1E /* CommonDataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonDataProvider.swift; sourceTree = "<group>"; };
@@ -250,6 +254,8 @@
 			children = (
 				371E061C25C10DE300934326 /* ContactsBridge.m */,
 				371E061E25C10FBC00934326 /* ContactsDataProvider.swift */,
+				375061E525CBDB6C0000DADC /* MessageDataProvider.swift */,
+				375061E725CBDCFE0000DADC /* MessageBridge.m */,
 			);
 			path = Bridge;
 			sourceTree = "<group>";
@@ -737,6 +743,7 @@
 				374635A925A94A3100E00D34 /* ZXWorkController.swift in Sources */,
 				3705100F25A85137003C31DC /* ApplicationConfiguration.swift in Sources */,
 				374635A725A94A1200E00D34 /* ZXShareController.swift in Sources */,
+				375061E825CBDCFE0000DADC /* MessageBridge.m in Sources */,
 				374635B425A9A8F600E00D34 /* BaseService.swift in Sources */,
 				374635A325A949E800E00D34 /* ZXMeController.swift in Sources */,
 				371ACE6E25AC34FD0001B87D /* ZXAppConfigurationChannelService.swift in Sources */,
@@ -761,6 +768,7 @@
 				374C15DF259C28F000A6F84F /* LoginConstant.swift in Sources */,
 				37D4C86925A89F3D0059E4AD /* TabsGenerator.swift in Sources */,
 				374635AE25A98CF800E00D34 /* ImageService.swift in Sources */,
+				375061E625CBDB6D0000DADC /* MessageDataProvider.swift in Sources */,
 				374C3C0925C015DB0043EB30 /* SystemInterfaceBridge.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

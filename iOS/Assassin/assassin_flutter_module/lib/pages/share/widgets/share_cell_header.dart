@@ -24,10 +24,13 @@ class _ShareCellHeaderState extends State<ShareCellHeader> {
                 margin: EdgeInsets.only(right: default_margin),
                 child: ClipOval(
                   child: Image.network(
-                    shareHeaderProvider.headerUrl,
+                    shareHeaderProvider.headerUrl ?? "",
                     width: share_portrait_size,
                     height: share_portrait_size,
                     fit: BoxFit.fill,
+                    errorBuilder: (context, error, stack) {
+                      return Image.asset("images/portrait.png", width: share_portrait_size, height: share_portrait_size,);
+                    },
                   ),
                 ),
               ),

@@ -16,6 +16,7 @@ const String assassin_application_configuration_channel_fetch_theme_color = "fet
 const String assassin_application_configuration_channel_fetch_account = "fetchAccount";
 const String assassin_application_configuration_channel_fetch_tabs = "fetchTabs";
 const String assassin_application_configuration_channel_fetch_shares = "fetchShares";
+const String assassin_application_configuration_channel_fetch_more_shares = "fetchMoreShares";
 const String action_name_update_portrait = "updatePortrait";
 
 /// constant

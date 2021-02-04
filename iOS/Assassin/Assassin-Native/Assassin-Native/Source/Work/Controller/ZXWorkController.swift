@@ -11,5 +11,11 @@ import Kingfisher
 import RxSwift
 import RxCocoa
 
+import BaseLibrary
+
 class ZXWorkController: ViewController {
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        let arr = MessageListDao.init().fetchMessageList()
+        print(arr)
+    }
 }

@@ -1,6 +1,7 @@
 PODS:
   - Alamofire (5.4.0)
   - assassin_flutter_plugin (0.0.1):
+    - BaseLibrary
     - Flutter
   - BaseLibrary (0.1.0):
     - FMDB
@@ -22,6 +23,8 @@ PODS:
   - FBSnapshotTestCase/SwiftSupport (2.1.4):
     - FBSnapshotTestCase/Core
   - Flutter (1.0.0)
+  - flutter_keyboard_visibility (0.0.1):
+    - Flutter
   - FlutterEngine (0.1.0)
   - FMDB (2.7.5):
     - FMDB/standard (= 2.7.5)
@@ -325,6 +328,7 @@ DEPENDENCIES:
   - FBReactNativeSpec (from `../assassin_reactnative_module/node_modules/react-native/Libraries/FBReactNativeSpec`)
   - FBSnapshotTestCase (~> 2.1.4)
   - Flutter (from `../products/FlutterEngine`)
+  - flutter_keyboard_visibility (from `../products/flutter_keyboard_visibility`)
   - FlutterEngine (from `../products/FlutterEngine`)
   - Folly (from `../assassin_reactnative_module/node_modules/react-native/third-party-podspecs/Folly.podspec`)
   - glog (from `../assassin_reactnative_module/node_modules/react-native/third-party-podspecs/glog.podspec`)
@@ -400,6 +404,8 @@ EXTERNAL SOURCES:
     :path: "../assassin_reactnative_module/node_modules/react-native/Libraries/FBReactNativeSpec"
   Flutter:
     :path: "../products/FlutterEngine"
+  flutter_keyboard_visibility:
+    :path: "../products/flutter_keyboard_visibility"
   FlutterEngine:
     :path: "../products/FlutterEngine"
   Folly:
@@ -465,15 +471,16 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   Alamofire: 3b6a534a3df22db367e4dedeeca73d1ddfcf0e2f
-  assassin_flutter_plugin: f0e27dccd431f24f6dddadfda556c5fa6c8d60a2
+  assassin_flutter_plugin: 4a2c31f7eb8b6c0f72a613182dc4342f82d647b5
   BaseLibrary: 649f76862506092732fc3faf367c09d9209b1929
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   DoubleConversion: cde416483dac037923206447da6e1454df403714
   FBLazyVector: 3bb422f41b18121b71783a905c10e58606f7dc3e
   FBReactNativeSpec: f2c97f2529dd79c083355182cc158c9f98f4bd6e
   FBSnapshotTestCase: 094f9f314decbabe373b87cc339bea235a63e07a
-  Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
-  FlutterEngine: 7eed8bac2a76cfceb006b3be72ed4b8de33cc9bc
+  Flutter: f7eedb4a11d54bd69511d0abf28996b73c32c084
+  flutter_keyboard_visibility: 0339d06371254c3eb25eeb90ba8d17dca8f9c069
+  FlutterEngine: 0acfef24ae119458291960a5e087ddf1fc284a6f
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   Folly: b73c3869541e86821df3c387eb0af5f65addfab4
   glog: 40a13f7840415b9a77023fbcae0f1e6f43192af3
@@ -518,6 +525,6 @@ SPEC CHECKSUMS:
   SwiftLint: 4fa9579c63416865179bc416f0a92d55f009600d
   Yoga: 4bd86afe9883422a7c4028c00e34790f560923d6
 
-PODFILE CHECKSUM: 91e2190fff178b04aa5ddebd5c868fe9153d3c6e
+PODFILE CHECKSUM: b7e5747403005c115092247c8268a79e697c6bbb
 
 COCOAPODS: 1.9.3

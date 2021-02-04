@@ -1,4 +1,4 @@
-import 'dart:convert';
+import 'dart:ui';
 import 'package:assassin_flutter_module/channels/application_configuration_channel.dart';
 import 'package:assassin_flutter_module/constants.dart';
 import 'package:assassin_flutter_module/pages/share/models/disk_attachment.dart';
@@ -127,15 +127,16 @@ class _HomePageState extends State<HomePage> {
     });
     super.initState();
 
+    double height = window.physicalSize.height / window.devicePixelRatio;
     KeyboardVisibilityController visibilityController = KeyboardVisibilityController();
     visibilityController.onChange.listen((bool visible) {
       if (visible) {
-        double keyboardHeight = 260.0;
-        double textFieldMinY = 667.0 - keyboardHeight - share_text_field_height;
+        double keyboardHeight = window.viewInsets.bottom / window.devicePixelRatio;
+        double textFieldMinY = height - keyboardHeight - share_text_field_height;
 
         RenderBox box = _activeKey.currentContext.findRenderObject();
         Offset offset = box.localToGlobal(Offset.zero);
-        double boxMaxY = offset.dy + box.size.height;
+        double boxMaxY = offset.dy + box.size.height + default_margin;
 
         double scrollOffset = _scrollController.offset;
 
@@ -155,33 +156,42 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: _themeColor,
       ),
       body: SafeArea(
-        child: ListView.separated(
-            controller: _scrollController,
-            itemBuilder: (context, index) {
-              ShareItem item = _shareList[index];
-              return GestureDetector(
-                child: Container(
-                  color: Colors.white,
-                  child: ShareCell(
-                      item.id,
-                      _shareHeaderProviderList[index],
-                      _shareContentProviderList[index],
-                      _shareImageAttachmentProviderList[index],
-                      _shareLocationAttachmentProviderList[index],
-                      _shareFileAttachmentProviderList[index],
-                      _shareActionProviderList[index],
-                      _shareGoodsProviderList[index],
-                      _shareCommentsProviderList[index],
-                      _callbacksProvider
+        child: NotificationListener<ScrollNotification>(
+          child: ListView.separated(
+              controller: _scrollController,
+              itemBuilder: (context, index) {
+                ShareItem item = _shareList[index];
+                return GestureDetector(
+                  child: Container(
+                    color: Colors.white,
+                    child: ShareCell(
+                        item.id,
+                        _shareHeaderProviderList[index],
+                        _shareContentProviderList[index],
+                        _shareImageAttachmentProviderList[index],
+                        _shareLocationAttachmentProviderList[index],
+                        _shareFileAttachmentProviderList[index],
+                        _shareActionProviderList[index],
+                        _shareGoodsProviderList[index],
+                        _shareCommentsProviderList[index],
+                        _callbacksProvider
+                    ),
                   ),
-                ),
-                onTap: () => onTapCell(index),
-              );
-            },
-            separatorBuilder: (context, index) {
-              return Divider(height: divide_height, indent: divide_indent,);
-            },
-            itemCount: _shareList?.length ?? 0),
+                  onTap: () => onTapCell(index),
+                );
+              },
+              separatorBuilder: (context, index) {
+                return Divider(height: divide_height, indent: divide_indent,);
+              },
+              itemCount: _shareList?.length ?? 0),
+          onNotification: (ScrollNotification notification) {
+            bool atEdge = notification.metrics.atEdge;
+            if (atEdge) {
+              loadMore();
+            }
+            return true;
+          },
+        ),
       ),
     );
   }
@@ -273,5 +283,70 @@ class _HomePageState extends State<HomePage> {
           return ShareTextField();
         }
     );
+  }
+
+  void loadMore() {
+    if (_shareList.length > 0) {
+      ShareItem shareItem = _shareList.last;
+      ShareService.shared.fetchMoreShares(shareItem.id)
+          .then((shares) {
+        List<ShareHeaderProvider> shareHeaderProviderList = [];
+        List<ShareContentProvider> shareContentProviderList = [];
+        List<ShareImageAttachmentProvider> shareImageAttachmentProviderList = [];
+        List<ShareLocationAttachmentProvider> shareLocationAttachmentProviderList = [];
+        List<ShareFileAttachmentProvider> shareFileAttachmentProviderList = [];
+        List<ShareActionProvider> shareActionProviderList = [];
+        List<ShareGoodsProvider> shareGoodsProviderList = [];
+        List<ShareCommentsProvider> shareCommentsProviderList = [];
+        List<ShareItem> shareList = [];
+        int index = 0;
+        for (ShareItem item in shares) {
+          ShareHeaderProvider shareHeaderProvider = ShareHeaderProvider(index, item.headUrl, item.publisherName, item.publisher, item.publishTime);
+          ShareContentProvider shareContentProvider = ShareContentProvider(index, item.content);
+          shareHeaderProviderList.add(shareHeaderProvider);
+          shareContentProviderList.add(shareContentProvider);
+          ShareImageAttachmentProvider imageAttachmentProvider = null;
+          ShareLocationAttachmentProvider locationAttachmentProvider = null;
+          ShareFileAttachmentProvider fileAttachmentProvider = null;
+          for (dynamic attachment in item.files) {
+            if (attachment.runtimeType == ImageAttachment && (attachment as ImageAttachment).originalImagePath.length > 0) {
+              imageAttachmentProvider = ShareImageAttachmentProvider(index, attachment);
+            } else if(attachment.runtimeType == LocationAttachment) {
+              locationAttachmentProvider = ShareLocationAttachmentProvider(index, attachment);
+            } else if(attachment.runtimeType == DiskAttachment) {
+              fileAttachmentProvider = ShareFileAttachmentProvider(index, attachment);
+            }
+          }
+          shareImageAttachmentProviderList.add(imageAttachmentProvider);
+          shareLocationAttachmentProviderList.add(locationAttachmentProvider);
+          shareFileAttachmentProviderList.add(fileAttachmentProvider);
+          ShareActionProvider shareActionProvider = ShareActionProvider(index, publisherId: item.publisher);
+          ShareGoodsProvider goodsProvider = ShareGoodsProvider(index, goods: item.goods);
+          ShareCommentsProvider commentsProvider = ShareCommentsProvider(index, comments: item.comments);
+          shareActionProviderList.add(shareActionProvider);
+          shareGoodsProviderList.add(goodsProvider);
+          shareCommentsProviderList.add(commentsProvider);
+          shareList.add(item);
+          index++;
+        }
+
+        _shareList.addAll(shareList);
+        _shareHeaderProviderList.addAll(shareHeaderProviderList);
+        _shareContentProviderList.addAll(shareContentProviderList);
+        _shareImageAttachmentProviderList.addAll(shareImageAttachmentProviderList);
+        _shareLocationAttachmentProviderList.addAll(shareLocationAttachmentProviderList);
+        _shareFileAttachmentProviderList.addAll(shareFileAttachmentProviderList);
+        _shareActionProviderList.addAll(shareActionProviderList);
+        _shareGoodsProviderList.addAll(shareGoodsProviderList);
+        _shareCommentsProviderList.addAll(shareCommentsProviderList);
+
+        setState(() {
+
+        });
+      })
+          .catchError((e) {
+            print(e);
+      });
+    }
   }
 }

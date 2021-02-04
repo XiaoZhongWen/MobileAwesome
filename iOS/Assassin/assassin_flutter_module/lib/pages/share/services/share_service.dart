@@ -22,4 +22,16 @@ class ShareService {
     }
     return shareItems;
   }
+
+  Future<List> fetchMoreShares(String sessionId) async {
+    String response = await AssassinFlutterPlugin.doRequest(assassin_application_configuration_channel_fetch_more_shares, {"pageSize":page_size_of_share, "sessionId": sessionId});
+    List<ShareItem> shareItems = List();
+    List list = json.decode(response);
+    for(int i = 0; i < list.length; i++) {
+      Map map = list[i];
+      ShareItem shareItem = ShareItem.fromJson(map);
+      shareItems.add(shareItem);
+    }
+    return shareItems;
+  }
 }

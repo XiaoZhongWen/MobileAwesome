@@ -26,7 +26,7 @@ TODO: Add long description of the pod here.
   s.author           = { 'hangisnice' => 'hangisnice@gmail.com' }
   s.source       = { :git => "", :tag => "#{s.version}" }
 
-  s.ios.deployment_target = '8.0'
+  s.ios.deployment_target = '10.0'
 
   s.ios.vendored_frameworks = 'App.framework', 'Flutter.framework'
   

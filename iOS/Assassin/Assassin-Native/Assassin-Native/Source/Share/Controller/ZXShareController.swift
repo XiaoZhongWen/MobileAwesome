@@ -10,6 +10,7 @@ import UIKit
 import RxSwift
 import Flutter
 import assassin_flutter_plugin
+import flutter_keyboard_visibility
 
 class ZXShareController: FlutterViewController {
     var disposeBag = DisposeBag()
@@ -21,6 +22,9 @@ class ZXShareController: FlutterViewController {
 
         let registrar = self.registrar(forPlugin: "SwiftAssassinFlutterPlugin")
         SwiftAssassinFlutterPlugin.register(with: registrar!)
+
+        let keyboardRegistrar = self.registrar(forPlugin: "FlutterKeyboardVisibilityPlugin")
+        FlutterKeyboardVisibilityPlugin.register(with: keyboardRegistrar!)
 
         channelService = ZXAppConfigurationChannelService.init(with: self)
         self.navigationItem.title = tab.name

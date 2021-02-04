@@ -16,6 +16,7 @@ target 'Assassin-Native' do
   pod 'FlutterEngine', :path => '../products/FlutterEngine'
   pod 'assassin_flutter_plugin', :path => '../products/assassin_flutter_plugin'
   pod 'image_picker', :path => '../products/image_picker'
+  pod 'flutter_keyboard_visibility', :path => '../products/flutter_keyboard_visibility'
 
 # The Pods which should be included in all projects
   pod 'FBLazyVector', :path => "../assassin_reactnative_module/node_modules/react-native/Libraries/FBLazyVector"

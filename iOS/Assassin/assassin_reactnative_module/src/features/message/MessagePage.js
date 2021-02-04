@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-01-25 11:04:45
- * @LastEditTime: 2021-01-29 11:03:57
+ * @LastEditTime: 2021-02-04 16:44:55
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /assassin_reactnative_module/src/message/MessagePage.js
@@ -11,6 +11,9 @@ import React, {Component} from 'react';
 import {Text, StyleSheet, View} from 'react-native';
 import {createAppContainer} from 'react-navigation';
 import {createStackNavigator} from 'react-navigation-stack';
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
+import {fetchMessageList} from './redux/actions';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {
     COMMOM_NAV_BAR_ICON_SIZE,
@@ -22,7 +25,7 @@ import navigationManager from '../../common/navigator/NavigationManager';
 
 import NBContainer from '../../nativebase/NBContainer';
 
-export default class MessagePage extends Component {
+class MessagePage extends Component {
     static navigationOptions = {
         title: '消息',
         headerLeft: () => (
@@ -41,22 +44,27 @@ export default class MessagePage extends Component {
     constructor(props) {
         super(props);
         navigationManager.navigation = this.props.navigation;
+        const {fetchMessageList} = this.props;
+        fetchMessageList();
     }
 
     render() {
+        const {messages} = this.props;
+        const {messageList, fetchMessageListError} = messages;
+        console.log(messageList);
         return (
             <View style={styles.container}>
-                <View style={styles.nb_container}>
+                {/* <View style={styles.nb_container}>
                     <NBContainer title={'Anatomy'} onClick={this.onNBClick} />
                     <NBContainer title={'Accordion'} onClick={this.onNBClick} />
-                </View>
+                </View> */}
             </View>
         );
     }
 
-    onNBClick(routeName) {
-        navigationManager.push(routeName);
-    }
+    // onNBClick(routeName) {
+    //     navigationManager.push(routeName);
+    // }
 }
 
 const styles = StyleSheet.create({
@@ -73,3 +81,12 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
 });
+
+const mapStateToProps = (state) => ({
+    messages: state.messages,
+});
+
+const mapDispatchToProps = (dispatch) =>
+    bindActionCreators({fetchMessageList}, dispatch);
+
+export default connect(mapStateToProps, mapDispatchToProps)(MessagePage);
