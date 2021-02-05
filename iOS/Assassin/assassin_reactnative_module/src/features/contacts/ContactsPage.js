@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-01-26 12:02:29
- * @LastEditTime: 2021-01-28 16:07:36
+ * @LastEditTime: 2021-02-05 09:53:34
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /assassin_reactnative_module/src/features/contacts/ContactsPage.js
@@ -37,6 +37,7 @@ import {
 } from '../contacts/redux/constants';
 import SearchBar from './components/SearchBar';
 import navigationManager from '../../common/navigator/NavigationManager';
+import SeparatorLine from '../../common/components/SeparatorLine';
 
 class ContactsPage extends Component {
     static navigationOptions = {
@@ -80,14 +81,7 @@ class ContactsPage extends Component {
                     ItemSeparatorComponent={(item) =>
                         !this.state.isFolder &&
                         item.section.type == CONSTANTS_CONTACTS ? (
-                            <View
-                                style={{
-                                    height: 0.5,
-                                    backgroundColor: '#DDDDDD',
-                                    marginLeft:
-                                        COMMON_HEADER_SIZE + 2 * COMMOM_MARGIN,
-                                }}
-                            />
+                            <SeparatorLine />
                         ) : null
                     }
                     renderSectionHeader={(info) => {

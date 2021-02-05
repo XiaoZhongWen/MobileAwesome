@@ -23,4 +23,13 @@ public class MessageListDao {
         }
         return msgList
     }
+
+    public func fetchLastestConversation(userId: String, pageSize: Int) -> [String] {
+        let list = MessageListService().fetchLastConversation(userId: userId, pageSize: pageSize)
+        return []
+    }
+
+    public func fetchPreviousConversation(userId: String, timestamp: Int, pageSize: Int) -> [String] {
+        return []
+    }
 }

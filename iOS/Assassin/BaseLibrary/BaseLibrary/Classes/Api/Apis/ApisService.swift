@@ -10,9 +10,11 @@ import Moya
 
 private let BASE_URL = "https://apis.chinamye.com"
 private let FETCH_CONTACTS_LIST = "/address/listAll"
+private let FETCH_USER_INFO = "/users/showOther"
 
 enum ApisService {
     case fetchContactsList
+    case fetchUserInfo(userId: String)
 }
 
 extension ApisService : AuthorizedTargetType {
@@ -28,19 +30,21 @@ extension ApisService : AuthorizedTargetType {
         switch self {
         case .fetchContactsList:
             return FETCH_CONTACTS_LIST
+        case .fetchUserInfo(_):
+            return FETCH_USER_INFO
         }
     }
 
     var method: Moya.Method {
         switch self {
-        case .fetchContactsList:
+        case .fetchContactsList, .fetchUserInfo(_):
             return .post
         }
     }
 
     var sampleData: Data {
         switch self {
-        case .fetchContactsList:
+        case .fetchContactsList, .fetchUserInfo(_):
             return "".utf8Encoded
         }
     }
@@ -49,6 +53,8 @@ extension ApisService : AuthorizedTargetType {
         switch self {
         case .fetchContactsList:
             return .requestPlain
+        case let .fetchUserInfo(userId):
+            return .requestParameters(parameters:["username":userId], encoding: JSONEncoding.default)
         }
     }
 

@@ -13,4 +13,6 @@
 RCT_EXTERN_METHOD(fetchContactsList:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 
+RCT_EXTERN_METHOD(fetchUserInfo:(NSString *)userId resolve:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
+
 @end

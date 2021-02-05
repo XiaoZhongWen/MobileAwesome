@@ -27,4 +27,19 @@ public class Apis {
         let command = RequestCommand.init(provider, target, completion)
         command.execute()
     }
+
+    public func fetchUserInfo(userId: String, completion: @escaping Completion) {
+        let provider = MoyaProvider<ApisService>(
+            plugins: [
+                AuthPlugin.init(tokenClosure: { () -> String? in
+                    let json = UserDefaults.init().value(forKey: TOKEN_KEY) as? String
+                    let token = Token.deserialize(from: json)
+                    return token?.access_token
+                })
+            ]
+        );
+        let target = ApisService.fetchUserInfo(userId: userId)
+        let command = RequestCommand.init(provider, target, completion)
+        command.execute()
+    }
 }

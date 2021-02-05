@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-01-26 12:24:37
- * @LastEditTime: 2021-01-29 11:07:28
+ * @LastEditTime: 2021-02-05 15:01:41
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /assassin_reactnative_module/src/common/navigator/AppNavigator.js
@@ -14,6 +14,7 @@ import ContactsPage from '../../features/contacts/ContactsPage';
 import withProvider from '../../withProvider';
 import {COMMON_THEME_COLOR, COMMON_TITLE_COLOR} from '../constants';
 import ContactsDetailPage from '../../features/contacts/ContactsDetailPage';
+import ChatPage from '../../features/message/ChatPage';
 
 import AnatomyPage from '../../nativebase/AnatomyPage';
 import AccordionPage from '../../nativebase/AccordionPage';
@@ -21,6 +22,7 @@ import AccordionPage from '../../nativebase/AccordionPage';
 const NavigationStack = createStackNavigator(
     {
         Message: withNavigationFocus(MessagePage),
+        Chat: ChatPage,
         Contacts: ContactsPage,
         ContactsDetail: ContactsDetailPage,
         Anatomy: AnatomyPage,

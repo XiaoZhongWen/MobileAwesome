@@ -26,4 +26,21 @@ class ContactsDataProvider: NSObject {
             }
         }
     }
+
+    @objc(fetchUserInfo:resolve:rejecter:)
+    func fetchUserInfo(userId: String,
+                       resolver: @escaping RCTPromiseResolveBlock,
+                       rejecter: @escaping RCTPromiseRejectBlock) {
+        Apis.shared.fetchUserInfo(userId: userId) { result in
+            switch result {
+            case let .success(response):
+                if response.statusCode == 200 {
+                    let json = try? response.mapString()
+                    resolver(json)
+                }
+            case let .failure(error):
+                rejecter(error.response?.statusCode.description, error.errorDescription, error)
+            }
+        }
+    }
 }

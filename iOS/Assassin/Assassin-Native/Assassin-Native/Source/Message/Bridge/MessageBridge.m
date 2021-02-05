@@ -14,4 +14,13 @@
 RCT_EXTERN_METHOD(fetchMessageList:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 
+RCT_EXTERN_METHOD(fetchLastestConversation:(NSString *)userId
+                  resolve:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject)
+
+RCT_EXTERN_METHOD(fetchPreviousConversation:(NSString *)userId
+                  timestamp:(long)timestamp
+                  resolve:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject);
+
 @end
