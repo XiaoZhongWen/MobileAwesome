@@ -26,7 +26,15 @@ public class MessageListDao {
 
     public func fetchLastestConversation(userId: String, pageSize: Int) -> [String] {
         let list = MessageListService().fetchLastConversation(userId: userId, pageSize: pageSize)
-        return []
+        var msgModels: [String] = []
+        for item in list {
+            if let msg = MessageModel.deserialize(from: item) {
+                if let json = msg.toJSONString() {
+                    msgModels.append(json)
+                }
+            }
+        }
+        return msgModels
     }
 
     public func fetchPreviousConversation(userId: String, timestamp: Int, pageSize: Int) -> [String] {

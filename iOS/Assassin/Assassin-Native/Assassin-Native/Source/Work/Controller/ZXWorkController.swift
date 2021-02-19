@@ -18,5 +18,6 @@ class ZXWorkController: ViewController {
         let list = MessageListDao.init().fetchLastestConversation(
             userId: "_group_b3739e3749c74f48a5dae812091ad8fc",
             pageSize: Global_Conversation_Page_Size)
+        print(list)
     }
 }
