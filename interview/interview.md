@@ -1678,4 +1678,290 @@
       }
       ```
 
-28. 
+28. 设计模式
+
+    * 创建型
+
+      * 工厂模式
+
+        ```java
+        1. 简单工厂模式
+        当每个对象的创建逻辑都比较简单，需要动态地根据不同类型创建不同的对象，将多个对象的创建逻辑放到一个工厂类中，则使用简单工厂模式。
+        
+        public class RuleConfigParserFactory {
+          private static final Map<String, RuleConfigParser> cachedParsers = new HashMap<>();
+        
+          static {
+            cachedParsers.put("json", new JsonRuleConfigParser());
+            cachedParsers.put("xml", new XmlRuleConfigParser());
+            cachedParsers.put("yaml", new YamlRuleConfigParser());
+            cachedParsers.put("properties", new PropertiesRuleConfigParser());
+          }
+        
+          public static IRuleConfigParser createParser(String configFormat) {
+            if (configFormat == null || configFormat.isEmpty()) {
+              return null;//返回null还是IllegalArgumentException全凭你自己说了算
+            }
+            IRuleConfigParser parser = cachedParsers.get(configFormat.toLowerCase());
+            return parser;
+          }
+        }
+        
+        IRuleConfigParser parser = RuleConfigParserFactory.createParser(ruleConfigFileExtension);
+        
+        2. 工厂方法模式
+        当每个对象的创建逻辑都比较复杂的时候，为了避免设计一个过于庞大的简单工厂类，将创建逻辑拆分得更细，每个对象的创建逻辑独立到各自的工厂类中，则使用工厂方法模式。
+        
+        
+        public interface IRuleConfigParserFactory {
+          IRuleConfigParser createParser();
+        }
+        
+        public class JsonRuleConfigParserFactory implements IRuleConfigParserFactory {
+          @Override
+          public IRuleConfigParser createParser() {
+            return new JsonRuleConfigParser();
+          }
+        }
+        
+        public class XmlRuleConfigParserFactory implements IRuleConfigParserFactory {
+          @Override
+          public IRuleConfigParser createParser() {
+            return new XmlRuleConfigParser();
+          }
+        }
+        
+        public class YamlRuleConfigParserFactory implements IRuleConfigParserFactory {
+          @Override
+          public IRuleConfigParser createParser() {
+            return new YamlRuleConfigParser();
+          }
+        }
+        
+        public class PropertiesRuleConfigParserFactory implements IRuleConfigParserFactory {
+          @Override
+          public IRuleConfigParser createParser() {
+            return new PropertiesRuleConfigParser();
+          }
+        }
+        
+        public class RuleConfigParserFactoryMap { //工厂的工厂
+          private static final Map<String, IRuleConfigParserFactory> cachedFactories = new HashMap<>();
+        
+          static {
+            cachedFactories.put("json", new JsonRuleConfigParserFactory());
+            cachedFactories.put("xml", new XmlRuleConfigParserFactory());
+            cachedFactories.put("yaml", new YamlRuleConfigParserFactory());
+            cachedFactories.put("properties", new PropertiesRuleConfigParserFactory());
+          }
+        
+          public static IRuleConfigParserFactory getParserFactory(String type) {
+            if (type == null || type.isEmpty()) {
+              return null;
+            }
+            IRuleConfigParserFactory parserFactory = cachedFactories.get(type.toLowerCase());
+            return parserFactory;
+          }
+        }
+        
+        IRuleConfigParserFactory parserFactory = RuleConfigParserFactoryMap.getParserFactory(ruleConfigFileExtension);
+        
+        3. 抽象工厂
+        在简单工厂和工厂方法中，类只有一种分类方式，但是，如果类有多种分类方式，可以让一个工厂负责创建多个不同类型的对象，有效地减少工厂类的个数，则使用抽象工厂。
+        
+        public interface IConfigParserFactory {
+          IRuleConfigParser createRuleParser();
+          ISystemConfigParser createSystemParser();
+          //此处可以扩展新的parser类型，比如IBizConfigParser
+        }
+        
+        public class JsonConfigParserFactory implements IConfigParserFactory {
+          @Override
+          public IRuleConfigParser createRuleParser() {
+            return new JsonRuleConfigParser();
+          }
+        
+          @Override
+          public ISystemConfigParser createSystemParser() {
+            return new JsonSystemConfigParser();
+          }
+        }
+        
+        public class XmlConfigParserFactory implements IConfigParserFactory {
+          @Override
+          public IRuleConfigParser createRuleParser() {
+            return new XmlRuleConfigParser();
+          }
+        
+          @Override
+          public ISystemConfigParser createSystemParser() {
+            return new XmlSystemConfigParser();
+          }
+        }
+        
+        // 省略YamlConfigParserFactory和PropertiesConfigParserFactory代码
+        ```
+
+        
+
+      * 建造者模式 | 生成器模式
+
+        <img src="./res/builder.png" alt="builder" style="zoom:50%;" />
+
+        ```java
+        对象的创建需要初始化多个成员变量，而各个成员变量的初始化对创建过程又不都是必须的，且对象创建过程中，各个成员变量的初始化间是有依赖关系的，则使用建造者模式，把成员变量的校验逻辑放到Builder 类中，先创建建造者，并且通过 set() 方法设置建造者的变量值，然后在使用 build() 方法真正创建对象之前，做集中的校验，校验通过之后才会创建对象。
+        
+        public class ResourcePoolConfig {
+          private String name;
+          private int maxTotal;
+          private int maxIdle;
+          private int minIdle;
+        
+          private ResourcePoolConfig(Builder builder) {
+            this.name = builder.name;
+            this.maxTotal = builder.maxTotal;
+            this.maxIdle = builder.maxIdle;
+            this.minIdle = builder.minIdle;
+          }
+          //...省略getter方法...
+        
+          //我们将Builder类设计成了ResourcePoolConfig的内部类。
+          //我们也可以将Builder类设计成独立的非内部类ResourcePoolConfigBuilder。
+          public static class Builder {
+            private static final int DEFAULT_MAX_TOTAL = 8;
+            private static final int DEFAULT_MAX_IDLE = 8;
+            private static final int DEFAULT_MIN_IDLE = 0;
+        
+            private String name;
+            private int maxTotal = DEFAULT_MAX_TOTAL;
+            private int maxIdle = DEFAULT_MAX_IDLE;
+            private int minIdle = DEFAULT_MIN_IDLE;
+        
+            public ResourcePoolConfig build() {
+              // 校验逻辑放到这里来做，包括必填项校验、依赖关系校验、约束条件校验等
+              if (StringUtils.isBlank(name)) {
+                throw new IllegalArgumentException("...");
+              }
+              if (maxIdle > maxTotal) {
+                throw new IllegalArgumentException("...");
+              }
+              if (minIdle > maxTotal || minIdle > maxIdle) {
+                throw new IllegalArgumentException("...");
+              }
+        
+              return new ResourcePoolConfig(this);
+            }
+        
+            public Builder setName(String name) {
+              if (StringUtils.isBlank(name)) {
+                throw new IllegalArgumentException("...");
+              }
+              this.name = name;
+              return this;
+            }
+        
+            public Builder setMaxTotal(int maxTotal) {
+              if (maxTotal <= 0) {
+                throw new IllegalArgumentException("...");
+              }
+              this.maxTotal = maxTotal;
+              return this;
+            }
+        
+            public Builder setMaxIdle(int maxIdle) {
+              if (maxIdle < 0) {
+                throw new IllegalArgumentException("...");
+              }
+              this.maxIdle = maxIdle;
+              return this;
+            }
+        
+            public Builder setMinIdle(int minIdle) {
+              if (minIdle < 0) {
+                throw new IllegalArgumentException("...");
+              }
+              this.minIdle = minIdle;
+              return this;
+            }
+          }
+        }
+        
+        // 这段代码会抛出IllegalArgumentException，因为minIdle>maxIdle
+        ResourcePoolConfig config = new ResourcePoolConfig.Builder()
+                .setName("dbconnectionpool")
+                .setMaxTotal(16)
+                .setMaxIdle(10)
+                .setMinIdle(12)
+                .build();
+        ```
+
+        
+
+      * 原型模式
+
+        <img src="./res/prototype.png" alt="prototype" style="zoom:50%;" />
+
+        ```
+        如果对象的创建成本比较大，而同一个类的不同对象之间差别不大（大部分字段都相同），在这种情况下，我们可以利用对已有对象（原型）进行复制（或者叫拷贝）的方式来创建新对象，以达到节省创建时间的目的。这种基于原型来创建对象的方式就叫作原型模式.
+        
+        原型模式的实现方式：深拷贝和浅拷贝
+        深拷贝 -> 先将对象序列化，然后再反序列化成新的对象
+        ```
+
+    * 结构型
+
+      * 桥接模式
+
+        <img src="./res/bridge.png" alt="bridge" style="zoom:50%;" />
+
+        ```
+        将抽象和实现解耦，让它们可以独立变化
+        举例:
+        地图功能的实现，我们可以使用高德地图，百度地图，腾讯地图..., 当我们希望根据不同的配置快速切换地图功能的具体实现时，可以封装一个地图功能的抽象层，该抽象层持有具体地图功能的实现对象，提供统一的地图功能服务接口，根据应用层传入的不同配置来实例化具体的地图实例，实现地图功能抽象层与实现层的解耦。
+        ```
+
+        
+
+      * 装饰器模式
+
+        <img src="./res/decorator.png" alt="decorator" style="zoom:50%;" />
+
+        ```
+        核心思想: 组合优于继承
+        
+        iOS 中的Category
+        
+        装饰器模式主要解决继承关系过于复杂的问题，通过组合来替代继承。它主要的作用是给原始类添加增强功能,在设计的时候，装饰器类需要跟原始类继承相同的抽象类或者接口。
+        
+        特点：
+        1. 不改变原始类
+        2. 不改变使用继承的情形
+        3. 动态扩展对象的功能
+        4. 持有原始对象的引用
+        ```
+
+        
+
+      * 适配器模式
+
+        ```
+        
+        ```
+
+        
+
+      * 组合模式
+
+        ```
+        
+        ```
+
+        
+
+      * 享元模式
+
+        ```
+        
+        ```
+
+        
