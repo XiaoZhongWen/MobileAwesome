@@ -1126,3 +1126,556 @@
     	a. 如果是 UIGestureRecognizerStateBegan, 手势识别对象会接收触控事件并调用指定的委托方法. 之后每当手势发生变化时就将状态更新为 UIGestureRecognizerStateChanged, 并始终调用委托方法, 直到最后的触碰事件结束, 此时状态为 UIGestureRecognizerStateEnded. 如果触碰模式不再和期望的手势相匹配, 可以将状态改为 UIGestureRecognizerStateCancelled
     	b. 如果是 UIGestureRecognizerStateFailed, 手势识别对象将触碰事件返回到响应链
     ```
+
+
+
+24. App启动速度优化
+
+    **App 的启动主要包括三个阶段：**
+
+    1. main() 函数执行前
+
+       * 加载可执行文件（App 的.o 文件的集合）
+       * 加载动态链接库，进行 rebase 指针调整和 bind 符号绑定
+       * Objc 运行时的初始处理，包括 Objc 相关类的注册、category 注册、selector 唯一性检查等
+       * 初始化，包括了执行 +load() 方法、attribute((constructor)) 修饰的函数的调用、创建 C++ 静态全局变量
+
+       ```
+       优化：
+       1. 减少动态库加载。每个库本身都有依赖关系，苹果公司建议使用更少的动态库，并且建议在使用动态库的数量较多时，尽量将多个动态库进行合并
+       2. 减少加载启动后不会去使用的类或者方法
+       3. +load() 方法里的内容可以放到首屏渲染完成后再执行，或使用 +initialize() 方法替换掉。因为，在一个 +load() 方法里，进行运行时方法替换操作会带来 4 毫秒的消耗
+       4. 控制 C++ 全局变量的数量
+       ```
+
+       
+
+    2. main() 函数执行后
+
+       *main() 函数执行后的阶段，指的是从 main() 函数执行开始，到 appDelegate 的 didFinishLaunchingWithOptions 方法里首屏渲染相关方法执行完成*
+
+       * 首屏初始化所需配置文件的读写操作
+       * 首屏列表大数据的读取
+       * 首屏渲染的大量计算等
+
+       ```
+       优化：
+       从功能上梳理出哪些是首屏渲染必要的初始化功能，哪些是 App 启动必要的初始化功能，而哪些是只需要在对应功能开始使用时才需要初始化的。梳理完之后，将这些初始化功能分别放到合适的阶段进行
+       ```
+
+       
+
+    3. 首屏渲染完成后
+
+       *这个阶段就是从渲染完成时开始，到 didFinishLaunchingWithOptions 方法作用域结束时结束*
+
+       
+
+    **对 App 启动速度的监控**
+
+    *对 objc_msgSend 方法进行 hook 来掌握所有方法的执行耗时*
+
+    
+
+25. App 包大小优化
+
+    * 图片资源压缩
+
+      *比较好的压缩方案是，将图片转成 WebP*
+
+      ```
+      1. WebP 压缩率高，而且肉眼看不出差异，同时支持有损和无损两种压缩模式。比如，将 Gif 图转为 Animated WebP ，有损压缩模式下可减少 64% 大小，无损压缩模式下可减少 19% 大小。
+      2. WebP 支持 Alpha 透明和 24-bit 颜色数，不会像 PNG8 那样因为色彩不够而出现毛边。
+      ```
+
+    * 代码瘦身
+
+      *App 的安装包主要是由资源和可执行文件组成，可执行文件就是 Mach-O 文件，其大小是由代码量决定的。通常情况下，对可执行文件进行瘦身，就是找到并删除无用代码的过程*
+
+      * 首先，找出方法和类的全集
+
+        ```
+        我们可以通过分析 LinkMap 来获得所有的代码类和方法的信息。获取 LinkMap 可以通过将 Build Setting 里的 Write Link Map File 设置为 Yes，然后指定 Path to Link Map File 的路径就可以得到每次编译后的 LinkMap 文件了
+        ```
+
+        LinkMap 文件分为三部分:
+
+        * Object File 包含了代码工程的所有文件
+        * Section 描述了代码段在生成的 Mach-O 里的偏移位置和大小
+        * Symbols 会列出每个方法、类、block，以及它们的大小
+
+        *通过 LinkMap ，你不光可以统计出所有的方法和类，还能够清晰地看到代码所占包大小的具体分布，进而有针对性地进行代码优化*
+
+      
+
+      * 然后，找到使用过的方法和类
+
+        *通过 Mach-O 取到使用过的方法和类*
+
+        ```
+        iOS 的方法都会通过 objc_msgSend 来调用。而，objc_msgSend 在 Mach-O 文件里是通过 __objc_selrefs 这个 section 来获取 selector 这个参数的, 所以，__objc_selrefs 里的方法一定是被调用了的, __objc_classrefs 里是被调用过的类，__objc_superrefs 是调用过 super 的类。通过 __objc_classrefs 和 __objc_superrefs，我们就可以找出使用过的类和子类。
+        ```
+
+        通过MachOView查看Mach-O 文件的 __objc_selrefs、__objc_classrefs 和 __objc_superrefs
+
+      
+
+      * 接下来，取二者的差集得到无用代码
+      * 最后，由人工确认无用代码可删除后，进行删除即可
+
+      
+    
+26. 组件化
+
+    * 组件分类
+
+      * 基础组件
+
+        ```
+        ZXBaseKit
+        1. 被所有业务组件直接依赖
+        2. 提供网络，数据存储，音视频处理，主题管理等
+        ```
+
+      * 业务组件
+
+        ```
+        1. 每个业务组件都通过Target-Action层暴露服务接口
+        2. 业务组件间通过业务接口组件来通信
+        ```
+
+      * 业务接口组件
+
+        ```
+        1. 每个业务组件都有一个与之对应的业务接口组件，提供接口调用服务
+        2. 一个业务组件必须依赖另一个业务组件的业务接口组件来实现组件间的通信
+        3. 所有业务接口组件都依赖中间件CTMediator
+        ```
+
+      * 中间件
+
+        ```
+        CTMediator
+        所有业务组件间的通信都通过CTMediator实现间接调用
+        ```
+
+    * 架构图
+
+      * 架构
+
+      <img src="/Volumes/XiaoZhongWen/Work/MobileAwesome/interview/res/component.png" alt="component" style="zoom:50%;" />
+
+      
+
+      * 业务组件
+
+        <img src="/Volumes/XiaoZhongWen/Work/MobileAwesome/interview/res/business.png" alt="business" style="zoom:50%;" />
+
+    * 示例
+
+      ZXIM 
+
+      ```objective-c
+      @interface Target_ZXIM : NSObject
+      
+      /**
+       震动
+      
+       @param ctx <#ctx description#>
+       */
+      - (void)Action_vibrateForReceiveMsg:(NSDictionary *)ctx;
+      
+      /**
+       开启扬声器
+       */
+      - (void)Action_enableSpeaker:(NSDictionary *)ctx;
+      
+      /**
+       关闭扬声器
+       */
+      - (void)Action_disableSpeaker:(NSDictionary *)ctx;
+      
+      - (void)Action_sendFlowDonateMessageWithRemoteParty:(NSDictionary *)ctx;
+      
+      /**
+       上传消息记录
+       
+       @param ctx <#ctx description#>
+       */
+      - (void)Action_uploadChatRecord:(NSDictionary *)ctx;
+      
+      /**
+       下载消息记录
+       
+       @param ctx <#ctx description#>
+       */
+      - (void)Action_downloadChatRecord:(NSDictionary *)ctx;
+      
+      /**
+       清除所有消息记录
+       
+       @param ctx <#ctx description#>
+       */
+      - (void)Action_clearAllChatRecord:(NSDictionary *)ctx;
+      
+      ...
+      
+      @end
+        
+      @implementation Target_ZXIM
+      
+      /**
+       震动
+       
+       @param ctx <#ctx description#>
+       */
+      - (void)Action_vibrateForReceiveMsg:(NSDictionary *)ctx {
+          [[ZXIMServiceManager sharedInstance].soundDeviceService vibrateForReceiveMsg];
+      }
+      
+      /**
+       开启扬声器
+       */
+      - (void)Action_enableSpeaker:(NSDictionary *)ctx {
+          [[ZXIMServiceManager sharedInstance].soundDeviceService setSpeakerEnabled:YES];
+      }
+      
+      /**
+       关闭扬声器
+       */
+      - (void)Action_disableSpeaker:(NSDictionary *)ctx {
+          [[ZXIMServiceManager sharedInstance].soundDeviceService setSpeakerEnabled:NO];
+      }
+      
+      - (void)Action_sendFlowDonateMessageWithRemoteParty:(NSDictionary *)ctx {
+          NSString *userId = ctx[ZXIMUSERID];
+          NSString *groupName = ctx[ZXIMGROUPNAME];
+          ZXMessageFlowMessageModel *model = ctx[ZXIMFlowMessageModel];
+          [[ZXIMServiceManager sharedInstance].messageService zx_sendFlowDonateMessageWithRemoteParty:userId
+                                                                                            groupName:groupName
+                                                                                    flowDonateMessage:model];
+      }
+      
+      /**
+       上传消息记录
+      
+       @param ctx <#ctx description#>
+       */
+      - (void)Action_uploadChatRecord:(NSDictionary *)ctx {
+          NSString *url = ctx[ZXIMURL];
+          void(^success)(id operation, id responseObject) = ctx[ZXIMSuccessBlock];
+          void(^failure)(id operation, NSError *error) = ctx[ZXIMFailureBlock];
+          if ([url isKindOfClass:[NSString class]] && url.length) {
+              [[ZXIMServiceManager sharedInstance].chatRecordMigrateService uploadChatRecordWithUrl:url
+                                                                                            success:success
+                                                                                            failure:failure];
+          }
+      }
+      
+      /**
+       下载消息记录
+       
+       @param ctx <#ctx description#>
+       */
+      - (void)Action_downloadChatRecord:(NSDictionary *)ctx {
+          NSString *url = ctx[ZXIMURL];
+          void(^success)(void) = ctx[ZXIMSuccessBlock];
+          void(^failure)(NSError *error) = ctx[ZXIMFailureBlock];
+          if ([url isKindOfClass:[NSString class]] && url.length) {
+              [[ZXIMServiceManager sharedInstance].chatRecordMigrateService downloadChatRecordWithUrl:url
+                                                                                              success:success
+                                                                                              failure:failure];
+          }
+      }
+      
+      @end
+      ```
+
+      CTMediator+ZXIM
+
+      ```objective-c
+      #import <CTMediator/CTMediator.h>
+      
+      @interface CTMediator (ZXIM)
+      
+      /**
+       震动
+       */
+      - (void)ZXIM_vibrateForReceiveMsg;
+      
+      /**
+       开启扬声器
+       */
+      - (void)ZXIM_enableSpeaker;
+      
+      /**
+       关闭扬声器
+       */
+      - (void)ZXIM_disableSpeaker;
+      
+      - (void)ZXIM_sendFlowDonateMessageWithRemoteParty:(NSString *)userId
+                                              groupName:(NSString *)groupName
+                                      flowDonateMessage:(id)flowMsgModel;
+      @end
+        
+      
+      @implementation CTMediator (ZXIM)
+      /**
+       震动
+       */
+      - (void)ZXIM_vibrateForReceiveMsg {
+          [[CTMediator sharedInstance] performTarget:@"ZXIM"
+                                              action:@"vibrateForReceiveMsg"
+                                              params:nil
+                                   shouldCacheTarget:YES];
+      }
+      
+      /**
+       开启扬声器
+       */
+      - (void)ZXIM_enableSpeaker {
+          [[CTMediator sharedInstance] performTarget:@"ZXIM"
+                                              action:@"enableSpeaker"
+                                              params:nil
+                                   shouldCacheTarget:YES];
+      }
+      
+      /**
+       关闭扬声器
+       */
+      - (void)ZXIM_disableSpeaker {
+          [[CTMediator sharedInstance] performTarget:@"ZXIM"
+                                              action:@"disableSpeaker"
+                                              params:nil
+                                   shouldCacheTarget:YES];
+      }
+      
+      @end
+      ```
+
+      中间件
+
+      ```objective-c
+      @interface CTMediator : NSObject
+      
+      + (instancetype)sharedInstance;
+      
+      // 远程App调用入口
+      - (id)performActionWithUrl:(NSURL *)url completion:(void(^)(NSDictionary *info))completion;
+      // 本地组件调用入口
+      - (id)performTarget:(NSString *)targetName action:(NSString *)actionName params:(NSDictionary *)params shouldCacheTarget:(BOOL)shouldCacheTarget;
+      - (void)releaseCachedTargetWithTargetName:(NSString *)targetName;
+      
+      @end
+        
+      @implementation CTMediator
+        
+      + (instancetype)sharedInstance
+      {
+          static CTMediator *mediator;
+          static dispatch_once_t onceToken;
+          dispatch_once(&onceToken, ^{
+              mediator = [[CTMediator alloc] init];
+          });
+          return mediator;
+      }
+      
+      - (id)performTarget:(NSString *)targetName action:(NSString *)actionName params:(NSDictionary *)params shouldCacheTarget:(BOOL)shouldCacheTarget
+      {
+          NSString *swiftModuleName = params[kCTMediatorParamsKeySwiftTargetModuleName];
+          
+          // generate target
+          NSString *targetClassString = nil;
+          if (swiftModuleName.length > 0) {
+              targetClassString = [NSString stringWithFormat:@"%@.Target_%@", swiftModuleName, targetName];
+          } else {
+              targetClassString = [NSString stringWithFormat:@"Target_%@", targetName];
+          }
+          NSObject *target = self.cachedTarget[targetClassString];
+          if (target == nil) {
+              Class targetClass = NSClassFromString(targetClassString);
+              target = [[targetClass alloc] init];
+          }
+      
+          // generate action
+          NSString *actionString = [NSString stringWithFormat:@"Action_%@:", actionName];
+          SEL action = NSSelectorFromString(actionString);
+          
+          if (target == nil) {
+              // 这里是处理无响应请求的地方之一，这个demo做得比较简单，如果没有可以响应的target，就直接return了。实际开发过程中是可以事先给一个固定的target专门用于在这个时候顶上，然后处理这种请求的
+              [self NoTargetActionResponseWithTargetString:targetClassString selectorString:actionString originParams:params];
+              return nil;
+          }
+          
+          if (shouldCacheTarget) {
+              self.cachedTarget[targetClassString] = target;
+          }
+      
+          if ([target respondsToSelector:action]) {
+              return [self safePerformAction:action target:target params:params];
+          } else {
+              // 这里是处理无响应请求的地方，如果无响应，则尝试调用对应target的notFound方法统一处理
+              SEL action = NSSelectorFromString(@"notFound:");
+              if ([target respondsToSelector:action]) {
+                  return [self safePerformAction:action target:target params:params];
+              } else {
+                  // 这里也是处理无响应请求的地方，在notFound都没有的时候，这个demo是直接return了。实际开发过程中，可以用前面提到的固定的target顶上的。
+                  [self NoTargetActionResponseWithTargetString:targetClassString selectorString:actionString originParams:params];
+                  [self.cachedTarget removeObjectForKey:targetClassString];
+                  return nil;
+              }
+          }
+      }
+      
+      - (id)safePerformAction:(SEL)action target:(NSObject *)target params:(NSDictionary *)params
+      {
+          NSMethodSignature* methodSig = [target methodSignatureForSelector:action];
+          if(methodSig == nil) {
+              return nil;
+          }
+          const char* retType = [methodSig methodReturnType];
+      
+          if (strcmp(retType, @encode(void)) == 0) {
+              NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:methodSig];
+              [invocation setArgument:&params atIndex:2];
+              [invocation setSelector:action];
+              [invocation setTarget:target];
+              [invocation invoke];
+              return nil;
+          }
+      
+          if (strcmp(retType, @encode(NSInteger)) == 0) {
+              NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:methodSig];
+              [invocation setArgument:&params atIndex:2];
+              [invocation setSelector:action];
+              [invocation setTarget:target];
+              [invocation invoke];
+              NSInteger result = 0;
+              [invocation getReturnValue:&result];
+              return @(result);
+          }
+      
+          if (strcmp(retType, @encode(BOOL)) == 0) {
+              NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:methodSig];
+              [invocation setArgument:&params atIndex:2];
+              [invocation setSelector:action];
+              [invocation setTarget:target];
+              [invocation invoke];
+              BOOL result = 0;
+              [invocation getReturnValue:&result];
+              return @(result);
+          }
+      
+          if (strcmp(retType, @encode(CGFloat)) == 0) {
+              NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:methodSig];
+              [invocation setArgument:&params atIndex:2];
+              [invocation setSelector:action];
+              [invocation setTarget:target];
+              [invocation invoke];
+              CGFloat result = 0;
+              [invocation getReturnValue:&result];
+              return @(result);
+          }
+      
+          if (strcmp(retType, @encode(NSUInteger)) == 0) {
+              NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:methodSig];
+              [invocation setArgument:&params atIndex:2];
+              [invocation setSelector:action];
+              [invocation setTarget:target];
+              [invocation invoke];
+              NSUInteger result = 0;
+              [invocation getReturnValue:&result];
+              return @(result);
+          }
+      
+      #pragma clang diagnostic push
+      #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+          return [target performSelector:action withObject:params];
+      #pragma clang diagnostic pop
+      }
+        
+      @end
+      ```
+
+27. Hybird层改造
+
+    * 将js能力接口分类
+
+      ```
+      1. ZXApiJSBridge 提供系统api的调用接口
+      2. ZXAudioJSBridge 提供音频相关的接口
+      3. ZXIMJSBridge 提供消息相关的接口
+      4. ZXVideoJSBridge 提供视频相关的接口
+      ...
+      ```
+
+    * 将js能力接口自动注入给前端
+
+      ```objective-c
+      遍历各个js bridge对象，获取各个bridge对象提供的能力接口并保存到bridgeNames集合中，该集合记录了各个bridge对象的名称，提供的能力接口列表， 如：
+      bridgeNames = [
+      	{
+      		"bridgeName":"_api",
+      		"methods":"[
+      			"appInfo",
+      			"systemInfo",
+      			"getAppToken"
+      			...
+      		]"
+      	},
+      	{
+      		"bridgeName":"_im",
+      		"methods":"[
+      			"getUnreadMessagesCount",
+      			"addOnInstantMessageLitsener",
+      			"removeOnInstantMessageListener",
+      			"sendAnnouncementMessage"
+      		]"
+      	},
+      	...
+      ];
+      NSString *injectJsPath = [[NSBundle h5bundle] pathForResource:@"hybridBridge.js" ofType:nil];
+          NSError *error = nil;
+          NSString *js = [NSString stringWithContentsOfFile:injectJsPath encoding:NSUTF8StringEncoding error:&error];
+          NSString *jsScript = [NSString stringWithFormat:@"%@\n%@", bridgeNames, js];
+          
+          WKUserScript *userScript = [[WKUserScript alloc] initWithSource:jsScript injectionTime:WKUserScriptInjectionTimeAtDocumentEnd forMainFrameOnly:NO];
+      ```
+
+    * 前端通过引入注入的js文件，获取客户端提供的能力
+
+    * hybridBridge.js文件提供调用对象的封装及调用规则确定
+
+      ```javascript
+      // 将bridge对象，提供的能力接口，句柄及回调挂到window上
+      for (var i = 0; i < bridgeNames.length; i++) {
+          var bridgeName = bridgeNames[i].bridgeName;
+          var jsInterfaceName = bridgeNames[i].jsInterfaceName;
+          window[bridgeName] = {
+              bridgeName: bridgeName,
+              jsInterfaceName: jsInterfaceName,
+              callHandler: callHandler,
+              _dispatchResult: _dispatchResult
+            };
+          
+          if (bridgeNames[i].methods) {
+            for (var index = 0; index < bridgeNames[i].methods.length; index++) {
+              var method = bridgeNames[i].methods[index];
+              (function (bridgeName, method) {
+                window[bridgeName][method] = function (params, callback) {
+                  // 所有的能力接口最终通过callHandler来间接调用
+                    return window[bridgeName].callHandler(method, params, callback);
+                  }
+              })(bridgeName, method)
+            }
+          }
+        }
+      
+      function callHandler(handlerName, args, callback) {
+        ...
+        window.webkit.messageHandlers[bridgeName].postMessage(postMsg);
+        ...
+      }
+      ```
+
+28. 
