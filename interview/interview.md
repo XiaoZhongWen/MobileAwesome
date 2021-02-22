@@ -1944,24 +1944,655 @@
 
       * 适配器模式
 
-        ```
+        <img src="./res/Class Adaptor.png" alt="Class Adaptor" style="zoom:50%;" />
+      
+        <img src="./res/Object Adaptor.png" alt="Object Adaptor" style="zoom:50%;" />
+
+        ```java
+      // 它将不兼容的接口转换为可兼容的接口，让原本由于接口不兼容而不能一起工作的类可以一起工作
+        1. 类适配器 (使用继承关系来实现)
+      
+        // 类适配器: 基于继承
+        public interface ITarget {
+          void f1();
+        void f2();
+          void fc();
+      }
         
         ```
-
-        
-
-      * 组合模式
-
+      
+      public class Adaptee {
+          public void fa() { //... }
+          public void fb() { //... }
+          public void fc() { //... }
+      }
+      
+        public class Adaptor extends Adaptee implements ITarget {
+          public void f1() {
+            super.fa();
+          }
+          
+          public void f2() {
+            //...重新实现f2()...
+          }
+          
+          // 这里fc()不需要实现，直接继承自Adaptee，这是跟对象适配器最大的不同点
+        }
+      
+        // 对象适配器：基于组合
+        public interface ITarget {
+          void f1();
+          void f2();
+          void fc();
+        }
+      
+        public class Adaptee {
+          public void fa() { //... }
+          public void fb() { //... }
+          public void fc() { //... }
+        }
+      
+        public class Adaptor implements ITarget {
+          private Adaptee adaptee;
+          
+          public Adaptor(Adaptee adaptee) {
+            this.adaptee = adaptee;
+          }
+          
+          public void f1() {
+            adaptee.fa(); //委托给Adaptee
+          }
+          
+          public void f2() {
+            //...重新实现f2()...
+          }
+          
+          public void fc() {
+            adaptee.fc();
+          }
+        }
+            
+        2. 对象适配器 (使用组合关系来实现)
+      
+        // 类适配器: 基于继承
+        public interface ITarget {
+          void f1();
+          void f2();
+          void fc();
+        }
+      
+        public class Adaptee {
+          public void fa() { //... }
+          public void fb() { //... }
+          public void fc() { //... }
+        }
+      
+        public class Adaptor extends Adaptee implements ITarget {
+          public void f1() {
+            super.fa();
+          }
+          
+          public void f2() {
+            //...重新实现f2()...
+          }
+          
+          // 这里fc()不需要实现，直接继承自Adaptee，这是跟对象适配器最大的不同点
+        }
+      
+        // 对象适配器：基于组合
+        public interface ITarget {
+          void f1();
+          void f2();
+          void fc();
+        }
+      
+        public class Adaptee {
+          public void fa() { //... }
+          public void fb() { //... }
+          public void fc() { //... }
+        }
+      
+        public class Adaptor implements ITarget {
+          private Adaptee adaptee;
+          
+          public Adaptor(Adaptee adaptee) {
+            this.adaptee = adaptee;
+          }
+          
+          public void f1() {
+            adaptee.fa(); //委托给Adaptee
+          }
+          
+          public void f2() {
+            //...重新实现f2()...
+          }
+          
+          public void fc() {
+            adaptee.fc();
+          }
+        }
         ```
+      
         
+      
+      * 代理模式
+      
+        ```java
+        // 在不改变原始类（或叫被代理类）代码的情况下，通过引入代理类来给原始类附加功能
+        //代理类 UserControllerProxy 和原始类 UserController 实现相同的接口 IUserController。UserController 类只负责业务功能。代理类 UserControllerProxy 负责在业务代码执行前后附加其他逻辑代码，并通过委托的方式调用原始类来执行业务代码
+        
+        public interface IUserController {
+          UserVo login(String telephone, String password);
+          UserVo register(String telephone, String password);
+        }
+        
+        public class UserController implements IUserController {
+          //...省略其他属性和方法...
+        
+          @Override
+          public UserVo login(String telephone, String password) {
+            //...省略login逻辑...
+            //...返回UserVo数据...
+          }
+        
+          @Override
+          public UserVo register(String telephone, String password) {
+            //...省略register逻辑...
+            //...返回UserVo数据...
+          }
+        }
+        
+        public class UserControllerProxy implements IUserController {
+          private MetricsCollector metricsCollector;
+          private UserController userController;
+        
+          public UserControllerProxy(UserController userController) {
+            this.userController = userController;
+            this.metricsCollector = new MetricsCollector();
+          }
+        
+          @Override
+          public UserVo login(String telephone, String password) {
+            long startTimestamp = System.currentTimeMillis();
+        
+            // 委托
+            UserVo userVo = userController.login(telephone, password);
+        
+            long endTimeStamp = System.currentTimeMillis();
+            long responseTime = endTimeStamp - startTimestamp;
+            RequestInfo requestInfo = new RequestInfo("login", responseTime, startTimestamp);
+            metricsCollector.recordRequest(requestInfo);
+        
+            return userVo;
+          }
+        
+          @Override
+          public UserVo register(String telephone, String password) {
+            long startTimestamp = System.currentTimeMillis();
+        
+            UserVo userVo = userController.register(telephone, password);
+        
+            long endTimeStamp = System.currentTimeMillis();
+            long responseTime = endTimeStamp - startTimestamp;
+            RequestInfo requestInfo = new RequestInfo("register", responseTime, startTimestamp);
+            metricsCollector.recordRequest(requestInfo);
+        
+            return userVo;
+          }
+        }
+        
+        //UserControllerProxy使用举例
+        //因为原始类和代理类实现相同的接口，是基于接口而非实现编程
+        //将UserController类对象替换为UserControllerProxy类对象，不需要改动太多代码
+        IUserController userController = new UserControllerProxy(new UserController());
         ```
-
+      
         
-
+      
       * 享元模式
+      
+        <img src="./res/FlyWeight.png" alt="FlyWeight" style="zoom:50%;" />
+        
+        ```java
+      意图是复用对象，节省内存，前提是享元对象是不可变对象。
+        当一个系统中存在大量重复对象的时候，如果这些重复的对象是不可变对象，我们就可以利用享元模式将对象设计成享元，在内存中只保留一份实例，供多处代码引用
+        “不可变对象”指的是，一旦通过构造函数初始化完成之后，它的状态（对象的成员变量或者属性）就不会再被修改了。所以，不可变对象不能暴露任何 set() 等修改内部状态的方法
+        ```
+        
+      * 观察者模式
+      
+        <img src="./res/Observer.png" alt="Observer" style="zoom:50%;" />
+      
+        *在对象之间定义一个一对多的依赖，当一个对象状态改变的时候，所有依赖的对象都会自动收到通知。*
+      
+        ```java
+        
+        public interface Subject {
+          void registerObserver(Observer observer);
+          void removeObserver(Observer observer);
+          void notifyObservers(Message message);
+        }
+        
+        public interface Observer {
+          void update(Message message);
+        }
+        
+        public class ConcreteSubject implements Subject {
+          private List<Observer> observers = new ArrayList<Observer>();
+        
+          @Override
+          public void registerObserver(Observer observer) {
+            observers.add(observer);
+          }
+        
+          @Override
+          public void removeObserver(Observer observer) {
+            observers.remove(observer);
+          }
+        
+          @Override
+          public void notifyObservers(Message message) {
+            for (Observer observer : observers) {
+              observer.update(message);
+            }
+          }
+        
+        }
+        
+        public class ConcreteObserverOne implements Observer {
+          @Override
+          public void update(Message message) {
+            //TODO: 获取消息通知，执行自己的逻辑...
+            System.out.println("ConcreteObserverOne is notified.");
+          }
+        }
+        
+        public class ConcreteObserverTwo implements Observer {
+          @Override
+          public void update(Message message) {
+            //TODO: 获取消息通知，执行自己的逻辑...
+            System.out.println("ConcreteObserverTwo is notified.");
+          }
+        }
+        
+        public class Demo {
+          public static void main(String[] args) {
+            ConcreteSubject subject = new ConcreteSubject();
+            subject.registerObserver(new ConcreteObserverOne());
+            subject.registerObserver(new ConcreteObserverTwo());
+            subject.notifyObservers(new Message());
+          }
+        }
+        ```
+      
+      * 策略模式
+      
+        <img src="./res/Strategy.png" alt="Strategy" style="zoom:50%;" />
+      
+        *策略模式可以使算法的变化独立于使用它们的客户端*
+      
+        ```java
+        1. 策略的定义
+        public interface Strategy {
+          void algorithmInterface();
+        }
+        
+        public class ConcreteStrategyA implements Strategy {
+          @Override
+          public void  algorithmInterface() {
+            //具体的算法...
+          }
+        }
+        
+        public class ConcreteStrategyB implements Strategy {
+          @Override
+          public void  algorithmInterface() {
+            //具体的算法...
+          }
+        }
+        
+        2. 策略的创建
+        public class StrategyFactory {
+          private static final Map<String, Strategy> strategies = new HashMap<>();
+        
+          static {
+            strategies.put("A", new ConcreteStrategyA());
+            strategies.put("B", new ConcreteStrategyB());
+          }
+        
+          public static Strategy getStrategy(String type) {
+            if (type == null || type.isEmpty()) {
+              throw new IllegalArgumentException("type should not be empty.");
+            }
+            return strategies.get(type);
+          }
+        }
+        
+        3. 策略的使用
+        // 策略接口：EvictionStrategy
+        // 策略类：LruEvictionStrategy、FifoEvictionStrategy、LfuEvictionStrategy...
+        // 策略工厂：EvictionStrategyFactory
+        
+        public class UserCache {
+          private Map<String, User> cacheData = new HashMap<>();
+          private EvictionStrategy eviction;
+        
+          public UserCache(EvictionStrategy eviction) {
+            this.eviction = eviction;
+          }
+        
+          //...
+        }
+        
+        // 运行时动态确定，根据配置文件的配置决定使用哪种策略
+        public class Application {
+          public static void main(String[] args) throws Exception {
+            EvictionStrategy evictionStrategy = null;
+            Properties props = new Properties();
+            props.load(new FileInputStream("./config.properties"));
+            String type = props.getProperty("eviction_type");
+            evictionStrategy = EvictionStrategyFactory.getEvictionStrategy(type);
+            UserCache userCache = new UserCache(evictionStrategy);
+            //...
+          }
+        }
+        
+        // 非运行时动态确定，在代码中指定使用哪种策略
+        public class Application {
+          public static void main(String[] args) {
+            //...
+            EvictionStrategy evictionStrategy = new LruEvictionStrategy();
+            UserCache userCache = new UserCache(evictionStrategy);
+            //...
+          }
+        }
+        ```
+      
+    * Swift
+
+      * swift中 closure 与OC中block的区别？
 
         ```
+        1、closure是匿名函数、block是一个结构体对象
+    2、closure通过逃逸闭包来在内部修改变量，block 通过 __block 修饰符
+        ```
+
+      * Swift运行时
+
+        <img src="./res/dispatch.png" alt="dispatch" style="zoom:50%;" />
+
+        * 直接派发
+
+          *直接派发是最快的，原因是调用指令会少，还可以通过编译器进行比如内联等方式的优化。缺点是由于缺少动态性而不支持继承。*
+
+          ```swift
+          struct DragonBallPosition {
+              var x:Int
+              var y:Int
+              func land() {}
+          }
+          func dragonWillFound(_ position:DragonBallPosition) {
+              position.land()
+          }
+          let position = DragonBallPosition(x: 342, y: 213)
+      dragonWillFound(position)
+          ```
+
+          编译后, 会直接跳到方法实现的地方, 变成position.land()
+
+        * 函数表派发
+
+          *使用数组来存储类声明的每一个函数的指针. 如C++里的virtual table(虚函数表), swift里称之为witness table. 每个类都会维护一个函数表, 记录类的所有函数, 如果父类函数被override的话, 表里面只会保存被override之后的函数. 一个子类新添加的函数, 会被插入到这个数组的最后. 运行时会根据这个表去决定实际调用的函数*
+
+          <img src="./res/function table.png" alt="function table" style="zoom:50%;" />
+
+        * 消息机制派发
+
+          <img src="./res/@objc.png" alt="@objc" style="zoom:50%;" />
+      
+    * Objective-C 内存管理原则
+
+      ```
+      1. 自己生成的对象，自己持有
+      2. 非自己生成的对象，自己也能持有
+      3. 不再需要自己持有的对象时释放
+      4. 非自己持有的对象无法释放
+      ```
+
+    * Flutter
+
+      * 混合开发
+
+        ```dart
+        void main() => runApp(_widgetForRoute(window.defaultRouteName));//独立运行传入默认路由
+        
+        Widget _widgetForRoute(String routeName) {
+          switch (routeName) {
+            case route_name_me_page:
+              return MePage();
+            case route_name_share_page:
+              return SharePage();
+            case "transparent_page":
+              return Test();
+            default:
+              return MaterialApp(
+                home: Scaffold(
+                  body: Center(
+                    child: Text(""),
+                  ),
+                ),
+              );
+          }
+        }
+        ```
+
+      * Dart
+
+        * 事件循环
+
+          *Dart在Event Loop 驱动下，将需要主线程响应的事件放入Event Queue，不断轮询事件队列，取出事件，然后在主线程同步执行其回调函数。*
+
+          * 事件队列和微任务队列
+
+            *Dart中有两个队列，事件队列（Event Queue）和 微任务队列（Microtask Queue）。在每一次事件循环中，Dart 总是先去第一个微任务队列中查询是否有可执行的任务，如果没有，才会处理后续的事件队列的流程。*
+
+            <img src="https://static001.geekbang.org/resource/image/70/bc/70dc4e1c222ddfaee8aa06df85c22bbc.png" alt="70dc4e1c222ddfaee8aa06df85c22bbc" style="zoom:50%;" />
+
+            * 微任务队列
+
+              *表示一个短时间内就会完成的异步任务，在事件循环中的优先级是最高的。（如，手势识别、文本输入、滚动视图、保存页面效果等）*
+
+            * 事件队列
+
+              *如，I/O、绘制、定时器，是通过事件队列驱动主线程执行的*
+
+          * Future
+
+            **是Dart 为 Event Queue 任务的建立提供的一层封装**
+
+            *在声明一个 Future 时，Dart 会将异步任务的函数执行体放入事件队列，然后立即返回，后续的代码继续同步执行。而当同步执行的代码执行完毕后，事件队列会按照加入事件队列的顺序（即声明顺序），依次取出事件，最后同步执行 Future 的函数体及后续的 then，then 与 Future 函数体共用一个事件循环。如果 Future 执行体已经执行完毕了，但又拿着这个 Future 的引用，往里面加了一个 then 方法体，这种情况，Dart 会将后续加入的 then 方法体放入微任务队列，尽快执行。*
+
+            ```dart
+            示例：
+            Future(() => print('f1'));//声明一个匿名Future
+            Future fx = Future(() =>  null);//声明Future fx，其执行体为null
+            
+            //声明一个匿名Future，并注册了两个then。在第一个then回调里启动了一个微任务
+            Future(() => print('f2')).then((_) {
+              print('f3');
+              scheduleMicrotask(() => print('f4'));
+            }).then((_) => print('f5'));
+            
+            //声明了一个匿名Future，并注册了两个then。第一个then是一个Future
+            Future(() => print('f6'))
+              .then((_) => Future(() => print('f7')))
+              .then((_) => print('f8'));
+            
+            //声明了一个匿名Future
+            Future(() => print('f9'));
+            
+            //往执行体为null的fx注册了了一个then
+            fx.then((_) => print('f10'));
+            
+            //启动一个微任务
+            scheduleMicrotask(() => print('f11'));
+            print('f12');
+            
+            运行结果：
+            
+            f12
+            f11
+            f1
+            f10
+            f2
+            f3
+            f5
+            f4
+            f6
+            f9
+            f7
+            f8
+            ```
+
+            ![8a1106a01613fa999a35911fc5922e8b](https://static001.geekbang.org/resource/image/8a/8b/8a1106a01613fa999a35911fc5922e8b.gif)
+
+            * 因为其他语句都是异步任务，所以先打印 f12
+            * 剩下的异步任务中，微任务队列优先级最高，因此随后打印 f11；然后按照 Future 声明的先后顺序，打印 f1
+            * 随后到了 fx，由于 fx 的执行体是 null，相当于执行完毕了，Dart 将 fx 的 then 放入微任务队列，由于微任务队列的优先级最高，因此 fx 的 then 还是会最先执行，打印 f10
+            * 然后到了 fx 下面的 f2，打印 f2，然后执行 then，打印 f3。f4 是一个微任务，要到下一个事件循环才执行，因此后续的 then 继续同步执行，打印 f5。本次事件循环结束，下一个事件循环取出 f4 这个微任务，打印 f4
+            * 然后到了 f2 下面的 f6，打印 f6，然后执行 then。这里需要注意的是，这个 then 是一个 Future 异步任务，因此这个 then，以及后续的 then 都被放入到事件队列中了
+            * f6 下面还有 f9，打印 f9
+            * 最后一个事件循环，打印 f7，以及后续的 f8
+
+            *then 会在 Future 函数体执行完毕后立刻执行，无论是共用同一个事件循环还是进入下一个微任务*
+
+        * Isolate
+
+          ```
+          Dart 的多线程机制，每个 Isolate 都有自己的 Event Loop 与 Queue，Isolate 之间不共享任何资源，只能依靠消息机制通信。
+          ```
+
+      * 混入（Mixin）
+
+        *Dart为了支持多重继承，引入了mixin关键字，它最大的特殊处在于：mixin定义的类不能有构造方法，这样可以避免继承多个类而产生的父类构造方法冲突, 通过混入，一个类里可以以非继承的方式使用其他类中的变量与方法*
+
+        ```dart
+        class Point { 
+          num x, y, z; 
+          Point(this.x, this.y) : z = 0; // 初始化变量z 
+          Point.bottom(num x) : this(x, 0); // 重定向构造函数 
+          void printInfo() => print('($x,$y,$z)');
+        }
+        
+        class Coordinate with Point {
+          // 不能有构造方法
+        }
+        
+        var yyy = Coordinate();
+        print (yyy is Point); //true
+        print(yyy is Coordinate); //true
         
         ```
 
-        
+      * Widget、Element、RenderObject
+
+        * Widget
+
+          *Widget 是 Flutter 世界里对视图的一种结构化描述，里面存储的是有关视图渲染的配置信息，包括布局、渲染属性、事件响应信息等，Widget 被设计成不可变的，当视图渲染的配置信息发生变化时，Flutter 会重建 Widget 树，进行数据更新*
+
+        * Element
+
+          *Element 是 Widget 的一个实例化对象，它承载了视图构建的上下文数据，是连接结构化的配置信息到完成最终渲染的桥梁*
+
+          ```
+          Flutter 渲染过程，可以分为这么三步：
+          1. 首先，通过 Widget 树生成对应的 Element 树；
+          2. 然后，创建相应的 RenderObject 并关联到 Element.renderObject 属性上；
+          3. 最后，构建成 RenderObject 树，以完成最终的渲染
+          Element 同时持有 Widget 和 RenderObject
+          ```
+
+        * RenderObject
+
+          *RenderObject 是主要负责实现视图渲染的对象, lutter 通过控件树（Widget 树）中的每个控件（Widget）创建不同类型的渲染对象，组成渲染对象树。布局和绘制在 RenderObject 中完成， 合成和渲染的工作则交给 Skia 搞定。*
+
+      * State
+
+        *Flutter的视图开发是声明式的，其核心设计思想是将视图和数据分离。在声明式UI编程中，除了设计好Widget布局方案外，还要提前维护一套文案数据集，并为需要变化的Widget绑定数据集中的数据，使Widget根据这个数据集完成渲染。当需要变更界面文案时，只要改变数据集中的文案数据，并通知Flutter框架触发Widget的重新渲染即可。*
+
+        * StatelessWidget
+
+          *一旦创建成功就不再关心、也不响应任何数据变化进行重绘*
+
+          <img src="./res/StatelessWidget.png" alt="StatelessWidget" style="zoom:50%;" />
+
+        * StatefulWidget
+
+          *Widget的展示，除了父 Widget 初始化时传入的静态配置之外，还需要处理用户的交互或其内部数据的变化，并体现在 UI 上，Widget 创建完成后，还需要关心和响应数据变化来进行重绘。*
+
+          <img src="./res/StatefulWidget.png" alt="StatefulWidget" style="zoom:50%;" />
+
+          *父 Widget 是否能通过初始化参数完全控制其 UI 展示效果，如果能，就使用StatelessWidget，负责使用StatefulWidget*
+
+        * StatefulWidget不能替代StatelessWidget的原因
+
+          ```
+          StatefulWidget 的滥用会直接影响 Flutter 应用的渲染性能，Widget 是不可变的，更新则意味着销毁 + 重建（build）。StatelessWidget 是静态的，一旦创建则无需更新；而对于 StatefulWidget 来说，在 State 类中调用 setState 方法更新数据，会触发视图的销毁和重建，也将间接地触发其每个子 Widget 的销毁和重建。如果我们的根布局是一个 StatefulWidget，在其 State 中每调用一次更新 UI，都将是一整个页面所有 Widget 的销毁和重建。
+          ```
+
+      * 生命周期
+
+        * State 生命周期
+
+          *指关联的 Widget 所经历的，从创建到显示再到更新最后到停止，直至销毁等各个过程阶段。*
+
+          <img src="./res/lifecycle_state.png" alt="lifecycle_state" style="zoom:50%;" />
+
+          1. 创建阶段
+             * Flutter 通过调用 StatefulWidget.createState() 来创建一个 State，通过构造方法，接收父 Widget 传递的初始化 UI 配置数据，决定 Widget 最初的呈现效果。
+             * initState，会在 State 对象被插入视图树的时候调用，它在 State 的生命周期中只会被调用一次，可以在这里做一些初始化工作。
+             * didChangeDependencies 则用来专门处理 State 对象依赖关系变化。
+             * build，作用是构建视图，根据父 Widget 传递过来的初始化配置数据，以及 State 的当前状态，创建一个 Widget 然后返回。
+          2. 更新阶段
+             * setState，当状态数据发生变化时，调用这个方法告诉 Flutter，使用更新后的数据重建 UI。
+             * didChangeDependencies：State对象的依赖关系发生变化后，如系统语言 Locale 或应用主题改变时。
+             * didUpdateWidget，当 Widget 的配置发生变化时，比如，父 Widget 触发重建
+          3. 销毁阶段
+             * 当组件的可见状态发生变化时，deactivate 函数会被调用，这时 State 会被暂时从视图树中移除，值得注意的是，页面切换时，由于 State 对象在视图树中的位置发生了变化，需要先暂时移除后再重新添加，重新触发组件构建，因此这个函数也会被调用。
+             * 当 State 被永久地从视图树中移除时，Flutter 会调用 dispose 函数，可以在这里进行最终的资源释放、移除监听、清理环境，等。
+
+        * 手势
+
+          手势竞技场
+
+          用来识别究竟哪个手势可以响应用户事件
+
+          *GestureDetector 内部对每一个手势都建立了一个工厂类（Gesture Factory）。而工厂类的内部会使用手势识别类（GestureRecognizer），来确定当前处理的手势。而所有手势的工厂类都会被交给 RawGestureDetector 类，以完成监测手势的工作，使用 Listener 监听原始指针事件，并在状态改变时把信息同步给所有的手势识别器，最后，手势会在竞技场决定最后由谁来响应用户事件*
+
+        * 跨组件数据传递
+
+          * InheritedWidget
+
+            ```
+            只能在有父子关系的 Widget 之间进行数据共享,自上而下
+            ```
+
+          * Notification
+
+            ```
+            只能在有父子关系的 Widget 之间进行数据共享,自下而上
+            ```
+
+          * EventBus
+
+    * ReactNative
+
+      * 生命周期
+
+      * immutable
+
+        ```
+        Javascript 中的对象一般是可变的,新的对象简单的引用了原始对象，新旧对象的修改都将影响到彼此, Immutable Data是一旦被创建，就不能被更改的数据。对Immutable 对象的任何修改或添加删除操作都会返回一个新的Immutable 对象。Immutable 实现原理是持久化数据结构（Persistent Data Structure）,也就是使用旧数据创建新数据的同时要保证旧数据的可用且不变。同时又为了避免深拷贝把所有节点都复制一遍带来的性能损耗，Immutable 使用了Structure Sharing(结构共享)，即如果对象树中一个节点发生变化，只修改这个节点和受它影响的父节点，其他节点则进行共享。
+        ```
+
+      * redux
