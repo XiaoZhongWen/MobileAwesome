@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-01-25 11:04:45
- * @LastEditTime: 2021-02-05 14:36:54
+ * @LastEditTime: 2021-02-23 17:01:45
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /assassin_reactnative_module/src/message/MessagePage.js
@@ -23,7 +23,6 @@ import {
 import withProvider from '../../withProvider';
 import navigationManager from '../../common/navigator/NavigationManager';
 
-import NBContainer from '../../nativebase/NBContainer';
 import MessageTipCell from './components/MessageTipCell';
 import SeparatorLine from '../../common/components/SeparatorLine';
 
@@ -55,10 +54,6 @@ class MessagePage extends Component {
         const {messageList, fetchMessageListError} = messages;
         return (
             <View style={styles.container}>
-                {/* <View style={styles.nb_container}>
-                    <NBContainer title={'Anatomy'} onClick={this.onNBClick} />
-                    <NBContainer title={'Accordion'} onClick={this.onNBClick} />
-                </View> */}
                 <FlatList
                     data={messageList}
                     renderItem={(item) => {
@@ -77,10 +72,6 @@ class MessagePage extends Component {
             </View>
         );
     }
-
-    // onNBClick(routeName) {
-    //     navigationManager.push(routeName);
-    // }
 }
 
 const styles = StyleSheet.create({

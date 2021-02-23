@@ -672,15 +672,15 @@ int main(int argc, const char * argv[]) {
 
 *如果在上面的 3 步都没挽救，那么系统会调用 `doesNotRecognizeSelector` 方法来输出崩溃的日志信息*
 
-12. 在block外定义weakSelf引用self，在block内定义strongSelf引用weakSelf原因
+## 在block外定义weakSelf引用self，在block内定义strongSelf引用weakSelf原因
 
-    * 在block外定义weakSelf引用self
+* 在block外定义weakSelf引用self
 
-      *block会强引用被捕获的对象，为了避免循环引用，所以用weakSelf引用self*
+  *block会强引用被捕获的对象，为了避免循环引用，所以用weakSelf引用self*
 
-    * 在block内定义strongSelf引用weakSelf
+* 在block内定义strongSelf引用weakSelf
 
-      *block被异步执行时，self可能已经被释放掉，weakSelf则被置空，为了避免block执行时因self被释放导致block执行逻辑异常，所以用strongSelf引用weakSelf*
+  *block被异步执行时，self可能已经被释放掉，weakSelf则被置空，为了避免block执行时因self被释放导致block执行逻辑异常，所以用strongSelf引用weakSelf*
 
 
 
@@ -785,8 +785,8 @@ Block作为函数返回值时
 
 ### runloop对象
 
-* NSRunLoop （提供了纯 C 函数的 API，所有这些 API 都是线程安全的）
-* CFRunLoopRef （提供了面向对象的 API，但是这些 API 不是线程安全的）
+* NSRunLoop （提供了面向对象的 API，但是这些 API 不是线程安全的）
+* CFRunLoopRef （提供了纯 C 函数的 API，所有这些 API 都是线程安全的）
 
 ### 与线程的关系
 
@@ -1121,7 +1121,7 @@ pointInside:withEvent:方法判断点在不在当前view上
 1. 窗口会将触碰事件发送到手势识别对象
 2. 手势识别对象将进入 UIGestureRecognizerStatePossible 状态
 3. 对于离散型手势, 手势识别对象会判断他是 UIGestureRecognizerStateRecognized 还是 UIGestureRecognizerStateFailed 类型
-	a. 如果是 UIGestureRecognizerStateRecognized, 手势识别接收触碰时间并调用指定的委托方法
+	a. 如果是 UIGestureRecognizerStateRecognized, 手势识别接收触碰事件并调用指定的委托方法
 	b. 如果是 UIGestureRecognizerStateFailed, 手势识别对象将触碰事件返回到响应链
 4. 对于连续型手势, 手势识别对象会判断他是 UIGestureRecognizerStateBegan 还是UIGestureRecognizerStateFailed
 	a. 如果是 UIGestureRecognizerStateBegan, 手势识别对象会接收触控事件并调用指定的委托方法. 之后每当手势发生变化时就将状态更新为 UIGestureRecognizerStateChanged, 并始终调用委托方法, 直到最后的触碰事件结束, 此时状态为 UIGestureRecognizerStateEnded. 如果触碰模式不再和期望的手势相匹配, 可以将状态改为 UIGestureRecognizerStateCancelled
@@ -1264,13 +1264,13 @@ pointInside:withEvent:方法判断点在不在当前view上
 
 * 架构
 
-<img src="/Volumes/XiaoZhongWen/Work/MobileAwesome/interview/res/component.png" alt="component" style="zoom:50%;" />
+<img src="./res/component.png" alt="component" style="zoom:50%;" />
 
 
 
 * 业务组件
 
-  <img src="/Volumes/XiaoZhongWen/Work/MobileAwesome/interview/res/business.png" alt="business" style="zoom:50%;" />
+  <img src="./res/business.png" alt="business" style="zoom:50%;" />
 
 ### 示例
 
@@ -2461,7 +2461,7 @@ Element 同时持有 Widget 和 RenderObject
 
 #### RenderObject
 
-*RenderObject 是主要负责实现视图渲染的对象, lutter 通过控件树（Widget 树）中的每个控件（Widget）创建不同类型的渲染对象，组成渲染对象树。布局和绘制在 RenderObject 中完成， 合成和渲染的工作则交给 Skia 搞定。*
+*RenderObject 是主要负责实现视图渲染的对象, Flutter 通过控件树（Widget 树）中的每个控件（Widget）创建不同类型的渲染对象，组成渲染对象树。布局和绘制在 RenderObject 中完成， 合成和渲染的工作则交给 Skia 搞定。*
 
 ### State
 
