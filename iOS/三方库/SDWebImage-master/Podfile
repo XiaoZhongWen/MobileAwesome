@@ -1,4 +1,4 @@
-source 'https://mirrors.bfsu.edu.cn/git/CocoaPods/Specs.git'
+source 'https://gitee.com/mirrors/CocoaPods-Specs.git'
 use_frameworks!
 
 def all_example_pods

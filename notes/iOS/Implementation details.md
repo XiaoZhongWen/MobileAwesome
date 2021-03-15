@@ -116,11 +116,41 @@
 
 ## 高清大图的解码及异步渲染过程
 
-[iOS图片加载过程以及优化](https://www.dazhuanlan.com/2019/11/07/5dc3d3911f8f8/)
+[如何处理iOS中照片的方向](http://www.cocoachina.com/articles/12021)
+
+* SDWebImage 图片解码过程
+
+  * 将图片元数据编码为UIImage对象
+
+    ![sd_decode_1](../../resources/iOS/sd_decode_1.png)
+
+    ![sd_decode_1](../../resources/iOS/sd_decode_2.png)
+
+    ![sd_decode_1](../../resources/iOS/sd_decode_3.png)
+
+    ![sd_decode_1](../../resources/iOS/sd_decode_4.png)
+
+    ![sd_decode_1](../../resources/iOS/sd_decode_5.png)
+
+    ![sd_decode_1](../../resources/iOS/sd_decode_6.png)
+
+    ![sd_decode_1](../../resources/iOS/sd_decode_7.png)
+
+  * 解码UIImage对象为新的解码后的UIImage对象
+
+    ![sd_decode_1](../../resources/iOS/sd_decode_8.png)
+
+    ![sd_decode_1](../../resources/iOS/sd_decode_9.png)
+
+    ![sd_decode_1](../../resources/iOS/sd_decode_10.png)
+
+    ![sd_decode_1](../../resources/iOS/sd_decode_11.png)
+
+* YYImage 图片解码过程
+
+  
 
 [iOS 保持界面流畅的技巧](https://blog.ibireme.com/2015/11/12/smooth_user_interfaces_for_ios/)
-
-[SDWebImage 源码](https://github.com/SDWebImage/SDWebImage)
 
 [YYImage 源码](https://github.com/ibireme/YYImage)
 

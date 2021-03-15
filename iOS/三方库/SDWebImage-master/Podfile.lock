@@ -1,0 +1,30 @@
+PODS:
+  - Expecta (1.0.6)
+  - KVOController (1.2.0)
+  - SDWebImage/Core (5.10.4)
+  - SDWebImage/MapKit (5.10.4):
+    - SDWebImage/Core
+
+DEPENDENCIES:
+  - Expecta
+  - KVOController
+  - SDWebImage/Core (from `./`)
+  - SDWebImage/MapKit (from `./`)
+
+SPEC REPOS:
+  https://gitee.com/mirrors/CocoaPods-Specs.git:
+    - Expecta
+    - KVOController
+
+EXTERNAL SOURCES:
+  SDWebImage:
+    :path: "./"
+
+SPEC CHECKSUMS:
+  Expecta: 3b6bd90a64b9a1dcb0b70aa0e10a7f8f631667d5
+  KVOController: d72ace34afea42468329623b3379ab3cd1d286b6
+  SDWebImage: c666b97e1fa9c64b4909816a903322018f0a9c84
+
+PODFILE CHECKSUM: 4686149b41ace1fef4127efe29ef881e410f6e3e
+
+COCOAPODS: 1.9.3
