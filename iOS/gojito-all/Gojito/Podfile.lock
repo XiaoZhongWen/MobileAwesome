@@ -1,0 +1,51 @@
+PODS:
+  - GJTAdditionKit (0.0.5)
+  - GJTAppLauncher (0.1.3)
+  - GJTApplicationModule (0.1.2):
+    - GJTAppLauncher
+    - GJTMvvmKit
+  - GJTControlsKit (0.0.8):
+    - GJTAdditionKit
+  - GJTMvvmKit (0.0.2):
+    - GJTAdditionKit
+    - GJTControlsKit
+    - Masonry
+    - ReactiveObjC
+  - GJTUserCenterModule (0.1.0):
+    - GJTMvvmKit
+  - LookinServer (1.0.0)
+  - Masonry (1.1.0)
+  - ReactiveObjC (3.1.1)
+
+DEPENDENCIES:
+  - GJTAppLauncher
+  - GJTApplicationModule
+  - GJTUserCenterModule
+  - LookinServer
+
+SPEC REPOS:
+  trunk:
+    - GJTAdditionKit
+    - GJTAppLauncher
+    - GJTApplicationModule
+    - GJTControlsKit
+    - GJTMvvmKit
+    - GJTUserCenterModule
+    - LookinServer
+    - Masonry
+    - ReactiveObjC
+
+SPEC CHECKSUMS:
+  GJTAdditionKit: 3a2e73b61ae4d52369cf3a069f8ffad741b1084c
+  GJTAppLauncher: 47ed4bb5c171f67f8f6c7a1681dc3c0b88612537
+  GJTApplicationModule: 3aded56e68e6e9e3aa4ba0adda16599d984beed4
+  GJTControlsKit: daf2dc8beec6fcb12a158c85b425af1a4512d4a1
+  GJTMvvmKit: f613e88767f46d2b88822e09787f8b4da6976b37
+  GJTUserCenterModule: 311eea0ca9e1affe612eb20ed0ca793a89cd2370
+  LookinServer: 0002891cd3cec5e082a910e897dfe71b4f06b89e
+  Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
+  ReactiveObjC: 011caa393aa0383245f2dcf9bf02e86b80b36040
+
+PODFILE CHECKSUM: 401054ec3a39d33f36adce1905969d5979d4541c
+
+COCOAPODS: 1.9.3

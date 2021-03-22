@@ -148,17 +148,68 @@
 
 * YYImage 图片解码过程
 
+  * decodeForDisplay
+  
+    ![sd_decode_1](../../resources/iOS/yy_decodeForDisplay.png)
+  
+  * decodeOnly 直接获取解码图片，非通过画布绘制生成
+  
+    1. CGImageSourceCreateWithData(data) 创建 ImageSource
+    2. CGImageSourceCreateImageAtIndex(source) 创建一个未解码的 CGImage
+    3. CGImageGetDataProvider(image) 获取这个图片的数据源
+    4. CGDataProviderCopyData(provider) 从数据源获取直接解码的数据
+  
+    ![sd_decode_1](../../resources/iOS/yy_decode.png)
+  
+* YYWebImage 边下载、边显示
+
+  图片本身有 3 种常见的编码方式：
+
+  <img src="https://blog.ibireme.com/wp-content/uploads/2015/11/image_baseline.gif" alt="image_baseline" style="zoom:50%;" /><img src="https://blog.ibireme.com/wp-content/uploads/2015/11/image_interlaced.gif" alt="image_interlaced" style="zoom:50%;" /><img src="https://blog.ibireme.com/wp-content/uploads/2015/11/image_progressive.gif" alt="image_progressive" style="zoom:50%;" />
+
   
 
-[iOS 保持界面流畅的技巧](https://blog.ibireme.com/2015/11/12/smooth_user_interfaces_for_ios/)
+  1. baseline，即逐行扫描。默认情况下，JPEG、PNG、GIF 都是这种保存方式
+  2. interlaced，即隔行扫描。PNG 和 GIF 在保存时可以选择这种格式
+  3. progressive，即渐进式。JPEG 在保存时可以选择这种方式
 
-[YYImage 源码](https://github.com/ibireme/YYImage)
+  ```
+  在下载图片时，首先用 CGImageSourceCreateIncremental(NULL) 创建一个空的图片源，随后在获得新数据时调用CGImageSourceUpdateData(data, false) 来更新图片源，最后在用CGImageSourceCreateImageAtIndex() 创建图片来显示。
+  ```
 
-[渐进式 YYWebImage 源码](https://github.com/ibireme/YYWebImage)
+  * 实现过程
 
-[mmap内存映射 字节对齐 FastImageCache 源码](https://github.com/path/FastImageCache)
+    1. 创建NSURLConnection，发起下载请求
 
+       ![sd_decode_1](../../resources/iOS/yy_progressive_1.png)
 
+    2. 创建NSMutableData对象，用于接收图片元数据
+
+       ![sd_decode_1](../../resources/iOS/yy_progressive_2.png)
+
+       ![sd_decode_1](../../resources/iOS/yy_progressive_3.png)
+
+       ![sd_decode_1](../../resources/iOS/yy_progressive_4.png)
+
+    3. 接收图片数据并更新source
+
+       ![sd_decode_1](../../resources/iOS/yy_progressive_5.png)
+
+       ![sd_decode_1](../../resources/iOS/yy_progressive_6.png)
+
+       ![sd_decode_1](../../resources/iOS/yy_progressive_7.png)
+
+       ![sd_decode_1](../../resources/iOS/yy_progressive_8.png)
+
+       ![sd_decode_1](../../resources/iOS/yy_progressive_9.png)
+
+       ![sd_decode_1](../../resources/iOS/yy_update_1.png)
+
+       ![sd_decode_1](../../resources/iOS/yy_update_2.png)
+
+       ![sd_decode_1](../../resources/iOS/yy_update_3.png)
+
+       ![sd_decode_1](../../resources/iOS/yy_progressive_4.png)
 
 ## 高清大图的压缩过程
 

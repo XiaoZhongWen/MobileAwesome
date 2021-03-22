@@ -6,6 +6,10 @@ target 'Gojito' do
   use_frameworks!
 
   # Pods for Gojito
-  pod 'GJTUserCenterModule',:path => '../GJTUserCenterModule'
+  # pod 'GJTUserCenterModule',:path => '../GJTUserCenterModule'
+  pod 'LookinServer', :configurations => ['Debug']
+  pod 'GJTApplicationModule'
+  pod 'GJTAppLauncher'
+  pod 'GJTUserCenterModule'
 
 end

@@ -81,9 +81,29 @@
     self.progressLayer.strokeEnd = 0;
     [CATransaction commit];
     
+//    [_webImageView setImageWithURL:url
+//                       placeholder:nil
+//                           options:YYWebImageOptionProgressiveBlur | YYWebImageOptionShowNetworkActivity | YYWebImageOptionSetImageWithFadeAnimation
+//                          progress:^(NSInteger receivedSize, NSInteger expectedSize) {
+//                              if (expectedSize > 0 && receivedSize > 0) {
+//                                  CGFloat progress = (CGFloat)receivedSize / expectedSize;
+//                                  progress = progress < 0 ? 0 : progress > 1 ? 1 : progress;
+//                                  if (_self.progressLayer.hidden) _self.progressLayer.hidden = NO;
+//                                  _self.progressLayer.strokeEnd = progress;
+//                              }
+//                       } transform:nil
+//                        completion:^(UIImage *image, NSURL *url, YYWebImageFromType from, YYWebImageStage stage, NSError *error) {
+//                           if (stage == YYWebImageStageFinished) {
+//                               _self.progressLayer.hidden = YES;
+//                               [_self.indicator stopAnimating];
+//                               _self.indicator.hidden = YES;
+//                               if (!image) _self.label.hidden = NO;
+//                           }
+//                       }];
+
     [_webImageView setImageWithURL:url
                        placeholder:nil
-                           options:YYWebImageOptionProgressiveBlur | YYWebImageOptionShowNetworkActivity | YYWebImageOptionSetImageWithFadeAnimation
+                           options:YYWebImageOptionProgressiveBlur
                           progress:^(NSInteger receivedSize, NSInteger expectedSize) {
                               if (expectedSize > 0 && receivedSize > 0) {
                                   CGFloat progress = (CGFloat)receivedSize / expectedSize;
@@ -100,6 +120,7 @@
                                if (!image) _self.label.hidden = NO;
                            }
                        }];
+
 }
 
 - (void)prepareForReuse {
