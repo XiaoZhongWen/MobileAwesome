@@ -32,7 +32,9 @@ NSString *const YYTextAttachmentAttributeName = @"YYTextAttachment";
 NSString *const YYTextHighlightAttributeName = @"YYTextHighlight";
 NSString *const YYTextGlyphTransformAttributeName = @"YYTextGlyphTransform";
 
+//取代无法显示字符的“OBJ”
 NSString *const YYTextAttachmentToken = @"\uFFFC";
+// …
 NSString *const YYTextTruncationToken = @"\u2026";
 
 

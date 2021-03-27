@@ -852,6 +852,8 @@
      微博 URL 嵌入的图片，比临近的字体要小一圈。。
      这里模拟一下 Heiti SC 字体，然后把图片缩小一下。
      */
+    // ascent 字形的上行高度
+    // descent 字形的下行高度
     CGFloat ascent = fontSize * 0.86;
     CGFloat descent = fontSize * 0.14;
     CGRect bounding = CGRectMake(0, -0.14 * fontSize, fontSize, fontSize);
