@@ -10,7 +10,7 @@ import UIKit
 class RootViewControllerGenerator {
     var rootViewController: UIViewController {
         var rootVc = LoginViewController.init()
-        
+        var acc = UserService.shared.activeAccount
         return rootVc
     }
 

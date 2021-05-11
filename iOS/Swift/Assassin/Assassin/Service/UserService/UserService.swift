@@ -12,9 +12,20 @@ class UserService {
     static let shared = UserService.init()
     private init() {}
 
-    lazy var account: Account? = { () -> Account? in
+    private lazy var account: Account? = { () -> Account? in
         let dict = UserDao.init().fetchActiveAccount()
-//        var acc = Account.init(<#T##userId: String##String#>)
+        if let userId = dict?[UserID] {
+            var acc = Account.init(userId)
+            acc.cnname = dict?[Nickname]
+            acc.headUrl = dict?[HeadUrl]
+            acc.password = dict?[Password]
+            return acc
+        }
         return nil
     }()
+
+    var activeAccount: Account? {
+        return self.account
+    }
+
 }
