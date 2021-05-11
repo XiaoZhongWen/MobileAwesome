@@ -8,3 +8,7 @@
 import Foundation
 
 let AssassinDBName = "Assassin.db"
+let UserID = "userID"
+let Password = "password"
+let HeadUrl = "headUrl"
+let Nickname = "nickname"

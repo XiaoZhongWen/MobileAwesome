@@ -14,6 +14,7 @@
 		37250C1C264A35AE002A55C3 /* DBService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37250C1B264A35AE002A55C3 /* DBService.swift */; };
 		37250C23264A3739002A55C3 /* Assassin.db in Resources */ = {isa = PBXBuildFile; fileRef = 37250C22264A3739002A55C3 /* Assassin.db */; };
 		37250C27264A3DB8002A55C3 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37250C26264A3DB8002A55C3 /* String.swift */; };
+		37250C2B264A7A4E002A55C3 /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37250C2A264A7A4E002A55C3 /* Account.swift */; };
 		37EB0715264953820089FF63 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37EB0714264953820089FF63 /* AppDelegate.swift */; };
 		37EB0719264953820089FF63 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37EB0718264953820089FF63 /* ViewController.swift */; };
 		37EB071E264953870089FF63 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 37EB071D264953870089FF63 /* Assets.xcassets */; };
@@ -29,6 +30,7 @@
 		37250C1B264A35AE002A55C3 /* DBService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBService.swift; sourceTree = "<group>"; };
 		37250C22264A3739002A55C3 /* Assassin.db */ = {isa = PBXFileReference; lastKnownFileType = file; path = Assassin.db; sourceTree = "<group>"; };
 		37250C26264A3DB8002A55C3 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
+		37250C2A264A7A4E002A55C3 /* Account.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account.swift; sourceTree = "<group>"; };
 		37EB0711264953820089FF63 /* Assassin.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Assassin.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		37EB0714264953820089FF63 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		37EB0718264953820089FF63 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -96,6 +98,7 @@
 		37250C11264A339B002A55C3 /* UserService */ = {
 			isa = PBXGroup;
 			children = (
+				37250C29264A7A3B002A55C3 /* Models */,
 				37250C12264A33C7002A55C3 /* UserService.swift */,
 			);
 			path = UserService;
@@ -115,6 +118,14 @@
 				37250C26264A3DB8002A55C3 /* String.swift */,
 			);
 			path = Constants;
+			sourceTree = "<group>";
+		};
+		37250C29264A7A3B002A55C3 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				37250C2A264A7A4E002A55C3 /* Account.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 		37EB0708264953820089FF63 = {
@@ -289,6 +300,7 @@
 				37250C06264A2E90002A55C3 /* RootViewControllerGenerator.swift in Sources */,
 				37250C1C264A35AE002A55C3 /* DBService.swift in Sources */,
 				37250C17264A33D5002A55C3 /* UserDao.swift in Sources */,
+				37250C2B264A7A4E002A55C3 /* Account.swift in Sources */,
 				37EB0719264953820089FF63 /* ViewController.swift in Sources */,
 				37250C27264A3DB8002A55C3 /* String.swift in Sources */,
 				37EB0715264953820089FF63 /* AppDelegate.swift in Sources */,

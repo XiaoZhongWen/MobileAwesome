@@ -10,6 +10,7 @@ import UIKit
 class RootViewControllerGenerator {
     var rootViewController: UIViewController {
         var rootVc = LoginViewController.init()
+        
         return rootVc
     }
 

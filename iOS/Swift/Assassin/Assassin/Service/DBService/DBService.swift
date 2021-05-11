@@ -11,7 +11,7 @@ import FMDB
 class DBService {
     static let shared = DBService.init()
 
-    var databaseQueue: FMDatabaseQueue?
+    private var databaseQueue: FMDatabaseQueue?
 
     private init() {
         let path = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]

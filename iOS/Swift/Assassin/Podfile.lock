@@ -2,17 +2,21 @@ PODS:
   - FMDB (2.7.5):
     - FMDB/standard (= 2.7.5)
   - FMDB/standard (2.7.5)
+  - HandyJSON (5.0.2)
 
 DEPENDENCIES:
   - FMDB
+  - HandyJSON
 
 SPEC REPOS:
   trunk:
     - FMDB
+    - HandyJSON
 
 SPEC CHECKSUMS:
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
+  HandyJSON: 9e4e236f5d2dbefad5155a77417bbea438201c03
 
-PODFILE CHECKSUM: abc0dcfb4163ff231dcccc8dfc7e9a567cb6ac79
+PODFILE CHECKSUM: 8485a74b8b8f6213c46250ef0b9f87b298c0368b
 
 COCOAPODS: 1.10.1
