@@ -11,6 +11,8 @@
 		371DF16B264B8E1E0072B380 /* ApplicationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 371DF16A264B8E1E0072B380 /* ApplicationService.swift */; };
 		371DF176264BA36E0072B380 /* DispatchQueue+Assassin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 371DF175264BA36E0072B380 /* DispatchQueue+Assassin.swift */; };
 		371DF179264BA8DA0072B380 /* TabBarControllerBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 371DF178264BA8DA0072B380 /* TabBarControllerBuilder.swift */; };
+		371DF212264E467F0072B380 /* DefaultConfiguration.plist in Resources */ = {isa = PBXBuildFile; fileRef = 371DF210264E467F0072B380 /* DefaultConfiguration.plist */; };
+		371DF213264E467F0072B380 /* default_app_config.json in Resources */ = {isa = PBXBuildFile; fileRef = 371DF211264E467F0072B380 /* default_app_config.json */; };
 		37250C06264A2E90002A55C3 /* RootViewControllerBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37250C05264A2E90002A55C3 /* RootViewControllerBuilder.swift */; };
 		37250C0B264A3156002A55C3 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37250C0A264A3156002A55C3 /* LoginViewController.swift */; };
 		37250C13264A33C7002A55C3 /* UserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37250C12264A33C7002A55C3 /* UserService.swift */; };
@@ -31,6 +33,8 @@
 		371DF16A264B8E1E0072B380 /* ApplicationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationService.swift; sourceTree = "<group>"; };
 		371DF175264BA36E0072B380 /* DispatchQueue+Assassin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DispatchQueue+Assassin.swift"; sourceTree = "<group>"; };
 		371DF178264BA8DA0072B380 /* TabBarControllerBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarControllerBuilder.swift; sourceTree = "<group>"; };
+		371DF210264E467F0072B380 /* DefaultConfiguration.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = DefaultConfiguration.plist; sourceTree = "<group>"; };
+		371DF211264E467F0072B380 /* default_app_config.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = default_app_config.json; sourceTree = "<group>"; };
 		37250C05264A2E90002A55C3 /* RootViewControllerBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewControllerBuilder.swift; sourceTree = "<group>"; };
 		37250C0A264A3156002A55C3 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		37250C12264A33C7002A55C3 /* UserService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserService.swift; sourceTree = "<group>"; };
@@ -185,6 +189,8 @@
 				37EB0714264953820089FF63 /* AppDelegate.swift */,
 				37EB0718264953820089FF63 /* ViewController.swift */,
 				37250C22264A3739002A55C3 /* Assassin.db */,
+				371DF211264E467F0072B380 /* default_app_config.json */,
+				371DF210264E467F0072B380 /* DefaultConfiguration.plist */,
 				37EB071D264953870089FF63 /* Assets.xcassets */,
 				37EB071F264953870089FF63 /* LaunchScreen.storyboard */,
 				37EB0722264953870089FF63 /* Info.plist */,
@@ -269,6 +275,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				37EB0721264953870089FF63 /* LaunchScreen.storyboard in Resources */,
+				371DF212264E467F0072B380 /* DefaultConfiguration.plist in Resources */,
+				371DF213264E467F0072B380 /* default_app_config.json in Resources */,
 				37250C23264A3739002A55C3 /* Assassin.db in Resources */,
 				37EB071E264953870089FF63 /* Assets.xcassets in Resources */,
 			);

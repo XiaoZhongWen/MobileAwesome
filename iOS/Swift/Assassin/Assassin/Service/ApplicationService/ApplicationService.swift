@@ -14,9 +14,24 @@ class ApplicationService {
     private init() {}
 
     lazy private var applicationConfiguration: ApplicationConfiguration? = { () -> ApplicationConfiguration? in
-        let plist = NSDictionary.init(contentsOfFile: path)
-        let json = plist?.object(forKey: KeyOfConfiguration) as? [String: Any]
-        return ApplicationConfiguration.deserialize(from: json)
+        let mgr = FileManager.default
+        let mainBundlePath = Bundle.main.bundlePath
+        if !mgr.fileExists(atPath: path) {
+            let bPath = mainBundlePath.appending("/DefaultConfiguration.plist")
+            try? mgr.copyItem(atPath: bPath, toPath: path)
+        }
+        var plist:NSMutableDictionary? = NSMutableDictionary.init(contentsOfFile: path)
+        if let json = plist?.object(forKey: KeyOfConfiguration) as? String {
+            return ApplicationConfiguration.deserialize(from: json)
+        } else {
+            let jsonPath = mainBundlePath.appending("/default_app_config.json")
+            do {
+                let json = try String.init(contentsOfFile: jsonPath)
+                plist?.setObject(json, forKey: KeyOfConfiguration as NSCopying)
+                return ApplicationConfiguration.deserialize(from: json)
+            } catch {}
+            return nil
+        }
     }()
 
     /// 获取应用配置
