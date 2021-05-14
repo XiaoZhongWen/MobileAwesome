@@ -7,7 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		37250C06264A2E90002A55C3 /* RootViewControllerGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37250C05264A2E90002A55C3 /* RootViewControllerGenerator.swift */; };
+		371DF161264B8A360072B380 /* ApplicationConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 371DF160264B8A360072B380 /* ApplicationConfiguration.swift */; };
+		371DF16B264B8E1E0072B380 /* ApplicationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 371DF16A264B8E1E0072B380 /* ApplicationService.swift */; };
+		371DF176264BA36E0072B380 /* DispatchQueue+Assassin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 371DF175264BA36E0072B380 /* DispatchQueue+Assassin.swift */; };
+		371DF179264BA8DA0072B380 /* TabBarControllerBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 371DF178264BA8DA0072B380 /* TabBarControllerBuilder.swift */; };
+		37250C06264A2E90002A55C3 /* RootViewControllerBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37250C05264A2E90002A55C3 /* RootViewControllerBuilder.swift */; };
 		37250C0B264A3156002A55C3 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37250C0A264A3156002A55C3 /* LoginViewController.swift */; };
 		37250C13264A33C7002A55C3 /* UserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37250C12264A33C7002A55C3 /* UserService.swift */; };
 		37250C17264A33D5002A55C3 /* UserDao.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37250C16264A33D5002A55C3 /* UserDao.swift */; };
@@ -23,7 +27,11 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		37250C05264A2E90002A55C3 /* RootViewControllerGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewControllerGenerator.swift; sourceTree = "<group>"; };
+		371DF160264B8A360072B380 /* ApplicationConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationConfiguration.swift; sourceTree = "<group>"; };
+		371DF16A264B8E1E0072B380 /* ApplicationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationService.swift; sourceTree = "<group>"; };
+		371DF175264BA36E0072B380 /* DispatchQueue+Assassin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DispatchQueue+Assassin.swift"; sourceTree = "<group>"; };
+		371DF178264BA8DA0072B380 /* TabBarControllerBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarControllerBuilder.swift; sourceTree = "<group>"; };
+		37250C05264A2E90002A55C3 /* RootViewControllerBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewControllerBuilder.swift; sourceTree = "<group>"; };
 		37250C0A264A3156002A55C3 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		37250C12264A33C7002A55C3 /* UserService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserService.swift; sourceTree = "<group>"; };
 		37250C16264A33D5002A55C3 /* UserDao.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDao.swift; sourceTree = "<group>"; };
@@ -54,10 +62,28 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		371DF163264B8DA10072B380 /* ApplicationService */ = {
+			isa = PBXGroup;
+			children = (
+				371DF169264B8E080072B380 /* Models */,
+				371DF16A264B8E1E0072B380 /* ApplicationService.swift */,
+			);
+			path = ApplicationService;
+			sourceTree = "<group>";
+		};
+		371DF169264B8E080072B380 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				371DF160264B8A360072B380 /* ApplicationConfiguration.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		37250C04264A2E69002A55C3 /* Launcher */ = {
 			isa = PBXGroup;
 			children = (
-				37250C05264A2E90002A55C3 /* RootViewControllerGenerator.swift */,
+				37250C05264A2E90002A55C3 /* RootViewControllerBuilder.swift */,
+				371DF178264BA8DA0072B380 /* TabBarControllerBuilder.swift */,
 			);
 			path = Launcher;
 			sourceTree = "<group>";
@@ -89,8 +115,10 @@
 		37250C10264A339B002A55C3 /* Service */ = {
 			isa = PBXGroup;
 			children = (
+				371DF163264B8DA10072B380 /* ApplicationService */,
 				37250C1A264A359D002A55C3 /* DBService */,
 				37250C11264A339B002A55C3 /* UserService */,
+				371DF175264BA36E0072B380 /* DispatchQueue+Assassin.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -296,12 +324,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				37250C0B264A3156002A55C3 /* LoginViewController.swift in Sources */,
+				371DF161264B8A360072B380 /* ApplicationConfiguration.swift in Sources */,
+				371DF16B264B8E1E0072B380 /* ApplicationService.swift in Sources */,
 				37250C13264A33C7002A55C3 /* UserService.swift in Sources */,
-				37250C06264A2E90002A55C3 /* RootViewControllerGenerator.swift in Sources */,
+				37250C06264A2E90002A55C3 /* RootViewControllerBuilder.swift in Sources */,
 				37250C1C264A35AE002A55C3 /* DBService.swift in Sources */,
 				37250C17264A33D5002A55C3 /* UserDao.swift in Sources */,
 				37250C2B264A7A4E002A55C3 /* Account.swift in Sources */,
+				371DF176264BA36E0072B380 /* DispatchQueue+Assassin.swift in Sources */,
 				37EB0719264953820089FF63 /* ViewController.swift in Sources */,
+				371DF179264BA8DA0072B380 /* TabBarControllerBuilder.swift in Sources */,
 				37250C27264A3DB8002A55C3 /* String.swift in Sources */,
 				37EB0715264953820089FF63 /* AppDelegate.swift in Sources */,
 			);

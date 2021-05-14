@@ -12,3 +12,8 @@ let UserID = "userID"
 let Password = "password"
 let HeadUrl = "headUrl"
 let Nickname = "nickname"
+
+let PlistFileNameOfConfiguration = "DefaultConfiguration.plist"
+let KeyOfConfiguration = "ApplicationConfiguration"
+
+let ServiceDispatchQueue = "ServiceDispatchQueue"

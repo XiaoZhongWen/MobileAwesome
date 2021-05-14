@@ -8,5 +8,6 @@ target 'Assassin' do
   # Pods for Assassin
   pod 'FMDB'
   pod 'HandyJSON'
+  pod 'Moya'
 
 end
