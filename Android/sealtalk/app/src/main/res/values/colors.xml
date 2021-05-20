@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">@color/main_theme_color</color>
+    <color name="colorPrimaryDark">#0083e0</color>
+    <color name="colorAccent">#0083e0</color>
+    <color name="main_theme_color">#0195ff</color>
+
+    <color name="seal_bg">#f0f0f6</color>
+    <color name="white">#ffffff</color>
+
+</resources>
