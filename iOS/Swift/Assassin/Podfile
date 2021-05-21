@@ -9,6 +9,9 @@ target 'Assassin' do
   pod 'FMDB'
   pod 'HandyJSON'
   pod 'Moya'
+  pod 'SnapKit'
+  pod 'RxSwift'
+  pod 'RxCocoa'
   pod 'LookinServer', :configurations => ['Debug']
 
 end

@@ -13,6 +13,11 @@
 		371DF179264BA8DA0072B380 /* TabBarControllerBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 371DF178264BA8DA0072B380 /* TabBarControllerBuilder.swift */; };
 		371DF212264E467F0072B380 /* DefaultConfiguration.plist in Resources */ = {isa = PBXBuildFile; fileRef = 371DF210264E467F0072B380 /* DefaultConfiguration.plist */; };
 		371DF213264E467F0072B380 /* default_app_config.json in Resources */ = {isa = PBXBuildFile; fileRef = 371DF211264E467F0072B380 /* default_app_config.json */; };
+		3720D92826576C1C00695B39 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3720D92726576C1C00695B39 /* Color.swift */; };
+		3720D92C26577ED800695B39 /* UIColor+Assassin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3720D92B26577ED800695B39 /* UIColor+Assassin.swift */; };
+		3720D930265781E300695B39 /* CornerButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3720D92F265781E300695B39 /* CornerButton.swift */; };
+		3720D9332657845A00695B39 /* Font.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3720D9322657845A00695B39 /* Font.swift */; };
+		3720D9362657893D00695B39 /* UIImage+Assassin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3720D9352657893D00695B39 /* UIImage+Assassin.swift */; };
 		37250C06264A2E90002A55C3 /* RootViewControllerBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37250C05264A2E90002A55C3 /* RootViewControllerBuilder.swift */; };
 		37250C0B264A3156002A55C3 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37250C0A264A3156002A55C3 /* LoginViewController.swift */; };
 		37250C13264A33C7002A55C3 /* UserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37250C12264A33C7002A55C3 /* UserService.swift */; };
@@ -21,6 +26,9 @@
 		37250C23264A3739002A55C3 /* Assassin.db in Resources */ = {isa = PBXBuildFile; fileRef = 37250C22264A3739002A55C3 /* Assassin.db */; };
 		37250C27264A3DB8002A55C3 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37250C26264A3DB8002A55C3 /* String.swift */; };
 		37250C2B264A7A4E002A55C3 /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37250C2A264A7A4E002A55C3 /* Account.swift */; };
+		372A4D9C2654CBFF0080BEAA /* BaseTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 372A4D9B2654CBFF0080BEAA /* BaseTextField.swift */; };
+		372A4DA3265512AF0080BEAA /* Size.swift in Sources */ = {isa = PBXBuildFile; fileRef = 372A4DA2265512AF0080BEAA /* Size.swift */; };
+		372A4DA6265514D90080BEAA /* Layout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 372A4DA5265514D90080BEAA /* Layout.swift */; };
 		37EB0715264953820089FF63 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37EB0714264953820089FF63 /* AppDelegate.swift */; };
 		37EB0719264953820089FF63 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37EB0718264953820089FF63 /* ViewController.swift */; };
 		37EB071E264953870089FF63 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 37EB071D264953870089FF63 /* Assets.xcassets */; };
@@ -35,6 +43,11 @@
 		371DF178264BA8DA0072B380 /* TabBarControllerBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarControllerBuilder.swift; sourceTree = "<group>"; };
 		371DF210264E467F0072B380 /* DefaultConfiguration.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = DefaultConfiguration.plist; sourceTree = "<group>"; };
 		371DF211264E467F0072B380 /* default_app_config.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = default_app_config.json; sourceTree = "<group>"; };
+		3720D92726576C1C00695B39 /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
+		3720D92B26577ED800695B39 /* UIColor+Assassin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Assassin.swift"; sourceTree = "<group>"; };
+		3720D92F265781E300695B39 /* CornerButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CornerButton.swift; sourceTree = "<group>"; };
+		3720D9322657845A00695B39 /* Font.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Font.swift; sourceTree = "<group>"; };
+		3720D9352657893D00695B39 /* UIImage+Assassin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Assassin.swift"; sourceTree = "<group>"; };
 		37250C05264A2E90002A55C3 /* RootViewControllerBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewControllerBuilder.swift; sourceTree = "<group>"; };
 		37250C0A264A3156002A55C3 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		37250C12264A33C7002A55C3 /* UserService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserService.swift; sourceTree = "<group>"; };
@@ -43,6 +56,9 @@
 		37250C22264A3739002A55C3 /* Assassin.db */ = {isa = PBXFileReference; lastKnownFileType = file; path = Assassin.db; sourceTree = "<group>"; };
 		37250C26264A3DB8002A55C3 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		37250C2A264A7A4E002A55C3 /* Account.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account.swift; sourceTree = "<group>"; };
+		372A4D9B2654CBFF0080BEAA /* BaseTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTextField.swift; sourceTree = "<group>"; };
+		372A4DA2265512AF0080BEAA /* Size.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Size.swift; sourceTree = "<group>"; };
+		372A4DA5265514D90080BEAA /* Layout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Layout.swift; sourceTree = "<group>"; };
 		37EB0711264953820089FF63 /* Assassin.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Assassin.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		37EB0714264953820089FF63 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		37EB0718264953820089FF63 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -81,6 +97,15 @@
 				371DF160264B8A360072B380 /* ApplicationConfiguration.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		3720D92A26577EB700695B39 /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				3720D92B26577ED800695B39 /* UIColor+Assassin.swift */,
+				3720D9352657893D00695B39 /* UIImage+Assassin.swift */,
+			);
+			path = Extension;
 			sourceTree = "<group>";
 		};
 		37250C04264A2E69002A55C3 /* Launcher */ = {
@@ -148,6 +173,10 @@
 			isa = PBXGroup;
 			children = (
 				37250C26264A3DB8002A55C3 /* String.swift */,
+				372A4DA2265512AF0080BEAA /* Size.swift */,
+				372A4DA5265514D90080BEAA /* Layout.swift */,
+				3720D92726576C1C00695B39 /* Color.swift */,
+				3720D9322657845A00695B39 /* Font.swift */,
 			);
 			path = Constants;
 			sourceTree = "<group>";
@@ -158,6 +187,15 @@
 				37250C2A264A7A4E002A55C3 /* Account.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		372A4D9A2654CB580080BEAA /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				372A4D9B2654CBFF0080BEAA /* BaseTextField.swift */,
+				3720D92F265781E300695B39 /* CornerButton.swift */,
+			);
+			path = Components;
 			sourceTree = "<group>";
 		};
 		37EB0708264953820089FF63 = {
@@ -181,6 +219,8 @@
 		37EB0713264953820089FF63 /* Assassin */ = {
 			isa = PBXGroup;
 			children = (
+				3720D92A26577EB700695B39 /* Extension */,
+				372A4D9A2654CB580080BEAA /* Components */,
 				37250C25264A3D99002A55C3 /* Constants */,
 				37250C0E264A339B002A55C3 /* Dao */,
 				37250C10264A339B002A55C3 /* Service */,
@@ -331,19 +371,27 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				372A4DA3265512AF0080BEAA /* Size.swift in Sources */,
+				372A4DA6265514D90080BEAA /* Layout.swift in Sources */,
+				3720D9332657845A00695B39 /* Font.swift in Sources */,
+				3720D930265781E300695B39 /* CornerButton.swift in Sources */,
 				37250C0B264A3156002A55C3 /* LoginViewController.swift in Sources */,
 				371DF161264B8A360072B380 /* ApplicationConfiguration.swift in Sources */,
+				372A4D9C2654CBFF0080BEAA /* BaseTextField.swift in Sources */,
 				371DF16B264B8E1E0072B380 /* ApplicationService.swift in Sources */,
 				37250C13264A33C7002A55C3 /* UserService.swift in Sources */,
 				37250C06264A2E90002A55C3 /* RootViewControllerBuilder.swift in Sources */,
+				3720D92C26577ED800695B39 /* UIColor+Assassin.swift in Sources */,
 				37250C1C264A35AE002A55C3 /* DBService.swift in Sources */,
 				37250C17264A33D5002A55C3 /* UserDao.swift in Sources */,
 				37250C2B264A7A4E002A55C3 /* Account.swift in Sources */,
+				3720D9362657893D00695B39 /* UIImage+Assassin.swift in Sources */,
 				371DF176264BA36E0072B380 /* DispatchQueue+Assassin.swift in Sources */,
 				37EB0719264953820089FF63 /* ViewController.swift in Sources */,
 				371DF179264BA8DA0072B380 /* TabBarControllerBuilder.swift in Sources */,
 				37250C27264A3DB8002A55C3 /* String.swift in Sources */,
 				37EB0715264953820089FF63 /* AppDelegate.swift in Sources */,
+				3720D92826576C1C00695B39 /* Color.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

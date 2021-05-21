@@ -54,7 +54,7 @@ extension ZXLoginViewController {
         loginButton.layer.cornerRadius = Login_Btn_CornerRadius
         let headerSize = headerView.bounds.size.width
         headerView.roundCorners(.allCorners, headerSize / 2)
-
+        
         let loginViewModel = ZXLoginViewModel.init(input: (
             username: usernameTextfield.rx.text.orEmpty.asObservable(),
             password: passwordTextfield.rx.text.orEmpty.asObservable(),

@@ -17,3 +17,7 @@ let PlistFileNameOfConfiguration = "DefaultConfiguration.plist"
 let KeyOfConfiguration = "ApplicationConfiguration"
 
 let ServiceDispatchQueue = "ServiceDispatchQueue"
+
+let Account_zh = "账号"
+let Pwd_zh = "密码"
+let Login_zh = "登录"
