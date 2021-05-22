@@ -7,8 +7,10 @@
 
 import UIKit
 import SnapKit
+import RxSwift
+import RxCocoa
 
-class LoginViewController: UIViewController {
+class LoginViewController: ViewController {
     private let imgView: UIImageView
     private let userIdTxtField: BaseTextField
     private let pwdTxtField: BaseTextField
@@ -28,7 +30,7 @@ class LoginViewController: UIViewController {
     }
 }
 
-// Mark: - life cycle
+// MARK: - life cycle
 extension LoginViewController {
     override func viewDidLoad() {
         self.view.addSubview(self.imgView)
@@ -61,10 +63,31 @@ extension LoginViewController {
             make.left.right.equalTo(self.pwdTxtField)
             make.height.equalTo(Login_Btn_Height)
         }
+        
+        self.bindVM()
     }
 }
 
-// Mark: - initialize
+// MARK: - private method
+extension LoginViewController {
+    func bindVM() {
+        let loginService = LoginService.init()
+        let validataService = LoginValidateService.init()
+        let loginViewModel = LoginViewModel.init(input:
+                                                    (username: self.userIdTxtField.rx.text.orEmpty.asDriver(),
+                                                     password: self.pwdTxtField.rx.text.orEmpty.asDriver(),
+                                                     loginTaps: self.loginBtn.rx.tap.asDriver()),
+                                                 dependency:
+                                                    (loginValidateService: validataService,
+                                                     loginApi: loginService))
+        loginViewModel.signupEnable.drive(self.loginBtn.rx.isEnabled).disposed(by: disposeBag)
+        loginViewModel.signedIn.drive(onNext: { signedIn in
+            
+        }).disposed(by: disposeBag)
+    }
+}
+
+// MARK: - initialize
 extension LoginViewController {
     func initialize() {
         imgView.image = UIImage.init(named: "login_icon")?.withCorner(CGFloat(Login_Icon_Size) * 0.5)
