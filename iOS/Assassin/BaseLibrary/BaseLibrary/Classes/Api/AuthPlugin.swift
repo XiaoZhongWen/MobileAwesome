@@ -21,5 +21,6 @@ struct AuthPlugin: PluginType {
     }
     
     func willSend(_ request: RequestType, target: TargetType) {
+        
     }
 }

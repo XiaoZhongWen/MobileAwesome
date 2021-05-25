@@ -7,6 +7,8 @@
 
 import Foundation
 
+let TOKEN_KEY = "TOKEN"
+
 let AssassinDBName = "Assassin.db"
 let UserID = "userID"
 let Password = "password"

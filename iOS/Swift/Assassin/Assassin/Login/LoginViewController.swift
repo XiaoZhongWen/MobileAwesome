@@ -80,7 +80,16 @@ extension LoginViewController {
                                                  dependency:
                                                     (loginValidateService: validataService,
                                                      loginApi: loginService))
-        loginViewModel.signupEnable.drive(self.loginBtn.rx.isEnabled).disposed(by: disposeBag)
+
+        loginViewModel.signupEnable.drive(onNext: { enable in
+            self.loginBtn.isUserInteractionEnabled = enable
+            if enable {
+                self.loginBtn.alpha = 1.0
+            } else {
+                self.loginBtn.alpha = 0.5
+            }
+        }).disposed(by: disposeBag)
+
         loginViewModel.signedIn.drive(onNext: { signedIn in
             
         }).disposed(by: disposeBag)
@@ -98,6 +107,11 @@ extension LoginViewController {
         userIdTxtField.font = UIFont.systemFont(ofSize: FontSize_Level_3)
         pwdTxtField.font = UIFont.systemFont(ofSize: FontSize_Level_3)
         loginBtn.titleLabel?.font = UIFont.systemFont(ofSize: FontSize_Level_4)
+        loginBtn.isUserInteractionEnabled = false
+        loginBtn.alpha = 0.5
+
+        userIdTxtField.backgroundColor = BackgroundColor
+        pwdTxtField.backgroundColor = BackgroundColor
 
         let phoneNumberIcon = UIImage.init(named: "icon_phonenumber")
         let phoneNumberBtn = UIButton.init(type: .custom)

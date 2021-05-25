@@ -10,6 +10,7 @@ import RxCocoa
 
 class LoginService: LoginApi {
     func signup(_ username: String, _ password: String) -> Driver<Bool> {
+        
         return Observable.create { (observer) -> Disposable in
             observer.onNext(true)
             return Disposables.create()
