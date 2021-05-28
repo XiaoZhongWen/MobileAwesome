@@ -23,4 +23,8 @@ struct AuthPlugin: PluginType {
     func willSend(_ request: RequestType, target: TargetType) {
         
     }
+
+    func didReceive(_ result: Result<Response, MoyaError>, target: TargetType) {
+        print()
+    }
 }

@@ -21,7 +21,7 @@ protocol ValidationService {
 }
 
 protocol LoginApi {
-    func signup(_ username: String, _ password: String) -> Driver<Bool>
+    func signup(_ username: String, _ password: String) -> Single<Bool>
 }
 
 extension ValidationResult {

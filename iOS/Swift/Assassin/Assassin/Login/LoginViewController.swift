@@ -76,7 +76,7 @@ extension LoginViewController {
         let loginViewModel = LoginViewModel.init(input:
                                                     (username: self.userIdTxtField.rx.text.orEmpty.asDriver(),
                                                      password: self.pwdTxtField.rx.text.orEmpty.asDriver(),
-                                                     loginTaps: self.loginBtn.rx.tap.asDriver()),
+                                                     loginTaps: self.loginBtn.rx.tap.asSignal()),
                                                  dependency:
                                                     (loginValidateService: validataService,
                                                      loginApi: loginService))
@@ -91,7 +91,7 @@ extension LoginViewController {
         }).disposed(by: disposeBag)
 
         loginViewModel.signedIn.drive(onNext: { signedIn in
-            
+            print(signedIn)
         }).disposed(by: disposeBag)
     }
 }

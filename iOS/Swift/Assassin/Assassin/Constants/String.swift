@@ -8,7 +8,7 @@
 import Foundation
 
 let TOKEN_KEY = "TOKEN"
-
+let Domain = "cike.com"
 let AssassinDBName = "Assassin.db"
 let UserID = "userID"
 let Password = "password"

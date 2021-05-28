@@ -26,7 +26,7 @@ class LoginViewModel {
     init(input: (
             username: Driver<String>,
             password: Driver<String>,
-            loginTaps: Driver<Void>
+            loginTaps: Signal<Void>
         ),
         dependency:(
             loginValidateService: ValidationService,
@@ -57,9 +57,9 @@ class LoginViewModel {
         let usernameAndPassword = Driver.combineLatest(username, password) {
             (username: $0, password: $1)
         }
-        
+
         signedIn = loginTaps.withLatestFrom(usernameAndPassword).flatMapLatest { pair in
-            return loginApi.signup(pair.username, pair.password)
+            return loginApi.signup(pair.username, pair.password).asDriver(onErrorJustReturn: false)
         }
     }
     

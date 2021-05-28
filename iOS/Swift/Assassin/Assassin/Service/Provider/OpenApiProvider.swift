@@ -6,7 +6,18 @@
 //
 
 import Moya
+import RxSwift
+import Result
 
-class OpenApiProvider: BaseProvider<OpenApi> {
-    
+class OpenApiProvider {
+    static let shared = OpenApiProvider.init()
+    private init() {}
+
+    func fetchToken(_ username:String, _ password: String, completion: @escaping Completion) {
+        let basicAuthCredentials = (username + ":" + password).data(using: .utf8)
+        let token = basicAuthCredentials?.base64EncodedString(options: .lineLength76Characters)
+        let plugin = AuthorizedPlugin.init(token)
+        let provider = MoyaProvider<OpenApi>(plugins: [plugin])
+        provider.request(.fetchToken, completion: completion)
+    }
 }

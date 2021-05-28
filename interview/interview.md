@@ -1,5 +1,13 @@
 <center><h1>interview</h1></center>
 
+**review list**
+
+* 代理模式
+* 元类的作用
+* OC对象的内存布局
+
+
+
 ## 元类的作用
 
 ### Class的定义
@@ -31,6 +39,85 @@
 
 
 ## 一个OC对象如何进行内存布局
+
+```c
+// Class的定义
+typedef struct objc_class *Class;
+
+// objc_class的定义
+struct objc_class : objc_object {
+  // Class ISA;
+    Class superclass;
+    cache_t cache;             // formerly cache pointer and vtable
+    class_data_bits_t bits;    // class_rw_t * plus custom rr/alloc flags
+
+    class_rw_t *data() const {
+        return bits.data();
+    }
+}
+
+// objc_object的定义
+struct objc_object {
+private:
+    isa_t isa;
+}
+
+// class_data_bits_t的定义
+struct class_data_bits_t {
+  class_rw_t* data() const {
+        return (class_rw_t *)(bits & FAST_DATA_MASK);
+    }
+}
+
+// class_rw_t的定义
+struct class_rw_t {
+  // Be warned that Symbolication knows the layout of this structure.
+    uint32_t flags;
+    uint16_t version;
+    uint16_t witness;
+
+    const class_ro_t *ro;
+
+    method_array_t methods;
+    property_array_t properties;
+    protocol_array_t protocols;
+
+    Class firstSubclass;
+    Class nextSiblingClass;
+
+    char *demangledName;
+
+#if SUPPORT_INDEXED_ISA
+    uint32_t index;
+#endif
+}
+
+// class_ro_t
+struct class_ro_t {
+    uint32_t flags;
+    uint32_t instanceStart;
+    uint32_t instanceSize;
+#ifdef __LP64__
+    uint32_t reserved;
+#endif
+
+    const uint8_t * ivarLayout;
+    
+    const char * name;
+    method_list_t * baseMethodList;
+    protocol_list_t * baseProtocols;
+    const ivar_list_t * ivars;
+
+    const uint8_t * weakIvarLayout;
+    property_list_t *baseProperties;
+
+    method_list_t *baseMethods() const {
+        return baseMethodList;
+    }
+};
+```
+
+
 
 - 所有父类的成员变量和自己的成员变量都会存放在该对象所对应的存储空间中.
 - 每一个对象内部都有一个isa指针,指向他的类对象,类对象中存放着本对象的
@@ -2015,8 +2102,104 @@ public class Adaptor implements ITarget {
 }
 ```
 
-
 #### 代理模式
+
+<img src="../resources/iOS/cycle_refrence.png" alt="cycle_refrence" style="zoom:25%;" />
+
+```objective-c
+// NSTimer 内存泄漏问题
+//  WeakProxy.h
+//  tt
+//
+//  Created by 肖仲文 on 2021/5/25.
+//  Copyright © 2021 肖仲文. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+
+NS_ASSUME_NONNULL_BEGIN
+
+@interface WeakProxy : NSProxy
+
++ (instancetype)proxyWithTarget:(id)target;
+
+@end
+  
+//  WeakProxy.m
+//  tt
+//
+//  Created by 肖仲文 on 2021/5/25.
+//  Copyright © 2021 肖仲文. All rights reserved.
+//
+
+#import "WeakProxy.h"
+#import "Target_NoTargetAction.h"
+
+@interface WeakProxy()
+
+@property (weak,nonatomic,readonly) id target;
+
+@end
+
+@implementation WeakProxy
+
+- (instancetype)initWithTarget:(id)target {
+    _target = target;
+    return self;
+}
+
++ (instancetype)proxyWithTarget:(id)target {
+    return [[self alloc] initWithTarget:target];
+}
+
+- (void)forwardInvocation:(NSInvocation *)invocation {
+    SEL sel = [invocation selector];
+    if ([self.target respondsToSelector:sel]) {
+        [invocation invokeWithTarget:self.target];
+    }
+}
+
+- (NSMethodSignature *)methodSignatureForSelector:(SEL)sel {
+    NSMethodSignature* methodSig = [self.target methodSignatureForSelector:sel];
+    if (methodSig == nil) {
+        id target = [Target_NoTargetAction new];
+        sel = @selector(Action_response:);
+        methodSig = [target methodSignatureForSelector:sel];
+        NSDictionary *param = @{};
+        NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:methodSig];
+        [invocation setArgument:&param atIndex:2];
+        [invocation setSelector:sel];
+        [invocation setTarget:target];
+        [invocation invoke];
+        return methodSig;
+    }
+    return [self.target methodSignatureForSelector:sel];
+}
+
+#import "TestViewController.h"
+#import "WeakProxy.h"
+
+@interface TestViewController ()
+
+@property (nonatomic, strong) NSTimer *timer;
+@property (nonatomic, strong) WeakProxy *proxy;
+
+@end
+
+@implementation TestViewController
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    // Do any additional setup after loading the view.
+
+    self.proxy = [WeakProxy proxyWithTarget:self];
+    self.timer = [NSTimer timerWithTimeInterval:1.0 target:self.proxy selector:@selector(handle:) userInfo:nil repeats:YES];
+
+    [[NSRunLoop mainRunLoop] addTimer:self.timer forMode:NSDefaultRunLoopMode];
+}
+```
+
+
 
 ```java
   // 在不改变原始类（或叫被代理类）代码的情况下，通过引入代理类来给原始类附加功能

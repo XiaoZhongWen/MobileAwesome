@@ -6,6 +6,7 @@
 //
 
 import Moya
+import Result
 
 struct AuthorizedPlugin: PluginType {
     let token: String?
@@ -22,12 +23,16 @@ struct AuthorizedPlugin: PluginType {
         }
     }
 
-    func prepare(_ request: URLRequest, target: AuthorizedTargetType) -> URLRequest {
-        guard let tokenStr = token, let authType = target.authType.value  else {
+    func prepare(_ request: URLRequest, target: TargetType) -> URLRequest {
+        guard let tokenStr = token, let authType = (target as? AuthorizedTargetType)?.authType.value  else {
             return request
         }
         var request = request
         request.addValue(authType + " " + tokenStr, forHTTPHeaderField: "Authorization")
         return request
+    }
+
+    func didReceive(_ result: Result<Response, MoyaError>, target: TargetType) {
+        print(result)
     }
 }
