@@ -18,6 +18,22 @@ class OpenApiProvider {
         let token = basicAuthCredentials?.base64EncodedString(options: .lineLength76Characters)
         let plugin = AuthorizedPlugin.init(token)
         let provider = MoyaProvider<OpenApi>(plugins: [plugin])
+        provider.request(.fetchToken) { result in
+            switch result {
+            case let .success(response):
+                if response.statusCode == 200 {
+                    if let json = try? response.mapString() {
+                        let token = Token.deserialize(from: json)
+                        UserDefaults.init().setValue(token?.toJSON(), forKey: TOKEN_KEY)
+                    }
+                }
+                completion(Result.init(value: response))
+                break
+            case let .failure(error):
+                completion(Result.init(error: error))
+                break
+            }
+        }
         provider.request(.fetchToken, completion: completion)
     }
 }

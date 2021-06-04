@@ -22,6 +22,11 @@
 		371F0DE2265B652E009B8434 /* String+Assassin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 371F0DE1265B652E009B8434 /* String+Assassin.swift */; };
 		371F0DE5265B763F009B8434 /* AuthorizedPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 371F0DE4265B763F009B8434 /* AuthorizedPlugin.swift */; };
 		371F0DE9265B78E3009B8434 /* Token.swift in Sources */ = {isa = PBXBuildFile; fileRef = 371F0DE8265B78E3009B8434 /* Token.swift */; };
+		37209FC5266871CB0095DB74 /* TabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37209FC4266871CB0095DB74 /* TabViewController.swift */; };
+		37209FCC266878C70095DB74 /* ConversationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37209FCB266878C70095DB74 /* ConversationViewController.swift */; };
+		37209FD0266878FE0095DB74 /* ContactViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37209FCF266878FE0095DB74 /* ContactViewController.swift */; };
+		37209FD3266879180095DB74 /* MeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37209FD2266879180095DB74 /* MeViewController.swift */; };
+		37209FD7266879280095DB74 /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37209FD6266879280095DB74 /* ShareViewController.swift */; };
 		3720D92826576C1C00695B39 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3720D92726576C1C00695B39 /* Color.swift */; };
 		3720D92C26577ED800695B39 /* UIColor+Assassin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3720D92B26577ED800695B39 /* UIColor+Assassin.swift */; };
 		3720D9332657845A00695B39 /* Font.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3720D9322657845A00695B39 /* Font.swift */; };
@@ -41,6 +46,17 @@
 		375ADE282658E387001871C0 /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 375ADE272658E387001871C0 /* Protocols.swift */; };
 		375ADE4526590351001871C0 /* LoginService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 375ADE4426590351001871C0 /* LoginService.swift */; };
 		375ADE4926590518001871C0 /* LoginValidateService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 375ADE4826590518001871C0 /* LoginValidateService.swift */; };
+		3776BA76266A221F00E7EE97 /* POAPinyin.m in Sources */ = {isa = PBXBuildFile; fileRef = 3776BA70266A221F00E7EE97 /* POAPinyin.m */; };
+		3776BA77266A221F00E7EE97 /* NSString+FirstLetter.m in Sources */ = {isa = PBXBuildFile; fileRef = 3776BA72266A221F00E7EE97 /* NSString+FirstLetter.m */; };
+		3776BA78266A221F00E7EE97 /* NSArray+FirstLetterArray.m in Sources */ = {isa = PBXBuildFile; fileRef = 3776BA73266A221F00E7EE97 /* NSArray+FirstLetterArray.m */; };
+		3776BA79266A221F00E7EE97 /* pinyin.m in Sources */ = {isa = PBXBuildFile; fileRef = 3776BA75266A221F00E7EE97 /* pinyin.m */; };
+		3776BA7D266A245B00E7EE97 /* SectionOfContactModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3776BA7C266A245B00E7EE97 /* SectionOfContactModel.swift */; };
+		37A700C02669C5BF007068DA /* ContactModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A700BF2669C5BF007068DA /* ContactModel.swift */; };
+		37A700C52669C97A007068DA /* ContactService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A700C42669C97A007068DA /* ContactService.swift */; };
+		37A700CA2669C9BD007068DA /* ContactDao.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A700C92669C9BD007068DA /* ContactDao.swift */; };
+		37A700CE2669D118007068DA /* BaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A700CD2669D118007068DA /* BaseService.swift */; };
+		37A700DF2669E046007068DA /* State.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A700DE2669E046007068DA /* State.swift */; };
+		37BEA62F26687FD500E1A58D /* TabBarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37BEA62E26687FD500E1A58D /* TabBarItem.swift */; };
 		37EB0715264953820089FF63 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37EB0714264953820089FF63 /* AppDelegate.swift */; };
 		37EB0719264953820089FF63 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37EB0718264953820089FF63 /* ViewController.swift */; };
 		37EB071E264953870089FF63 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 37EB071D264953870089FF63 /* Assets.xcassets */; };
@@ -64,6 +80,11 @@
 		371F0DE1265B652E009B8434 /* String+Assassin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Assassin.swift"; sourceTree = "<group>"; };
 		371F0DE4265B763F009B8434 /* AuthorizedPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizedPlugin.swift; sourceTree = "<group>"; };
 		371F0DE8265B78E3009B8434 /* Token.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Token.swift; sourceTree = "<group>"; };
+		37209FC4266871CB0095DB74 /* TabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabViewController.swift; sourceTree = "<group>"; };
+		37209FCB266878C70095DB74 /* ConversationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationViewController.swift; sourceTree = "<group>"; };
+		37209FCF266878FE0095DB74 /* ContactViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactViewController.swift; sourceTree = "<group>"; };
+		37209FD2266879180095DB74 /* MeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeViewController.swift; sourceTree = "<group>"; };
+		37209FD6266879280095DB74 /* ShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
 		3720D92726576C1C00695B39 /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 		3720D92B26577ED800695B39 /* UIColor+Assassin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Assassin.swift"; sourceTree = "<group>"; };
 		3720D9322657845A00695B39 /* Font.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Font.swift; sourceTree = "<group>"; };
@@ -83,6 +104,22 @@
 		375ADE272658E387001871C0 /* Protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Protocols.swift; sourceTree = "<group>"; };
 		375ADE4426590351001871C0 /* LoginService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginService.swift; sourceTree = "<group>"; };
 		375ADE4826590518001871C0 /* LoginValidateService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginValidateService.swift; sourceTree = "<group>"; };
+		3776BA4D266A212300E7EE97 /* Assassin-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Assassin-Bridging-Header.h"; sourceTree = "<group>"; };
+		3776BA6E266A221F00E7EE97 /* NSArray+FirstLetterArray.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+FirstLetterArray.h"; sourceTree = "<group>"; };
+		3776BA6F266A221F00E7EE97 /* NSString+FirstLetter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+FirstLetter.h"; sourceTree = "<group>"; };
+		3776BA70266A221F00E7EE97 /* POAPinyin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = POAPinyin.m; sourceTree = "<group>"; };
+		3776BA71266A221F00E7EE97 /* pinyin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pinyin.h; sourceTree = "<group>"; };
+		3776BA72266A221F00E7EE97 /* NSString+FirstLetter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+FirstLetter.m"; sourceTree = "<group>"; };
+		3776BA73266A221F00E7EE97 /* NSArray+FirstLetterArray.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+FirstLetterArray.m"; sourceTree = "<group>"; };
+		3776BA74266A221F00E7EE97 /* POAPinyin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = POAPinyin.h; sourceTree = "<group>"; };
+		3776BA75266A221F00E7EE97 /* pinyin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = pinyin.m; sourceTree = "<group>"; };
+		3776BA7C266A245B00E7EE97 /* SectionOfContactModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionOfContactModel.swift; sourceTree = "<group>"; };
+		37A700BF2669C5BF007068DA /* ContactModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactModel.swift; sourceTree = "<group>"; };
+		37A700C42669C97A007068DA /* ContactService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactService.swift; sourceTree = "<group>"; };
+		37A700C92669C9BD007068DA /* ContactDao.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactDao.swift; sourceTree = "<group>"; };
+		37A700CD2669D118007068DA /* BaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseService.swift; sourceTree = "<group>"; };
+		37A700DE2669E046007068DA /* State.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = State.swift; sourceTree = "<group>"; };
+		37BEA62E26687FD500E1A58D /* TabBarItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarItem.swift; sourceTree = "<group>"; };
 		37EB0711264953820089FF63 /* Assassin.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Assassin.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		37EB0714264953820089FF63 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		37EB0718264953820089FF63 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -147,8 +184,53 @@
 			children = (
 				3735E2F92660EFBA00743EEE /* ActivityIndicator.swift */,
 				371F0DE8265B78E3009B8434 /* Token.swift */,
+				37A700DE2669E046007068DA /* State.swift */,
 			);
 			path = Common;
+			sourceTree = "<group>";
+		};
+		37209FC3266871AC0095DB74 /* Tabs */ = {
+			isa = PBXGroup;
+			children = (
+				37209FC4266871CB0095DB74 /* TabViewController.swift */,
+				37209FC9266878A10095DB74 /* Contact */,
+				37209FC7266878A10095DB74 /* Me */,
+				37209FC8266878A10095DB74 /* Message */,
+				37209FCA266878A10095DB74 /* Share */,
+			);
+			path = Tabs;
+			sourceTree = "<group>";
+		};
+		37209FC7266878A10095DB74 /* Me */ = {
+			isa = PBXGroup;
+			children = (
+				37209FD2266879180095DB74 /* MeViewController.swift */,
+			);
+			path = Me;
+			sourceTree = "<group>";
+		};
+		37209FC8266878A10095DB74 /* Message */ = {
+			isa = PBXGroup;
+			children = (
+				37209FCB266878C70095DB74 /* ConversationViewController.swift */,
+			);
+			path = Message;
+			sourceTree = "<group>";
+		};
+		37209FC9266878A10095DB74 /* Contact */ = {
+			isa = PBXGroup;
+			children = (
+				37209FCF266878FE0095DB74 /* ContactViewController.swift */,
+			);
+			path = Contact;
+			sourceTree = "<group>";
+		};
+		37209FCA266878A10095DB74 /* Share */ = {
+			isa = PBXGroup;
+			children = (
+				37209FD6266879280095DB74 /* ShareViewController.swift */,
+			);
+			path = Share;
 			sourceTree = "<group>";
 		};
 		3720D92A26577EB700695B39 /* Extension */ = {
@@ -183,6 +265,7 @@
 		37250C0E264A339B002A55C3 /* Dao */ = {
 			isa = PBXGroup;
 			children = (
+				37A700C82669C9A9007068DA /* ContactDao */,
 				37250C0F264A339B002A55C3 /* UserDao */,
 			);
 			path = Dao;
@@ -199,12 +282,15 @@
 		37250C10264A339B002A55C3 /* Service */ = {
 			isa = PBXGroup;
 			children = (
+				3776BA6D266A221F00E7EE97 /* HTLetterManger */,
+				37A700C22669C92A007068DA /* ContactService */,
 				371F0DCD265B5F6F009B8434 /* Provider */,
 				375ADE4326590336001871C0 /* LoginService */,
 				371DF163264B8DA10072B380 /* ApplicationService */,
 				37250C1A264A359D002A55C3 /* DBService */,
 				37250C11264A339B002A55C3 /* UserService */,
 				371DF175264BA36E0072B380 /* DispatchQueue+Assassin.swift */,
+				37A700CD2669D118007068DA /* BaseService.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -251,6 +337,7 @@
 			children = (
 				371F0DC8265B55D9009B8434 /* BaseTextField.swift */,
 				371F0DC9265B55D9009B8434 /* CornerButton.swift */,
+				37BEA62E26687FD500E1A58D /* TabBarItem.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -270,6 +357,47 @@
 				375ADE4826590518001871C0 /* LoginValidateService.swift */,
 			);
 			path = LoginService;
+			sourceTree = "<group>";
+		};
+		3776BA6D266A221F00E7EE97 /* HTLetterManger */ = {
+			isa = PBXGroup;
+			children = (
+				3776BA6E266A221F00E7EE97 /* NSArray+FirstLetterArray.h */,
+				3776BA6F266A221F00E7EE97 /* NSString+FirstLetter.h */,
+				3776BA70266A221F00E7EE97 /* POAPinyin.m */,
+				3776BA71266A221F00E7EE97 /* pinyin.h */,
+				3776BA72266A221F00E7EE97 /* NSString+FirstLetter.m */,
+				3776BA73266A221F00E7EE97 /* NSArray+FirstLetterArray.m */,
+				3776BA74266A221F00E7EE97 /* POAPinyin.h */,
+				3776BA75266A221F00E7EE97 /* pinyin.m */,
+			);
+			path = HTLetterManger;
+			sourceTree = "<group>";
+		};
+		37A700C22669C92A007068DA /* ContactService */ = {
+			isa = PBXGroup;
+			children = (
+				37A700C32669C946007068DA /* Models */,
+				37A700C42669C97A007068DA /* ContactService.swift */,
+			);
+			path = ContactService;
+			sourceTree = "<group>";
+		};
+		37A700C32669C946007068DA /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				37A700BF2669C5BF007068DA /* ContactModel.swift */,
+				3776BA7C266A245B00E7EE97 /* SectionOfContactModel.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		37A700C82669C9A9007068DA /* ContactDao */ = {
+			isa = PBXGroup;
+			children = (
+				37A700C92669C9BD007068DA /* ContactDao.swift */,
+			);
+			path = ContactDao;
 			sourceTree = "<group>";
 		};
 		37EB0708264953820089FF63 = {
@@ -293,6 +421,7 @@
 		37EB0713264953820089FF63 /* Assassin */ = {
 			isa = PBXGroup;
 			children = (
+				37209FC3266871AC0095DB74 /* Tabs */,
 				371F0DE7265B78D7009B8434 /* Common */,
 				375ADE262658E36C001871C0 /* Protocols */,
 				3720D92A26577EB700695B39 /* Extension */,
@@ -310,6 +439,7 @@
 				37EB071D264953870089FF63 /* Assets.xcassets */,
 				37EB071F264953870089FF63 /* LaunchScreen.storyboard */,
 				37EB0722264953870089FF63 /* Info.plist */,
+				3776BA4D266A212300E7EE97 /* Assassin-Bridging-Header.h */,
 			);
 			path = Assassin;
 			sourceTree = "<group>";
@@ -364,6 +494,7 @@
 				TargetAttributes = {
 					37EB0710264953820089FF63 = {
 						CreatedOnToolsVersion = 12.4;
+						LastSwiftMigration = 1230;
 					};
 				};
 			};
@@ -450,17 +581,31 @@
 				372A4DA3265512AF0080BEAA /* Size.swift in Sources */,
 				375ADE282658E387001871C0 /* Protocols.swift in Sources */,
 				372A4DA6265514D90080BEAA /* Layout.swift in Sources */,
+				3776BA76266A221F00E7EE97 /* POAPinyin.m in Sources */,
+				37A700DF2669E046007068DA /* State.swift in Sources */,
 				375ADE142658E15A001871C0 /* LoginViewModel.swift in Sources */,
 				3720D9332657845A00695B39 /* Font.swift in Sources */,
+				37209FD0266878FE0095DB74 /* ContactViewController.swift in Sources */,
+				37209FD7266879280095DB74 /* ShareViewController.swift in Sources */,
 				371F0DDF265B63BE009B8434 /* AuthorizedTargetType.swift in Sources */,
 				37250C0B264A3156002A55C3 /* LoginViewController.swift in Sources */,
+				37BEA62F26687FD500E1A58D /* TabBarItem.swift in Sources */,
+				37209FCC266878C70095DB74 /* ConversationViewController.swift in Sources */,
 				371F0DE2265B652E009B8434 /* String+Assassin.swift in Sources */,
 				375ADE4526590351001871C0 /* LoginService.swift in Sources */,
 				371DF161264B8A360072B380 /* ApplicationConfiguration.swift in Sources */,
 				371DF16B264B8E1E0072B380 /* ApplicationService.swift in Sources */,
 				37250C13264A33C7002A55C3 /* UserService.swift in Sources */,
+				37209FD3266879180095DB74 /* MeViewController.swift in Sources */,
+				3776BA77266A221F00E7EE97 /* NSString+FirstLetter.m in Sources */,
+				37A700C52669C97A007068DA /* ContactService.swift in Sources */,
+				37209FC5266871CB0095DB74 /* TabViewController.swift in Sources */,
+				37A700C02669C5BF007068DA /* ContactModel.swift in Sources */,
 				375ADE4926590518001871C0 /* LoginValidateService.swift in Sources */,
+				3776BA7D266A245B00E7EE97 /* SectionOfContactModel.swift in Sources */,
+				37A700CA2669C9BD007068DA /* ContactDao.swift in Sources */,
 				37250C06264A2E90002A55C3 /* RootViewControllerBuilder.swift in Sources */,
+				37A700CE2669D118007068DA /* BaseService.swift in Sources */,
 				3720D92C26577ED800695B39 /* UIColor+Assassin.swift in Sources */,
 				37250C1C264A35AE002A55C3 /* DBService.swift in Sources */,
 				3735E2FA2660EFBA00743EEE /* ActivityIndicator.swift in Sources */,
@@ -470,8 +615,10 @@
 				371F0DD7265B61E4009B8434 /* OpenApi.swift in Sources */,
 				37250C2B264A7A4E002A55C3 /* Account.swift in Sources */,
 				3720D9362657893D00695B39 /* UIImage+Assassin.swift in Sources */,
+				3776BA79266A221F00E7EE97 /* pinyin.m in Sources */,
 				371F0DCA265B55D9009B8434 /* BaseTextField.swift in Sources */,
 				371DF176264BA36E0072B380 /* DispatchQueue+Assassin.swift in Sources */,
+				3776BA78266A221F00E7EE97 /* NSArray+FirstLetterArray.m in Sources */,
 				37EB0719264953820089FF63 /* ViewController.swift in Sources */,
 				371F0DC5265B5056009B8434 /* UIView+Corner.swift in Sources */,
 				371DF179264BA8DA0072B380 /* TabBarControllerBuilder.swift in Sources */,
@@ -619,7 +766,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
+				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 3YJ9KM5KAS;
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = Assassin/Info.plist;
@@ -631,6 +780,8 @@
 				LIBRARY_SEARCH_PATHS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = geekbang.Assassin;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Assassin/Assassin-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -642,7 +793,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
+				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 3YJ9KM5KAS;
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = Assassin/Info.plist;
@@ -654,6 +807,7 @@
 				LIBRARY_SEARCH_PATHS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = geekbang.Assassin;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Assassin/Assassin-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};

@@ -8,13 +8,13 @@
 import HandyJSON
 
 class Tab: HandyJSON {
-    private var type: Int?
-    private var name: String?
-    private var selIcon: String?
-    private var unselIcon: String?
-    private var param: String?
-    private var rnAccess: String?
-    private var showMessageNotify: Int?
+    var type: Int?
+    var name: String?
+    var selIcon: String?
+    var unselIcon: String?
+    var param: String?
+    var rnAccess: String?
+    var showMessageNotify: Int?
 
     required init() {}
 }

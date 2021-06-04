@@ -11,18 +11,31 @@ import Foundation
 class UserDao {
     /// 保存用户账号信息
     /// - Parameter account: 用户账号信息
-    func saveAccount(_ account: [String:String]?) {
+    func saveAccount(_ account: [String:String]?) -> Bool {
         guard let userID = account?[UserID], let password = account?[Password] else {
-            return
+            return false
         }
         let headUrl = account?[HeadUrl] ?? ""
-        let nickname = account?[Nickname] ?? ""
+        let nickname = account?[CNName] ?? ""
 
+        var result = false
         DBService.shared.inDatabase { (db) in
             do {
-                try db.executeUpdate("INSERT INTO TB_ACCOUNT (userID, password, headUrl, nickname, isActive) VALUES (?, ?, ?, ?, ?)", values: [userID, password, headUrl, nickname, true])
+                let set = try db.executeQuery("SELECT count(*) FROM TB_ACCOUNT WHERE userID = ?", values: [userID])
+                var count = 0
+                if set.next() {
+                    count = Int(set.int(forColumnIndex: 0))
+                }
+                if count > 0 {
+                    try db.executeUpdate("UPDATE TB_ACCOUNT SET password = ?, headUrl = ?, nickname = ?, isActive = ? WHERE userID = ?", values: [password, headUrl, nickname, true, userID])
+                } else {
+                    try db.executeUpdate("UPDATE TB_ACCOUNT SET isActive = ?", values: [false])
+                    try db.executeUpdate("INSERT INTO TB_ACCOUNT (userID, password, headUrl, nickname, isActive) VALUES (?, ?, ?, ?, ?)", values: [userID, password, headUrl, nickname, true])
+                }
+                result = true
             } catch {}
         }
+        return result
     }
 
     /// 获取已登录用户账号信息
@@ -47,7 +60,7 @@ class UserDao {
                     }
 
                     if let nickname = resultSet.string(forColumn: Nickname) {
-                        account?[Nickname] = nickname
+                        account?[CNName] = nickname
                     }
                 }
             } catch {}

@@ -30,7 +30,7 @@ extension OpenApi: AuthorizedTargetType {
         }
     }
 
-    var method: Method {
+    var method: Moya.Method {
         switch self {
         case .fetchToken:
             return .post

@@ -112,6 +112,7 @@ extension LoginViewController {
 
         userIdTxtField.backgroundColor = BackgroundColor
         pwdTxtField.backgroundColor = BackgroundColor
+        pwdTxtField.isSecureTextEntry = true
 
         let phoneNumberIcon = UIImage.init(named: "icon_phonenumber")
         let phoneNumberBtn = UIButton.init(type: .custom)

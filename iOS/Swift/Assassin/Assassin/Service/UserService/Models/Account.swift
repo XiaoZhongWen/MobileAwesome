@@ -20,4 +20,11 @@ class Account {
     var password: String?
     var cnname: String?
     var headUrl: String?
+
+    func toJson() -> [String:String] {
+        return ["userId"    :userId,
+                "password"  :password ?? "",
+                "cnname"    : cnname ?? "",
+                "headUrl"   :headUrl ?? ""]
+    }
 }
