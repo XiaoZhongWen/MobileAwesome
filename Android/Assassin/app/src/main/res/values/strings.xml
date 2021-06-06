@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">Assassin</string>
+    <string name="assassin_conversation_text_title">会话</string>
+    <string name="assassin_conversation_text_search">搜索</string>
+
+    <string-array name="tab_names">
+        <item>消息</item>
+        <item>联系人</item>
+        <item>发现</item>
+        <item>我的</item>
+    </string-array>
+
 </resources>
