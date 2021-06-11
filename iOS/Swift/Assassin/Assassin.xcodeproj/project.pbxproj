@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		371C1330267316660017FE46 /* ContactCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 371C132F267316660017FE46 /* ContactCell.swift */; };
+		371C1333267321390017FE46 /* ContactViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 371C1332267321390017FE46 /* ContactViewModel.swift */; };
 		371DF161264B8A360072B380 /* ApplicationConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 371DF160264B8A360072B380 /* ApplicationConfiguration.swift */; };
 		371DF16B264B8E1E0072B380 /* ApplicationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 371DF16A264B8E1E0072B380 /* ApplicationService.swift */; };
 		371DF176264BA36E0072B380 /* DispatchQueue+Assassin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 371DF175264BA36E0072B380 /* DispatchQueue+Assassin.swift */; };
@@ -65,6 +67,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		371C132F267316660017FE46 /* ContactCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactCell.swift; sourceTree = "<group>"; };
+		371C1332267321390017FE46 /* ContactViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactViewModel.swift; sourceTree = "<group>"; };
 		371DF160264B8A360072B380 /* ApplicationConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationConfiguration.swift; sourceTree = "<group>"; };
 		371DF16A264B8E1E0072B380 /* ApplicationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationService.swift; sourceTree = "<group>"; };
 		371DF175264BA36E0072B380 /* DispatchQueue+Assassin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DispatchQueue+Assassin.swift"; sourceTree = "<group>"; };
@@ -221,6 +225,8 @@
 			isa = PBXGroup;
 			children = (
 				37209FCF266878FE0095DB74 /* ContactViewController.swift */,
+				371C132F267316660017FE46 /* ContactCell.swift */,
+				371C1332267321390017FE46 /* ContactViewModel.swift */,
 			);
 			path = Contact;
 			sourceTree = "<group>";
@@ -582,6 +588,7 @@
 				375ADE282658E387001871C0 /* Protocols.swift in Sources */,
 				372A4DA6265514D90080BEAA /* Layout.swift in Sources */,
 				3776BA76266A221F00E7EE97 /* POAPinyin.m in Sources */,
+				371C1333267321390017FE46 /* ContactViewModel.swift in Sources */,
 				37A700DF2669E046007068DA /* State.swift in Sources */,
 				375ADE142658E15A001871C0 /* LoginViewModel.swift in Sources */,
 				3720D9332657845A00695B39 /* Font.swift in Sources */,
@@ -618,6 +625,7 @@
 				3776BA79266A221F00E7EE97 /* pinyin.m in Sources */,
 				371F0DCA265B55D9009B8434 /* BaseTextField.swift in Sources */,
 				371DF176264BA36E0072B380 /* DispatchQueue+Assassin.swift in Sources */,
+				371C1330267316660017FE46 /* ContactCell.swift in Sources */,
 				3776BA78266A221F00E7EE97 /* NSArray+FirstLetterArray.m in Sources */,
 				37EB0719264953820089FF63 /* ViewController.swift in Sources */,
 				371F0DC5265B5056009B8434 /* UIView+Corner.swift in Sources */,

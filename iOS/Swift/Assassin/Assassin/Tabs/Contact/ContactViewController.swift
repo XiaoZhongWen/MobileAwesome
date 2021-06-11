@@ -11,37 +11,43 @@ import RxSwift
 import RxCocoa
 import RxDataSources
 
-class ContactViewController: ViewController, UITableViewDelegate, UITableViewDataSource {
+class ContactViewController: ViewController {
     private let tableView = UITableView.init()
-    private var datasource:[ContactModel] = []
+    private let datasource = PublishSubject<[SectionOfContactModel]>()
+    var ds:RxTableViewSectionedReloadDataSource<SectionOfContactModel>?
 }
 
 extension ContactViewController {
     // life cycle methods
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        self.tableView.delegate = self
-        self.tableView.dataSource = self
-
+        self.tableView.tableFooterView = UIView.init()
+        self.tableView.register(ContactCell.self, forCellReuseIdentifier: ContactCell.identifier)
         self.view.addSubview(self.tableView)
         self.tableView.snp_makeConstraints { maker in
             maker.edges.equalTo(self.view)
         }
 
         self.loadData()
-    }
-}
+        self.bindVM()
 
-extension ContactViewController {
-    // delegate and datasource methods
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.datasource.count
-    }
+        let btn = UIButton.init(type: .contactAdd)
+        self.view.addSubview(btn)
 
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell.init(style: .default, reuseIdentifier: "")
-        return cell
+        btn.snp_makeConstraints { make in
+            make.center.equalTo(self.view)
+        }
+
+        btn.rx.tap.subscribe(onNext:  {
+            let c = ContactModel.init()
+            c.depts = "1"
+            c.nickname = "2"
+            c.username = "3"
+            let indexPath = IndexPath.init(row: 0, section: 0)
+            self.ds?[indexPath] = c
+//            let d = SectionOfContactModel.init(header: "*", items: [c])
+        }).disposed(by: disposeBag)
+
     }
 }
 
@@ -73,11 +79,24 @@ extension ContactViewController {
                         let section = SectionOfContactModel.init(header: header, items: contacts)
                         sections.append(section)
                     }
+                    self.datasource.onNext(sections)
                 }
                 break
             case .failure(_):
                 break
             }
         }).disposed(by: self.disposeBag)
+    }
+
+    func bindVM() {
+        let ds = RxTableViewSectionedReloadDataSource<SectionOfContactModel> { (datasource, tableView, indexPath, item) -> UITableViewCell in
+            let cell = tableView.dequeueReusableCell(withIdentifier: ContactCell.identifier, for: indexPath)
+            return cell
+        }
+        ds.titleForHeaderInSection = { datasource, index in
+            return ds.sectionModels[index].header
+        }
+        self.datasource.bind(to: tableView.rx.items(dataSource: ds)).disposed(by: disposeBag)
+        self.ds = ds
     }
 }
