@@ -145,6 +145,40 @@ extension ObservableType {
 
 
 
+### DelegateProxy是什么？
+
+```swift
+source.subscribeProxyDataSource(ofObject: self.base, dataSource: dataSource as UITableViewDataSource, retainDataSource: true) { [weak tableView = self.base] (_: RxTableViewDataSourceProxy, event) -> Void in
+                guard let tableView = tableView else {
+                    return
+                }
+                dataSource.tableView(tableView, observedEvent: event)
+            }
+// DelegateProxy的类型是RxTableViewDataSourceProxy
+
+class RxTableViewDataSourceProxy: DelegateProxy<UITableView, UITableViewDataSource>
+    , DelegateProxyType 
+    , UITableViewDataSource
+class DelegateProxy<P: AnyObject, D>: _RXDelegateProxy {
+        public typealias ParentObject = P
+        public typealias Delegate = D
+  ...
+}
+// 由以上可知，RxTableViewDataSourceProxy的关联类型ParentObject的类型是UITableView，Delegate的类型是UITableViewDataSource
+
+func subscribeProxyDataSource<DelegateProxy: DelegateProxyType>(ofObject object: DelegateProxy.ParentObject, dataSource: DelegateProxy.Delegate, retainDataSource: Bool, binding: @escaping (DelegateProxy, Event<E>) -> Void)
+                -> Disposable
+                where DelegateProxy.ParentObject: UIView
+                , DelegateProxy.Delegate: AnyObject {...}
+// 所有函数subscribeProxyDataSource中，DelegateProxy的类型是RxTableViewDataSourceProxy，DelegateProxy.ParentObject的类型是UITableView，DelegateProxy.Delegate的类型是UITableViewDataSource
+```
+
+
+
+
+
+
+
 ## DelegateProxyType
 
 ```swift
@@ -220,4 +254,6 @@ let datasource = PublishSubject<[SectionOfContactModel]>()
 var ds:RxTableViewSectionedReloadDataSource<SectionOfContactModel>
 self.datasource.bind(to: tableView.rx.items(dataSource: ds)).disposed(by: disposeBag)
 ```
+
+
 
