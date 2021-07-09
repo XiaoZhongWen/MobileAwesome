@@ -371,13 +371,13 @@ struct yy_trans_info
 	};
 static yyconst flex_int16_t yy_accept[9] =
     {   0,
-        0,    0,    5,    2,    3,    1,    2,    0
+        0,    0,    5,    3,    2,    1,    2,    0
     } ;
 
 static yyconst flex_int32_t yy_ec[256] =
     {   0,
-        1,    1,    1,    1,    1,    1,    2,    1,    2,    3,
-        1,    1,    2,    1,    1,    1,    1,    1,    1,    1,
+        1,    1,    1,    1,    1,    1,    1,    1,    2,    3,
+        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    2,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
@@ -389,7 +389,7 @@ static yyconst flex_int32_t yy_ec[256] =
 
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
+        1,    1,    1,    2,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
@@ -408,17 +408,17 @@ static yyconst flex_int32_t yy_ec[256] =
 
 static yyconst flex_int32_t yy_meta[4] =
     {   0,
-        1,    2,    2
+        1,    2,    1
     } ;
 
 static yyconst flex_int16_t yy_base[10] =
     {   0,
-        0,    0,    5,    0,    6,    6,    0,    6,    3
+        0,    0,    5,    6,    0,    6,    0,    6,    2
     } ;
 
 static yyconst flex_int16_t yy_def[10] =
     {   0,
-        8,    1,    8,    9,    8,    8,    9,    0,    8
+        8,    1,    8,    8,    9,    8,    9,    0,    8
     } ;
 
 static yyconst flex_int16_t yy_nxt[10] =
@@ -445,11 +445,8 @@ int yy_flex_debug = 0;
 #define YY_MORE_ADJ 0
 #define YY_RESTORE_YY_MORE_OFFSET
 char *yytext;
-#line 1 "word-spliter.l"
-#line 2 "word-spliter.l"
-	#define T_WORD 1
-	int numChars = 0, numWords = 0, numLines = 0;
-#line 453 "lex.yy.c"
+#line 1 "single_whitespace.l"
+#line 450 "lex.yy.c"
 
 #define INITIAL 0
 
@@ -631,9 +628,9 @@ YY_DECL
 	register char *yy_cp, *yy_bp;
 	register int yy_act;
     
-#line 8 "word-spliter.l"
+#line 3 "single_whitespace.l"
 
-#line 637 "lex.yy.c"
+#line 634 "lex.yy.c"
 
 	if ( !(yy_init) )
 		{
@@ -719,29 +716,27 @@ do_action:	/* This label is used only to access EOF actions. */
 case 1:
 /* rule 1 can match eol */
 YY_RULE_SETUP
-#line 9 "word-spliter.l"
-{ numChars++; numLines++; }
+#line 4 "single_whitespace.l"
+{ printf("\n"); }
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 10 "word-spliter.l"
-{ numWords++; numChars += yyleng; return T_WORD; }
-	YY_BREAK
-case YY_STATE_EOF(INITIAL):
-#line 11 "word-spliter.l"
-{ return 0; }
+#line 5 "single_whitespace.l"
+{ printf(" "); }
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 12 "word-spliter.l"
-{ numChars++; }
+#line 6 "single_whitespace.l"
+ECHO;
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 13 "word-spliter.l"
+#line 7 "single_whitespace.l"
 ECHO;
 	YY_BREAK
-#line 745 "lex.yy.c"
+#line 738 "lex.yy.c"
+case YY_STATE_EOF(INITIAL):
+	yyterminate();
 
 	case YY_END_OF_BUFFER:
 		{
@@ -1736,23 +1731,15 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 13 "word-spliter.l"
+#line 7 "single_whitespace.l"
 
 
 
 int main() {
-	int token_type = -1;
-	printf("begin token_type:\t%d, token:\t%s\n", token_type, yytext);
-	while( (token_type = yylex()) ) {
-		printf("token_type:\t%d, token:\t%s\n", token_type, yytext);
-	}
-	printf("end token_type:\t%d, token:%s\n", token_type, yytext);
-	printf("\nChars=%d, Words=%d, Lines=%d\n", numChars, numWords, numLines);
+	yylex();
 	return 0;
 }
 
 int yywrap() {
 	return 1;
 }
-
-

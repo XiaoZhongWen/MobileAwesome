@@ -170,12 +170,8 @@ func subscribeProxyDataSource<DelegateProxy: DelegateProxyType>(ofObject object:
                 -> Disposable
                 where DelegateProxy.ParentObject: UIView
                 , DelegateProxy.Delegate: AnyObject {...}
-// 所有函数subscribeProxyDataSource中，DelegateProxy的类型是RxTableViewDataSourceProxy，DelegateProxy.ParentObject的类型是UITableView，DelegateProxy.Delegate的类型是UITableViewDataSource
+// 所已函数subscribeProxyDataSource中，DelegateProxy的类型是RxTableViewDataSourceProxy，DelegateProxy.ParentObject的类型是UITableView，DelegateProxy.Delegate的类型是UITableViewDataSource
 ```
-
-
-
-
 
 
 
@@ -253,6 +249,34 @@ extension DelegateProxyType {
 let datasource = PublishSubject<[SectionOfContactModel]>()
 var ds:RxTableViewSectionedReloadDataSource<SectionOfContactModel>
 self.datasource.bind(to: tableView.rx.items(dataSource: ds)).disposed(by: disposeBag)
+```
+
+
+
+## DelegateProxy.proxy(for: object)
+
+```swift
+// object -> UITableView
+
+extension DelegateProxyType {
+    /// Unique identifier for delegate
+    public static var identifier: UnsafeRawPointer {
+      /// A unique identifier for a class instance or metatype.
+			///
+			/// In Swift, only class instances and metatypes have unique identities. There
+			/// is no notion of identity for structs, enums, functions, or tuples.
+        let delegateIdentifier = ObjectIdentifier(Delegate.self)
+        let integerIdentifier = Int(bitPattern: delegateIdentifier)
+        return UnsafeRawPointer(bitPattern: integerIdentifier)!
+    }
+}
+
+let maybeProxy = self.assignedProxy(for: object)
+fileprivate static func assignedProxy(for object: ParentObject) -> AnyObject? {
+  // self.identifier为UITabViewDataSource的identifier，通过扩展DelegateProxyType的默认的计算属性获取
+        let maybeDelegate = objc_getAssociatedObject(object, self.identifier)
+        return castOptionalOrFatalError(maybeDelegate)
+    }
 ```
 
 

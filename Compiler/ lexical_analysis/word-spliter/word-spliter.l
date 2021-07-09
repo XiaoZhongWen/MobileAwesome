@@ -14,10 +14,9 @@ WORD ([^ \t\n\r\a]+)
 
 int main() {
 	int token_type = -1;
-	printf("begin token_type:\t%d, token:%s\n", token_type, yytext);
+	printf("begin token_type:\t%d, token:\t%s\n", token_type, yytext);
 	while( (token_type = yylex()) ) {
-		; printf("WORD:\t%s\n", yytext);
-		printf("token_type:\t%d, token:%s\n", token_type, yytext);
+		printf("token_type:\t%d, token:\t%s\n", token_type, yytext);
 	}
 	printf("end token_type:\t%d, token:%s\n", token_type, yytext);
 	printf("\nChars=%d, Words=%d, Lines=%d\n", numChars, numWords, numLines);
