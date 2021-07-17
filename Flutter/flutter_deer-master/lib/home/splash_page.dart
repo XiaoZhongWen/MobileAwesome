@@ -71,7 +71,7 @@ class _SplashPageState extends State<SplashPage> {
   }
 
   void _initSplash() {
-    _subscription = Stream.value(1).delay(const Duration(milliseconds: 1500)).listen((_) {
+    _subscription = Stream.value(1).delay(const Duration(milliseconds: 3500)).listen((_) {
       if (SpUtil.getBool(Constant.keyGuide, defValue: true)! || Constant.isDriverTest) {
         SpUtil.putBool(Constant.keyGuide, false);
         _initGuide();
@@ -89,7 +89,7 @@ class _SplashPageState extends State<SplashPage> {
   Widget build(BuildContext context) {
     return Material(
       color: context.backgroundColor,
-      child: _status == 0 ? 
+      child: _status == 1 ?
       const FractionallyAlignedSizedBox(
         heightFactor: 0.3,
         widthFactor: 0.33,
@@ -102,6 +102,7 @@ class _SplashPageState extends State<SplashPage> {
         itemCount: _guideList.length,
         loop: false,
         itemBuilder: (_, index) {
+          print(index);
           return LoadAssetImage(
             _guideList[index],
             key: Key(_guideList[index]),

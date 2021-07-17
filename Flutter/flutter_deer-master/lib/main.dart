@@ -21,6 +21,7 @@ import 'package:quick_actions/quick_actions.dart';
 import 'package:sp_util/sp_util.dart';
 import 'package:flutter_deer/demo/demo_page.dart';
 import 'package:url_strategy/url_strategy.dart';
+import 'package:synchronized/synchronized.dart';
 
 Future<void> main() async {
 //  debugProfileBuildsEnabled = true;
@@ -43,6 +44,7 @@ Future<void> main() async {
   SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
   // TODO(weilu): 启动体验不佳。状态栏、导航栏在冷启动开始的一瞬间为黑色，且无法通过隐藏、修改颜色等方式进行处理。。。
   // 相关问题跟踪：https://github.com/flutter/flutter/issues/73351
+
 }
 
 class MyApp extends StatelessWidget {

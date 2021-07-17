@@ -41,4 +41,4 @@ public final class PublishSubject<Element> : Observable<Element> {
 
 let datasource = PublishSubject<[SectionOfContactModel]>()
 let tableView = UITableView.init()
-datasource.bind(to: tableView.)
+datasource.bind(to: tableView.rx)
