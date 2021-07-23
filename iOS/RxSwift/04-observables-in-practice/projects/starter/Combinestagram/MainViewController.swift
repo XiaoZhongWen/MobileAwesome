@@ -41,13 +41,23 @@ class MainViewController: UIViewController {
   @IBOutlet weak var buttonSave: UIButton!
   @IBOutlet weak var itemAdd: UIBarButtonItem!
 
+  private let images = BehaviorRelay<[UIImage]>.init(value: [])
+  private let disposeBag = DisposeBag.init()
+
   override func viewDidLoad() {
     super.viewDidLoad()
+    images.subscribe(onNext: { [weak imagePreview] phtots in
+      guard let preview = imagePreview else { return }
+      preview.image = phtots.collage(size: preview.frame.size)
+    }).disposed(by: disposeBag)
 
+    images.subscribe(onNext: { [weak self] photos in
+      self?.updateUI(photots: photos)
+    }).disposed(by: disposeBag)
   }
   
   @IBAction func actionClear() {
-
+    images.accept([])
   }
 
   @IBAction func actionSave() {
@@ -55,7 +65,25 @@ class MainViewController: UIViewController {
   }
 
   @IBAction func actionAdd() {
+    let photosViewController = storyboard!.instantiateViewController(
+      withIdentifier: "PhotosViewController") as! PhotosViewController
+    photosViewController.selectedPhotos.subscribe(onNext: { [weak self] photo in
+      guard let images = self?.images else { return }
+      images.accept(images.value + [photo])
+    },
+    onDisposed: {
+      print("Completed photo selection")
+    }).disposed(by: disposeBag)
+    navigationController!.pushViewController(photosViewController, animated: true)
+//    let newImages = images.value + [UIImage.init(named: "IMG_1907.jpg")!]
+//    images.accept(newImages)
+  }
 
+  private func updateUI(photots:[UIImage]) {
+    buttonClear.isEnabled = photots.count > 0
+    buttonSave.isEnabled = photots.count > 0 && photots.count % 2 == 0
+    itemAdd.isEnabled = photots.count < 6
+    title = photots.count > 0 ? "\(photots.count) photos" : "Collage"
   }
 
   func showMessage(_ title: String, description: String? = nil) {

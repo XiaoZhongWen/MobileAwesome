@@ -65,3 +65,67 @@ example(of: "subscribe") {
         print(element)
     })
 }
+
+example(of: "empty") {
+    let observable = Observable<Any>.empty()
+    observable.subscribe(onNext: {element in
+        print(element)
+    }, onCompleted: {
+        print("Completed")
+    })
+}
+
+example(of: "never") {
+    let observable = Observable<Void>.never()
+    let disposebag = DisposeBag()
+    observable.do(onSubscribe:{
+        print("onSubscribe")
+    }).subscribe(onNext: { element in
+        print(element)
+    }, onCompleted: {
+        print("onCompleted")
+    }, onDisposed: {
+        print("onDisposed")
+    }).disposed(by: disposebag)
+}
+
+example(of: "range") {
+    let observable = Observable.range(start: 1, count: 10)
+    observable.subscribe(onNext: {i in
+        let n = Double(i)
+        let fibonacci = Int(
+                ((pow(1.61803, n) - pow(0.61803, n)) /
+                  2.23606).rounded()
+              )
+        print(fibonacci)
+    }, onCompleted: {
+        print("Completed")
+    })
+}
+
+example(of: "dispose") {
+    let disposeBag = DisposeBag()
+    let observable = Observable.of("A", "B", "C")
+    observable.subscribe { event in
+        print(event)
+    }.disposed(by: disposeBag)
+}
+
+example(of: "create") {
+    let disposeBag = DisposeBag()
+    Observable<String>.create { observer in
+        observer.onNext("1")
+        observer.onCompleted()
+        observer.onNext("?")
+        return Disposables.create()
+    }.subscribe(onNext: {
+        print($0)
+    }, onError: {
+        print($0)
+    }, onCompleted: {
+        print("Completed")
+    }, onDisposed: {
+        print("Disposed")
+    })
+    .disposed(by: disposeBag)
+}
