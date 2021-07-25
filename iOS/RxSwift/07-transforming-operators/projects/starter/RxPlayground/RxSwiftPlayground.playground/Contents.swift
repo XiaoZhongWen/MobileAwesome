@@ -1,7 +1,103 @@
 import Foundation
 import RxSwift
 
+example(of: "toArray") {
+    let disposeBag = DisposeBag()
+    let observer = Observable.of("A", "B", "C")
+    observer.toArray().subscribe(onSuccess: {
+        print($0)
+    }).disposed(by: disposeBag)
+}
 
+example(of: "enumerated and map") {
+    let disposeBag = DisposeBag()
+    Observable.of(1, 2, 3, 4, 5, 6)
+        .enumerated()
+        .map { (index, value) in
+            index > 3 ? value * 2 : value
+        }
+        .subscribe(onNext: { element in
+            print(element)
+        })
+        .disposed(by: disposeBag)
+}
+
+example(of: "compactMap") {
+    let disposeBag = DisposeBag()
+    Observable.of("to", "be", nil, "or", "not", "to", "be", nil)
+        .compactMap { $0 }
+        .toArray()
+        .map { $0.joined(separator: " ") }
+        .subscribe(onSuccess: {
+            print($0)
+        }).disposed(by: disposeBag)
+}
+
+struct Student {
+  let score: BehaviorSubject<Int>
+}
+
+example(of: "flatMap") {
+    let disposeBag = DisposeBag()
+    let laura = Student.init(score: BehaviorSubject.init(value: 80))
+    let charlotte = Student.init(score: BehaviorSubject.init(value: 90))
+    
+    let student = PublishSubject<Student>.init()
+    student.flatMap {
+        $0.score
+    }.subscribe(onNext: {
+        print($0)
+    }).disposed(by: disposeBag)
+    
+    student.onNext(laura)
+    laura.score.onNext(85)
+    
+    student.onNext(charlotte)
+    charlotte.score.onNext(95)
+    charlotte.score.onNext(100)
+}
+
+example(of: "flatMapLatest") {
+    let disposeBag = DisposeBag()
+    let laura = Student.init(score: BehaviorSubject.init(value: 80))
+    let charlotte = Student.init(score: BehaviorSubject.init(value: 90))
+    
+    let student = PublishSubject<Student>.init()
+    student.flatMapLatest {
+        $0.score
+    }.subscribe(onNext: {
+        print($0)
+    }).disposed(by: disposeBag)
+    
+    student.onNext(laura)
+    laura.score.onNext(85)
+    student.onNext(charlotte)
+    laura.score.onNext(95)
+    charlotte.score.onNext(100)
+}
+
+example(of: "materialize and dematerialize") {
+    enum MyError: Error {
+        case anError
+      }
+
+      let disposeBag = DisposeBag()
+    let laura = Student.init(score: BehaviorSubject.init(value: 80))
+    let charlotte = Student.init(score: BehaviorSubject.init(value: 100))
+    let student = BehaviorSubject.init(value: laura)
+    let studentScore = student.flatMapLatest {
+        $0.score.materialize()
+    }
+    studentScore.subscribe(onNext: {
+        print($0)
+    }).disposed(by: disposeBag)
+    
+    laura.score.onNext(85)
+    laura.score.onError(MyError.anError)
+    laura.score.onNext(90)
+    
+    student.onNext(charlotte)
+}
 
 /// Copyright (c) 2020 Razeware LLC
 /// 

@@ -43,6 +43,7 @@ class MainViewController: UIViewController {
 
   private let images = BehaviorRelay<[UIImage]>.init(value: [])
   private let disposeBag = DisposeBag.init()
+  private var imageCache = [Int]()
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -58,16 +59,38 @@ class MainViewController: UIViewController {
   
   @IBAction func actionClear() {
     images.accept([])
+    imageCache = []
   }
 
   @IBAction func actionSave() {
+    guard let image = imagePreview.image else {return}
+    PhotoWriter.save(image).asSingle().subscribe { [weak self] id in
+      self?.showMessage("Saved with id: \(id)")
+      self?.actionClear()
+    } onError: { [weak self] error in
+      self?.showMessage("Error", description: error.localizedDescription)
+    }.disposed(by: disposeBag)
 
   }
 
   @IBAction func actionAdd() {
     let photosViewController = storyboard!.instantiateViewController(
       withIdentifier: "PhotosViewController") as! PhotosViewController
-    photosViewController.selectedPhotos.subscribe(onNext: { [weak self] photo in
+    
+    let newPhotos = photosViewController.selectedPhotos.share()
+    newPhotos.takeWhile { [weak self] image in
+      let count = self?.images.value.count ?? 0
+      return count < 6
+    }.filter { newImage in
+      newImage.size.width > newImage.size.height
+    }.filter { [weak self] newImage in
+      let len = newImage.pngData()?.count ?? 0
+      guard self?.imageCache.contains(len) == false else {
+        return false
+      }
+      self?.imageCache.append(len)
+      return true
+    }.subscribe(onNext: { [weak self] photo in
       guard let images = self?.images else { return }
       images.accept(images.value + [photo])
     },
@@ -75,14 +98,30 @@ class MainViewController: UIViewController {
       print("Completed photo selection")
     }).disposed(by: disposeBag)
     navigationController!.pushViewController(photosViewController, animated: true)
+    
+    newPhotos.ignoreElements()
+      .subscribe(onCompleted: { [weak self] in
+        self?.updateNavigationIcon()
+      }).disposed(by: disposeBag)
+
+    
 //    let newImages = images.value + [UIImage.init(named: "IMG_1907.jpg")!]
 //    images.accept(newImages)
+  }
+  
+  private func updateNavigationIcon() {
+    let icon = imagePreview.image?
+      .scaled(CGSize(width: 22, height: 22))
+      .withRenderingMode(.alwaysOriginal)
+
+    navigationItem.leftBarButtonItem = UIBarButtonItem(image: icon,
+      style: .done, target: nil, action: nil)
   }
 
   private func updateUI(photots:[UIImage]) {
     buttonClear.isEnabled = photots.count > 0
     buttonSave.isEnabled = photots.count > 0 && photots.count % 2 == 0
-    itemAdd.isEnabled = photots.count < 6
+//    itemAdd.isEnabled = photots.count < 6
     title = photots.count > 0 ? "\(photots.count) photos" : "Collage"
   }
 

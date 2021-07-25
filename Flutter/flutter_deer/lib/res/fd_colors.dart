@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 
 class FdColors {
+  static const Color text = Color(0xFF333333);
   static const Color dark_text = Color(0xFFB8B8B8);
   static const Color text_disabled = Color(0xFFD4E2FA);
   static const Color dark_button_text = Color(0xFFF2F2F2);
@@ -8,4 +9,5 @@ class FdColors {
   static const Color app_main = Color(0xFF4688FA);
   static const Color button_disabled = Color(0xFF96BBFA);
   static const Color dark_button_disabled = Color(0xFF83A5E0);
+  static const Color dark_bg_color = Color(0xFF18191A);
 }

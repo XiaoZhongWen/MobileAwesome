@@ -4,7 +4,9 @@ import 'dart:ffi';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_deer/login/login_router.dart';
 import 'package:flutter_deer/res/constants.dart';
+import 'package:flutter_deer/routers/fluro_navigator.dart';
 import 'package:flutter_deer/util/image_utils.dart';
 import 'package:flutter_deer/widgets/load_image.dart';
 import 'package:flutter_swiper_null_safety/flutter_swiper_null_safety.dart';
@@ -46,7 +48,7 @@ class _SplashPageState extends State<SplashPage> {
   @override
   Widget build(BuildContext context) {
     return Material(
-      child: _status == 1?
+      child: _status == 0?
       const FractionallySizedBox(
         alignment: Alignment.bottomCenter,
         widthFactor: 0.33,
@@ -87,7 +89,7 @@ class _SplashPageState extends State<SplashPage> {
 
   // 导航到登录页面
   void _goLogin() {
-
+    NavigatorUtils.push(context, LoginRouter.loginPage, replace: true);
   }
 
   // 向导页面

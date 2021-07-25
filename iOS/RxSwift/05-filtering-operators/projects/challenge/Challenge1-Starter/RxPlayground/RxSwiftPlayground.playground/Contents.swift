@@ -30,11 +30,23 @@ example(of: "Challenge 1") {
   let input = PublishSubject<Int>()
   
   // Add your code here
+    input.skipWhile { $0 == 0 }
+        .filter { $0 < 10 }
+        .take(10).toArray()
+        .subscribe { (number) in
+        print(number)
+//        let str = phoneNumber(from: number)
+//        print(contacts[str] ?? "")
+    } onError: { error in
+        
+    }.disposed(by: disposeBag)
+
   
   
   input.onNext(0)
   input.onNext(603)
   
+    input.onNext(0)
   input.onNext(2)
   input.onNext(1)
   
@@ -42,13 +54,29 @@ example(of: "Challenge 1") {
   // and then change to 2 and confirm that Shai is found
   input.onNext(7)
   
-  "5551212".forEach {
-    if let number = (Int("\($0)")) {
-      input.onNext(number)
-    }
-  }
-  
-  input.onNext(9)
+//  "5551212".forEach {
+//    if let number = (Int("\($0)")) {
+//      input.onNext(number)
+//    }
+//  }
+    
+    input.onNext(5)
+    input.onNext(5)
+    input.onNext(5)
+    input.onNext(1)
+    input.onNext(2)
+    input.onNext(1)
+    
+//    input.onNext(2)
+//  input.onNext(9)
+//    input.onNext(5)
+//    input.onNext(5)
+//    input.onNext(5)
+//    input.onNext(1)
+//    input.onNext(2)
+//    input.onNext(1)
+//    input.onNext(2)
+//    input.onNext(7)
 }
 
 /// Copyright (c) 2020 Razeware LLC

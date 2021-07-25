@@ -8,8 +8,9 @@ DEPENDENCIES:
   - RxSwift (= 5.1.1)
 
 SPEC REPOS:
-  https://github.com/CocoaPods/Specs.git:
+  https://mirrors.bfsu.edu.cn/git/CocoaPods/Specs.git:
     - RxRelay
+  trunk:
     - RxSwift
 
 SPEC CHECKSUMS:

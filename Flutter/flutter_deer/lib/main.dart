@@ -68,6 +68,7 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Deer',
       theme: theme ?? themeProvider.getTheme(),
       home: home ?? const SplashPage(),
+      onGenerateRoute: Routers.router.generator,
     );
   }
 }

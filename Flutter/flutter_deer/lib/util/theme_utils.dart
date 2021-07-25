@@ -11,6 +11,10 @@ class ThemeUtils {
   static Color? getIconColor(BuildContext context) {
     return isDark(context)? FdColors.dark_text: null;
   }
+
+  static Color? getKeyboardActionsColor(BuildContext context) {
+    return isDark(context) ? FdColors.dark_bg_color : Colors.grey[200];
+  }
 }
 
 extension ThemeExtension on BuildContext {
