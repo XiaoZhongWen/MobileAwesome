@@ -55,4 +55,45 @@ class EONET {
       .sorted(by: EOEvent.compareDates)
   }
 
+  static func request<T: Decodable>(endpoint: String,
+                                    query: [String: Any] = [:],
+                                    contentIdentifier: String) -> Observable<T> {
+    let url = URL(string: API)?.appendingPathComponent(endpoint)
+    var components = URLComponents(url: url!, resolvingAgainstBaseURL: true)
+    components?.queryItems = query.compactMap { (key, value) in
+      let v = value as? CustomStringConvertible
+      return URLQueryItem(name: key, value: v!.description)
+    }
+    let finalURL = components?.url
+    let request = URLRequest(url: finalURL!)
+    return URLSession.shared.rx.response(request: request)
+      .map { (result: (response: HTTPURLResponse, data: Data)) -> T in
+        let decoder = self.jsonDecoder(contentIdentifier: contentIdentifier)
+        let envelope = try decoder.decode(EOEnvelope<T>.self, from: result.data)
+        return envelope.content
+      }
+  }
+
+  static func events(forLast days: Int, closed: Bool) -> Observable<[EOEvent]> {
+    let query: [String: Any] = [
+        "days": days,
+        "status": (closed ? "closed" : "open")
+      ]
+    let request: Observable<[EOEvent]> = EONET.request(endpoint: eventsEndpoint, query: query, contentIdentifier: "events")
+    return request.catchErrorJustReturn([])
+  }
+
+  static func events(forLast days: Int = 100) -> Observable<[EOEvent]> {
+    let openEvents = EONET.events(forLast: days, closed: true)
+    let closeEvents = EONET.events(forLast: days, closed: true)
+    return openEvents.concat(closeEvents)
+  }
+
+  static var categories: Observable<[EOCategory]> = {
+    let request: Observable<[EOCategory]> = EONET.request(endpoint: categoriesEndpoint, contentIdentifier: "categories")
+      return request
+        .map { categories in categories.sorted { $0.name < $1.name } }
+        .catchErrorJustReturn([])
+        .share(replay: 1, scope: .forever)
+    }()
 }

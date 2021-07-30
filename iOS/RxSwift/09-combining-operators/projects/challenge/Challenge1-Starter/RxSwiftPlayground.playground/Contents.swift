@@ -7,9 +7,17 @@ example(of: "scan") {
   let source = Observable.of(1, 3, 5, 7, 9)
 
   let observable = source.scan(0, accumulator: +)
-  _ = observable.subscribe(onNext: { value in
-    print(value)
-  })
+//  _ = observable.subscribe(onNext: { value in
+//    print(value)
+//  })
+
+
+
+    Observable.zip(source, observable) { currentValue, total in
+        return "current: \(currentValue), total: \(total)"
+    }.subscribe(onNext: {
+        print($0)
+    })
 }
 
 /// Copyright (c) 2020 Razeware LLC
