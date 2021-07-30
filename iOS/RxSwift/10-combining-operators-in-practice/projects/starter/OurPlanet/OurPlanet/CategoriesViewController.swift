@@ -46,6 +46,7 @@ class CategoriesViewController: UIViewController, UITableViewDataSource, UITable
 
     categories.asObservable().subscribe(onNext: { [weak self] _ in
       DispatchQueue.main.async {
+        print(Date.init().timeIntervalSince1970)
         self?.tableView.reloadData()
       }
     }).disposed(by: disposeBag)
@@ -82,6 +83,17 @@ class CategoriesViewController: UIViewController, UITableViewDataSource, UITable
     cell.detailTextLabel?.text = category.description
     return cell
   }
-  
+
+  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    let category = categories.value[indexPath.row]
+    tableView.deselectRow(at: indexPath, animated: true)
+
+    guard !category.events.isEmpty else { return }
+
+    let eventsController = storyboard!.instantiateViewController(withIdentifier: "events") as! EventsViewController
+    eventsController.title = category.name
+    eventsController.events.accept(category.events)
+    navigationController!.pushViewController(eventsController, animated: true)
+  }
 }
 

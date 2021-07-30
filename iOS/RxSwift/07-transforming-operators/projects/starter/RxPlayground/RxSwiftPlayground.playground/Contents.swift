@@ -55,6 +55,9 @@ example(of: "flatMap") {
     student.onNext(charlotte)
     charlotte.score.onNext(95)
     charlotte.score.onNext(100)
+    laura.score.onNext(120)
+
+    Observable.from([])
 }
 
 example(of: "flatMapLatest") {
