@@ -16,7 +16,7 @@ class FDAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.title = '',
     this.centerTitle = '',
     this.actionName = '',
-    this.backImg = 'ic_back_black.png',
+    this.backImg = 'ic_back_black',
     this.backImgColor,
     this.onPressed,
     this.isBack = true

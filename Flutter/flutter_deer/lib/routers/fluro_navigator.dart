@@ -18,4 +18,36 @@ class NavigatorUtils {
           arguments: arguments
         ));
   }
+
+  static void goBack(BuildContext context) {
+    unfocus();
+    Navigator.pop(context);
+  }
+
+  static void unfocus() {
+    FocusManager.instance.primaryFocus?.unfocus();
+  }
+
+  static void pushResult(BuildContext context,
+      String path,
+      Function(Object) function,
+      {bool replace = false, bool clearStack = false, Object? arguments}) {
+    unfocus();
+    Routers.router.navigateTo(
+        context,
+        path,
+        replace: replace,
+        clearStack: clearStack,
+        transition: TransitionType.native,
+        routeSettings: RouteSettings(
+            arguments: arguments
+        )).then((Object? result) {
+          if (result == null) {
+            return;
+          }
+          function(result);
+    }).catchError(((Object error) {
+      print('$error');
+    }));
+  }
 }

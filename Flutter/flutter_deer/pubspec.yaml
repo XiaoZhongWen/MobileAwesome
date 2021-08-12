@@ -44,6 +44,13 @@ dependencies:
   rxdart: ^0.27.0
   flutter_swiper_null_safety: ^1.0.2
   keyboard_actions: ^3.4.0
+  image_picker: 0.7.5+2
+  cached_network_image: ^3.0.0
+
+  flutter_2d_amap:
+    git:
+      ref: 'fdf1e412'
+      url: 'https://github.com/simplezhli/flutter_2d_amap.git'
 
 dev_dependencies:
   flutter_test:
@@ -63,6 +70,13 @@ flutter:
   assets:
     - assets/images/
     - assets/images/state/
+    - assets/images/login/
+    - assets/images/store/
+    - assets/images/store/2.0x/
+    - assets/images/store/3.0x/
+    - assets/images/order/
+    - assets/images/order/dark/
+    - assets/images/home/
 
   # To add assets to your application, add an assets section, like this:
   # assets:

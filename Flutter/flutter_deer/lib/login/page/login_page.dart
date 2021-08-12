@@ -1,143 +1,156 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_deer/login/login_router.dart';
+import 'package:flutter_deer/res/constants.dart';
 import 'package:flutter_deer/res/gaps.dart';
 import 'package:flutter_deer/res/styles.dart';
+import 'package:flutter_deer/routers/fluro_navigator.dart';
+import 'package:flutter_deer/store/store_router.dart';
 import 'package:flutter_deer/util/change_notifier_mixin.dart';
-import 'package:flutter_deer/util/theme_utils.dart';
 import 'package:flutter_deer/widgets/fd_app_bar.dart';
-import 'package:keyboard_actions/keyboard_actions.dart';
+import 'package:flutter_deer/widgets/fd_button.dart';
+import 'package:flutter_deer/widgets/fd_textfield.dart';
+import 'package:shared_preferences_extension/shared_preferences_extension.dart';
 
-class LoginPage extends StatefulWidget  {
+class LoginPage extends StatefulWidget {
 
-  const LoginPage({Key? key}):super(key: key);
+  const LoginPage({Key? key}): super(key: key);
 
   _LoginPageState createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> with ChangeNotifierMixin {
+
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+
   final FocusNode _nameNode = FocusNode();
   final FocusNode _passwordNode = FocusNode();
+
   bool _clickable = false;
 
   @override
-  Map<ChangeNotifier, List<VoidCallback>?>? changeNotifier() {
-    final List<VoidCallback> callbacks = [_verify];
-    return <ChangeNotifier, List<VoidCallback>?>{
-      _nameController: callbacks,
-      _passwordController: callbacks,
-      _nameNode: null,
-      _passwordNode: null
-    };
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+      // print("addPostFrameCallback");
+    });
+    _nameController.text = SpExtension.getString(Constant.phone) ?? "";
   }
 
   @override
   Widget build(BuildContext context) {
-    List<FocusNode> list = [_nameNode, _passwordNode];
     return Scaffold(
       appBar: FDAppBar(
         isBack: false,
         actionName: "Verification Code Login",
         onPressed: () {
-
+          NavigatorUtils.push(context, LoginRouter.smsLoginPage);
         },
       ),
-      body: KeyboardActions(
-        config: KeyboardActionsConfig(
-          keyboardBarColor: ThemeUtils.getKeyboardActionsColor(context),
-          nextFocus: true,
-          actions: List.generate(list.length, (index) => KeyboardActionsItem(
-            focusNode: list[index],
-            toolbarButtons: [
-              (node) {
-                return GestureDetector(
-                  onTap: () => node.unfocus(),
-                  child: Padding(
-                    padding: const EdgeInsets.only(right: 5.0),
-                    child: Text("关闭"),
+      body: Padding(
+        padding: EdgeInsets.fromLTRB(16.0, 20.0, 16.0, 0.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text("Password Login",
+              style: TextStyles.textBold26,
+              textAlign: TextAlign.left,
+            ),
+
+            Gaps.vGap16,
+            FdTextField(
+              key: const Key("phone"),
+              controller: _nameController,
+              focusNode: _nameNode,
+              hintText: "Please input username",
+              maxLength: 11,
+              keyboardType: TextInputType.phone,
+            ),
+            Gaps.vGap8,
+            FdTextField(
+              key: const Key("password"),
+              controller: _passwordController,
+              focusNode: _passwordNode,
+              hintText: "Please enter the password",
+              maxLength: 16,
+              keyboardType: TextInputType.visiblePassword,
+              isPwd: true,
+            ),
+            Gaps.vGap24,
+            FdButton(
+              key: const Key("login"),
+              text: "Login",
+              onPressed: _clickable? _login: null,
+            ),
+            Container(
+              height: 40,
+              alignment: Alignment.centerRight,
+              child: GestureDetector(
+                child: Text(
+                  "Forgot Password",
+                  key: const Key('forgotPassword'),
+                  style: Theme.of(context).textTheme.subtitle2,
+                ),
+                onTap: () {
+                  NavigatorUtils.push(context, LoginRouter.resetPasswordPage);
+                },
+              ),
+            ),
+            Gaps.vGap16,
+            Container(
+              alignment: Alignment.center,
+              child: GestureDetector(
+                child: Text(
+                  "No account yet? Register Now",
+                  style: TextStyle(
+                      color: Theme.of(context).primaryColor
                   ),
-                );
-              }
-            ]
-          ))
+                ),
+                onTap: () {
+                  NavigatorUtils.push(context, LoginRouter.registerPage);
+                },
+              ),
+            )
+          ],
         ),
-        child: Padding(
-          padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 20.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: _buildBody,
-          ),
-        )
-      )
+      ),
     );
   }
 
+  void _login() {
+    SpExtension.putString(Constant.phone, _nameController.text);
+    NavigatorUtils.push(context, StoreRouter.auditPage);
+  }
+
   void _verify() {
-    final String name = _nameController.text;
-    final String password = _passwordController.text;
+    String name = _nameController.text;
+    String pwd = _passwordController.text;
+
     bool clickable = true;
     if (name.isEmpty || name.length < 11) {
       clickable = false;
     }
-    if (password.isEmpty || password.length < 6) {
+
+    if (pwd.isEmpty || pwd.length < 6) {
       clickable = false;
     }
-    if (clickable != _clickable) {
+
+    if (_clickable != clickable) {
       setState(() {
         _clickable = clickable;
       });
     }
   }
 
-  List<Widget> get _buildBody => <Widget>[
-    Text("Password Login", style: TextStyles.textBold26),
-    Gaps.vGap16,
-    TextField(
-      key: const Key("phone"),
-      focusNode: _nameNode,
-      controller: _nameController,
-      maxLength: 11,
-      keyboardType: TextInputType.phone,
-    ),
-    Gaps.vGap8,
-    TextField(
-      key: const Key("password"),
-      focusNode: _passwordNode,
-      controller: _passwordController,
-      maxLength: 16,
-      keyboardType: TextInputType.visiblePassword,
-    ),
-    Gaps.vGap24,
-    TextButton(
-        key: const Key("login"),
-        onPressed: (){},
-        child: Text("Login"),
-    ),
-    Container(
-      height: 40.0,
-      alignment: Alignment.centerRight,
-      child: GestureDetector(
-        child: Text(
-          "Forget Password",
-          key: Key("forgotPassword"),
-          style: Theme.of(context).textTheme.subtitle2,
-        ),
-        onTap: () {},
-      ),
-    ),
-    Gaps.vGap16,
-    Container(
-      alignment: Alignment.center,
-      child: GestureDetector(
-        child: Text(
-          "No account yet? Register now",
-          style: TextStyle(
-            color: Theme.of(context).primaryColor
-          ),
-        ),
-        onTap: () {},
-      ),
-    ),
-  ];
+  @override
+  Map<ChangeNotifier, List<VoidCallback>?>? changeNotifier() {
+    List<VoidCallback> callbacks = [_verify];
+    return {
+      _nameController: callbacks,
+      _passwordController: callbacks,
+      _nameNode: null,
+      _passwordNode: null
+    };
+  }
 }
