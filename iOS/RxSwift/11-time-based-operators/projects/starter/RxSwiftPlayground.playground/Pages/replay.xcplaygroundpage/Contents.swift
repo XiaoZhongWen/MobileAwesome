@@ -4,7 +4,23 @@ import RxCocoa
 
 
 // Start coding here
+let elementsPerSecond = 1
+let maxElements = 58
+let replayedElements = 1
+let replayDelay: TimeInterval = 4
 
+let sourceObservable = Observable<Int>.create { observer in
+    var value = 1
+    let timer = DispatchSource.timer(interval: 1.0 / Double(elementsPerSecond), queue: .main, handler: {
+        if value <= maxElements {
+            observer.onNext(value)
+            value += 1
+        }
+    })
+    return Disposables.create {
+        timer.suspend()
+      }
+}.replay(replayedElements)
 
 // Support code -- DO NOT REMOVE
 class TimelineView<E>: TimelineViewBase, ObserverType where E: CustomStringConvertible {
@@ -22,6 +38,27 @@ class TimelineView<E>: TimelineViewBase, ObserverType where E: CustomStringConve
     }
   }
 }
+
+let sourceTimeline = TimelineView<Int>.make()
+let replayedTimeline = TimelineView<Int>.make()
+let stack = UIStackView.makeVertical([
+  UILabel.makeTitle("replay"),
+  UILabel.make("Emit \(elementsPerSecond) per second:"),
+  sourceTimeline,
+  UILabel.make("Replay \(replayedElements) after \(replayDelay) sec:"),
+  replayedTimeline])
+
+let _ = sourceObservable.subscribe(sourceTimeline)
+DispatchQueue.main.asyncAfter(deadline: .now() + replayDelay) {
+  _ = sourceObservable.subscribe(replayedTimeline)
+}
+
+_ = sourceObservable.connect()
+
+let hostView = setupHostView()
+hostView.addSubview(stack)
+hostView
+
 /// Copyright (c) 2020 Razeware LLC
 /// 
 /// Permission is hereby granted, free of charge, to any person obtaining a copy

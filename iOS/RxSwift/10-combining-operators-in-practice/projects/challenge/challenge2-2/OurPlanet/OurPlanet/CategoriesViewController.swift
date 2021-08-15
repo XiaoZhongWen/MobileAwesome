@@ -87,6 +87,7 @@ class CategoriesViewController: UIViewController, UITableViewDataSource, UITable
 
     let updatedCategories = eoCategories.flatMap { categories in
       downloadedEvents.scan(categories) { updated, events in
+        print("<>:updatedCategories emit")
         return updated.map { category in
           let eventsForCategory = EONET.filteredEvents(events: events, forCategory: category)
           if !eventsForCategory.isEmpty {
@@ -116,6 +117,7 @@ class CategoriesViewController: UIViewController, UITableViewDataSource, UITable
         .map { ($0, categories.count) }
       }
       .subscribe(onNext: { tuple in
+        print("<>:updatedCategories next")
         DispatchQueue.main.async { [weak self] in
           let progress = Float(tuple.0) / Float(tuple.1)
           self?.download.progress.progress = progress

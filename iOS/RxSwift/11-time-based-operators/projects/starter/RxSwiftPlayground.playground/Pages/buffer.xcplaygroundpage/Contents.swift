@@ -1,5 +1,6 @@
 import UIKit
 import RxSwift
+import RxRelay
 import RxCocoa
 
 // Start coding here
@@ -21,6 +22,37 @@ class TimelineView<E>: TimelineViewBase, ObserverType where E: CustomStringConve
       add(.error())
     }
   }
+}
+
+let bufferMaxCount = 2
+let bufferTimeSpan: RxTimeInterval = .seconds(4)
+
+let sourceTimeline = TimelineView<String>.make()
+let bufferedTimeline = TimelineView<Int>.make()
+
+let stack = UIStackView.makeVertical([
+  UILabel.makeTitle("buffer"),
+  UILabel.make("Emitted elements:"),
+  sourceTimeline,
+  UILabel.make("Buffered elements (at most \(bufferMaxCount) every \(bufferTimeSpan) seconds):"),
+  bufferedTimeline])
+
+let sourceObservable = PublishSubject<String>.init()
+sourceObservable.subscribe(sourceTimeline)
+
+sourceObservable
+    .buffer(timeSpan: bufferTimeSpan, count: bufferMaxCount, scheduler: MainScheduler.instance)
+    .map(\.count)
+    .subscribe(bufferedTimeline)
+
+let hostView = setupHostView()
+hostView.addSubview(stack)
+hostView
+
+DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+    sourceObservable.onNext("🐱")
+    sourceObservable.onNext("🐱")
+    sourceObservable.onNext("🐱")
 }
 
 /// Copyright (c) 2020 Razeware LLC
