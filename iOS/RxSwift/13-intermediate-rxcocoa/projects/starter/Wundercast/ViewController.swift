@@ -53,16 +53,43 @@ class ViewController: UIViewController {
     // Do any additional setup after loading the view, typically from a nib.
     style()
 
-    let search = searchCityName.rx
-      .controlEvent(.editingDidEndOnExit)
-      .map { self.searchCityName.text ?? "" }
-      .filter { !$0.isEmpty }
-      .flatMapLatest { text in
-        ApiController.shared
-          .currentWeather(for: text)
-          .catchErrorJustReturn(.empty)
-      }
-      .asDriver(onErrorJustReturn: .empty)
+    let searchInput = searchCityName.rx
+        .controlEvent(.editingDidEndOnExit)
+        .map {
+            self.searchCityName.text ?? ""
+        }
+        .filter {
+            !$0.isEmpty
+        }
+
+    let search = searchInput.flatMapLatest { text in
+        ApiController.shared.currentWeather(for: text)
+            .catchErrorJustReturn(.empty)
+    }
+    .asDriver(onErrorJustReturn: .empty)
+
+    let running = Observable.merge(
+        searchInput.map { _ in true },
+        search.map { _ in false }.asObservable()
+    )
+    .startWith(true)
+    .asDriver(onErrorJustReturn: false)
+
+    running.skip(1)
+        .drive(activityIndicator.rx.isAnimating)
+        .disposed(by: bag)
+
+    running.drive(tempLabel.rx.isHidden)
+        .disposed(by: bag)
+
+    running.drive(iconLabel.rx.isHidden)
+        .disposed(by: bag)
+
+    running.drive(humidityLabel.rx.isHidden)
+        .disposed(by: bag)
+
+    running.drive(cityNameLabel.rx.isHidden)
+        .disposed(by: bag)
 
     search.map { "\($0.temperature)° C" }
       .drive(tempLabel.rx.text)
