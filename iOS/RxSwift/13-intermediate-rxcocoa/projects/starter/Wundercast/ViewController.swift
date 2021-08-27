@@ -47,6 +47,7 @@ class ViewController: UIViewController {
   @IBOutlet private var cityNameLabel: UILabel!
 
   private let bag = DisposeBag()
+    private let locationManager = CLLocationManager.init()
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -106,6 +107,16 @@ class ViewController: UIViewController {
     search.map(\.cityName)
       .drive(cityNameLabel.rx.text)
       .disposed(by: bag)
+
+    geoLocationButton.rx.tap.subscribe(onNext: { [weak self] in
+        guard let self = self else { return }
+        self.locationManager.requestWhenInUseAuthorization()
+        self.locationManager.startUpdatingLocation()
+    }).disposed(by: bag)
+
+    self.locationManager.rx.didUpdateLocations.subscribe(onNext: { locations in
+        print(locations)
+    }).disposed(by: bag)
   }
 
   override func viewDidAppear(_ animated: Bool) {
