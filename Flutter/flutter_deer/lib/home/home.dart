@@ -40,8 +40,6 @@ class _HomeState extends State<Home> {
 
     bool isDark = ThemeUtils.isDark(context);
 
-    print("home rebuild");
-
     return Scaffold(
       bottomNavigationBar: BottomNavigationBar(
         items: isDark? darkItems: itmes,

@@ -62,15 +62,29 @@ class ViewController: UIViewController {
         .filter {
             !$0.isEmpty
         }
-
-    let search = searchInput.flatMapLatest { text in
-        ApiController.shared.currentWeather(for: text)
+    
+    let geoSearch = geoLocationButton.rx.tap
+        .flatMapLatest { _ in
+        self.locationManager.rx.getCurrentLocation()
+    }
+    .flatMapLatest { location in
+        ApiController.shared
+            .currentWeather(at: location.coordinate)
             .catchErrorJustReturn(.empty)
     }
-    .asDriver(onErrorJustReturn: .empty)
+
+    let textSearch = searchInput.flatMap { city in
+        ApiController.shared
+            .currentWeather(for: city)
+            .catchErrorJustReturn(.empty)
+    }
+    
+    let search = Observable.merge(textSearch, geoSearch)
+        .asDriver(onErrorJustReturn: .empty)
 
     let running = Observable.merge(
         searchInput.map { _ in true },
+        geoLocationButton.rx.tap.map {_ in true},
         search.map { _ in false }.asObservable()
     )
     .startWith(true)
@@ -107,16 +121,6 @@ class ViewController: UIViewController {
     search.map(\.cityName)
       .drive(cityNameLabel.rx.text)
       .disposed(by: bag)
-
-    geoLocationButton.rx.tap.subscribe(onNext: { [weak self] in
-        guard let self = self else { return }
-        self.locationManager.requestWhenInUseAuthorization()
-        self.locationManager.startUpdatingLocation()
-    }).disposed(by: bag)
-
-    self.locationManager.rx.didUpdateLocations.subscribe(onNext: { locations in
-        print(locations)
-    }).disposed(by: bag)
   }
 
   override func viewDidAppear(_ animated: Bool) {

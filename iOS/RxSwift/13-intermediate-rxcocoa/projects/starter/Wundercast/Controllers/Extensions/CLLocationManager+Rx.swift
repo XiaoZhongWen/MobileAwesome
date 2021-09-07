@@ -60,5 +60,30 @@ public extension Reactive where Base: CLLocationManager {
                 parameters[1] as! [CLLocation]
         }
     }
+    
+    var authorizationStatus: Observable<CLAuthorizationStatus> {
+        delegate.methodInvoked(#selector(CLLocationManagerDelegate.locationManager(_:didChangeAuthorization:)))
+            .map { parameters in
+                CLAuthorizationStatus(rawValue: parameters[1] as! Int32)!
+            }
+            .startWith(CLLocationManager.authorizationStatus())
+    }
+    
+    func getCurrentLocation() -> Observable<CLLocation> {
+        let location = authorizationStatus
+            .filter { status in
+                status == .authorizedAlways || status == .authorizedWhenInUse
+            }
+            .flatMap { _ in
+                self.didUpdateLocations.compactMap(\.first)
+            }
+            .take(1)
+            .do(onDispose: { [weak base] in
+                base?.stopUpdatingLocation()
+            })
+        base.requestWhenInUseAuthorization()
+        base.startUpdatingLocation()
+        return location
+    }
 }
 
