@@ -8,6 +8,8 @@
 
 
 
+# OC底层
+
 ## 元类的作用
 
 ### Class的定义
@@ -35,6 +37,17 @@
 `isa` 指向他的类对象，从而可以找到对象上的方法。
 
 同一个类的不同对象，他们的 isa 指针是一样的
+
+
+
+##  Objective-C 内存管理原则
+
+```
+1. 自己生成的对象，自己持有
+2. 非自己生成的对象，自己也能持有
+3. 不再需要自己持有的对象时释放
+4. 非自己持有的对象无法释放
+```
 
 
 
@@ -514,46 +527,6 @@ weak_clear_no_lock(weak_table_t *weak_table, id referent_id)
 
 <img src="./res/pop_process.png" alt="pop_process" style="zoom:50%;" />
 
-## 如何检测内存泄漏
-
-* MLeaksFinder
-* Instruments中的Leak动态分析
-
-
-
-## 如何调试BAD_ACCESS错误
-
-### 通过 Zombie
-
-```
-原理
-1. 开启Zombie Objects后，dealloc将会被hook，被hook后执行dealloc，内存并不会真正释放，系统会修改对象的isa指针，指向_NSZombie_前缀名称的僵尸类，将该对象变为僵尸对象
-2. 僵尸类做的事情比较单一，就是响应所有的方法：抛出异常，打印一条包含消息内容及其接收者的消息，然后终止程序
-3. Zombie Objects是无法检测内存越界的
-```
-
-### 设置全局断点快速定位问题代码所在行
-
-### Address Sanitizer
-
-```
-作用
-1. 内存释放后又被使用
-2. 内存重复释放
-3. 释放未申请的内存
-4. 使用栈内存作为函数返回值
-5. 使用了超出作用域的栈内存
-6. 内存越界访问
-
-原理
-1. 启用Address Sanitizer后，会在APP中增加libclang_rt.asan_ios_dynamic.dylib，它将在运行时加载
-2. Address Sanitizer替换了malloc和free的实现。当调用malloc函数时，它将分配指定大小的内存A，并将内存A周围的区域标记为”off-limits“
-3. 当free方法被调用时，内存A也被标记为”off-limits“，同时内存A被添加到隔离队列，这个操作将导致内存A无法再被重新malloc使用
-4. 当访问到被标记为”off-limits“的内存时，Address Sanitizer就会报告异常
-```
-
-
-
 ## 消息机制
 
 ### 消息发送机制
@@ -989,7 +962,53 @@ CFRunLoopRef CFRunLoopGetCurrent() {
 
     *当调用 dispatch_async(dispatch_get_main_queue(), block) 时，libDispatch 会向主线程的 RunLoop 发送消息，RunLoop会被唤醒，并从消息中取得这个 block，并在回调 __CFRUNLOOP_IS_SERVICING_THE_MAIN_DISPATCH_QUEUE__() 里执行这个 block。但这个逻辑仅限于 dispatch 到主线程*
 
-    
+
+
+# Swift
+
+### swift中 closure 与OC中block的区别？
+
+```
+1、closure是匿名函数、block是一个结构体对象
+2、closure通过逃逸闭包来在内部修改变量，block 通过 __block 修饰符
+```
+
+### Swift运行时
+
+<img src="./res/dispatch.png" alt="dispatch" style="zoom:50%;" />
+
+* 直接派发
+
+  *直接派发是最快的，原因是调用指令会少，还可以通过编译器进行比如内联等方式的优化。缺点是由于缺少动态性而不支持继承。*
+
+  ```swift
+  struct DragonBallPosition {
+      var x:Int
+      var y:Int
+      func land() {}
+  }
+  func dragonWillFound(_ position:DragonBallPosition) {
+      position.land()
+  }
+  let position = DragonBallPosition(x: 342, y: 213)
+  dragonWillFound(position)
+  ```
+
+  编译后, 会直接跳到方法实现的地方, 变成position.land()
+
+* 函数表派发
+
+  *使用数组来存储类声明的每一个函数的指针. 如C++里的virtual table(虚函数表), swift里称之为witness table. 每个类都会维护一个函数表, 记录类的所有函数, 如果父类函数被override的话, 表里面只会保存被override之后的函数. 一个子类新添加的函数, 会被插入到这个数组的最后. 运行时会根据这个表去决定实际调用的函数*
+
+  <img src="./res/function table.png" alt="function table" style="zoom:50%;" />
+
+* 消息机制派发
+
+  <img src="./res/@objc.png" alt="@objc" style="zoom:50%;" />
+
+
+
+# 性能优化
 
 
 ## 卡顿检测
@@ -1007,6 +1026,46 @@ CFRunLoopRef CFRunLoopGetCurrent() {
 利用runloop检测卡顿：
 
 *如果 RunLoop 的线程，进入睡眠前方法的执行时间过长而导致无法进入睡眠，或者线程唤醒后接收消息时间过长而无法进入下一步的话，就可以认为是线程受阻了。如果这个线程是主线程的话，表现出来的就是出现了卡顿。利用 RunLoop 原理来监控卡顿，要关注这两个阶段，RunLoop 在进入睡眠之前和唤醒后的两个 loop 状态定义的值，分别是 kCFRunLoopBeforeSources 和 kCFRunLoopAfterWaiting ，也就是要触发 Source0 回调和接收 mach_port 消息两个状态；创建观察者 runLoopObserver 添加到主线程 RunLoop 的 **common** 模式下观察， 然后，创建一个持续的子线程专门用来监控主线程的 RunLoop 状态， 一旦发现进入睡眠前的 kCFRunLoopBeforeSources 状态，或者唤醒后的状态 kCFRunLoopAfterWaiting，在设置的时间阈值内一直没有变化，即可判定为卡顿*
+
+
+
+## 如何检测内存泄漏
+
+* MLeaksFinder
+* Instruments中的Leak动态分析
+
+
+
+## 如何调试BAD_ACCESS错误
+
+### 通过 Zombie
+
+```
+原理
+1. 开启Zombie Objects后，dealloc将会被hook，被hook后执行dealloc，内存并不会真正释放，系统会修改对象的isa指针，指向_NSZombie_前缀名称的僵尸类，将该对象变为僵尸对象
+2. 僵尸类做的事情比较单一，就是响应所有的方法：抛出异常，打印一条包含消息内容及其接收者的消息，然后终止程序
+3. Zombie Objects是无法检测内存越界的
+```
+
+### 设置全局断点快速定位问题代码所在行
+
+### Address Sanitizer
+
+```
+作用
+1. 内存释放后又被使用
+2. 内存重复释放
+3. 释放未申请的内存
+4. 使用栈内存作为函数返回值
+5. 使用了超出作用域的栈内存
+6. 内存越界访问
+
+原理
+1. 启用Address Sanitizer后，会在APP中增加libclang_rt.asan_ios_dynamic.dylib，它将在运行时加载
+2. Address Sanitizer替换了malloc和free的实现。当调用malloc函数时，它将分配指定大小的内存A，并将内存A周围的区域标记为”off-limits“
+3. 当free方法被调用时，内存A也被标记为”off-limits“，同时内存A被添加到隔离队列，这个操作将导致内存A无法再被重新malloc使用
+4. 当访问到被标记为”off-limits“的内存时，Address Sanitizer就会报告异常
+```
 
 
 
@@ -1078,142 +1137,6 @@ CFRunLoopRef CFRunLoopGetCurrent() {
   ```
   alpha并不是分别应用在每一层之上，而是只有到整个layer树画完之后，再统一加上alpha，最后和底下其他layer的像素进行组合。显然也无法通过一次遍历就得到最终结果
   ```
-
-
-
-## 事件处理
-
-### 事件传递
-
-```
-触摸事件的传递是从父控件传递到子控件，即UIApplication->window->寻找处理事件最合适的view
-
-hitTest:withEvent:方法
-只要事件一传递给一个控件,这个控件就会调用他自己的hitTest:withEvent:方法, 寻找并返回最合适的view
-
-pointInside方法
-pointInside:withEvent:方法判断点在不在当前view上
-
-如何找到最合适的控件来处理事件？
-1. 首先判断主窗口（keyWindow）自己是否能接受触摸事件
-2. 判断触摸点是否在自己身上
-3. 子控件数组中从后往前遍历子控件，重复前面的两个步骤
-4. view，比如叫做fitView，那么会把这个事件交给这个fitView，再遍历这个fitView的子控件，直至没有更合适的view为止。
-如果没有符合条件的子控件，那么就认为自己最合适处理这个事件，也就是自己是最合适的view
-
-```
-
-### 事件响应
-
-```
-1. 如果当前view是控制器的view，那么控制器就是上一个响应者，事件就传递给控制器；如果当前view不是控制器的view，那么父视图就是当前view的上一个响应者，事件就传递给它的父视图
-2. 在视图层次结构的最顶级视图，如果也不能处理收到的事件或消息，则其将事件或消息传递给window对象进行处理
-3. 如果window对象也不处理，则其将事件或消息传递给UIApplication对象
-4. 如果UIApplication也不能处理该事件或消息，则将其丢弃
-```
-
-## GCD
-
-* dispatch_set_target_queue
-
-  变更生成的Dispatch queue的优先级
-
-  ```objective-c
-  dispatch_queue_t serialQueue = dispatch_queue_create("com.gcd.setTargetQueue.serialQueue", NULL);
-  //获取优先级为后台优先级的全局队列
-  dispatch_queue_t globalDefaultQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0);
-  //变更优先级
-  dispatch_set_target_queue(serialQueue, globalDefaultQueue);
-  ```
-
-* dispatch_barrier_async
-
-  dispatch_barrier_async函数会等待追加到并行队列上的任务全部执行完后再将指定的任务追加到该并行队列中
-
-  ```objective-c
-  dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0);
-  
-  dispatch_async(queue, blk0_for_reading)
-  dispatch_async(queue, blk1_for_reading)
-  dispatch_async(queue, blk2_for_reading)
-  dispatch_barrier_async(queue, blk_for_writing);
-  dispatch_async(queue, blk3_for_reading)
-  dispatch_async(queue, blk4_for_reading)
-  dispatch_async(queue, blk5_for_reading)
-  ```
-
-* dispatch_suspend / dispatch_resume
-
-* Dispatch I/O 一次使用多个线程并行读取文件
-
-* Dispatch Source (通过内核函数获取时间, 不会受runloop轮询的影响, 时间更加准确)
-
-  ```objective-c
-  dispatch_source_t timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, queue);
-      dispatch_source_set_timer(timer, DISPATCH_TIME_NOW, timeInterval * NSEC_PER_SEC, start * NSEC_PER_SEC);
-  dispatch_source_set_event_handler(timer, ^{
-          task();
-          if (!repeat) {
-              [self cancelTask:timerKey];
-          }
-      });
-      dispatch_resume(timer);
-  ```
-
-## 锁
-
-* 自旋锁
-
-  ```
-  OSSpinLock 不再安全，主要原因发生在低优先级线程拿到锁时，高优先级线程进入忙等(busy-wait)状态，消耗大量 CPU 时间，从而导致低优先级线程拿不到 CPU 时间，也就无法完成任务并释放锁。这种问题被称为优先级反转。
-  ```
-
-* 互斥锁
-
-  * NSLock
-  * pthread_mutex
-  * @synchronized
-
-* 读写锁
-
-  ```
-  用于解决多线程对公共资源读写问题，读操作可并发重入，写操作是互斥的
-  //加读锁
-  pthread_rwlock_rdlock(&rwlock);
-  //解锁
-  pthread_rwlock_unlock(&rwlock);
-  //加写锁
-  pthread_rwlock_wrlock(&rwlock);
-  //解锁
-  pthread_rwlock_unlock(&rwlock);
-  ```
-
-* 递归锁
-
-  ```
-  同一个线程可以加锁N次而不会引发死锁
-  ```
-
-* 条件锁
-
-* 信号量
-
-## 手势识别过程
-
-```
-手势识别操作是在常规视图响应链之外的. 首先 UIWindow 会将触碰事件发送到手势识别对象, 他们必须指明无法处理该事件, 之后该事件才会默认向前传到视图的响应链。
-
-事件发生的顺序：
-
-1. 窗口会将触碰事件发送到手势识别对象
-2. 手势识别对象将进入 UIGestureRecognizerStatePossible 状态
-3. 对于离散型手势, 手势识别对象会判断他是 UIGestureRecognizerStateRecognized 还是 UIGestureRecognizerStateFailed 类型
-	a. 如果是 UIGestureRecognizerStateRecognized, 手势识别接收触碰事件并调用指定的委托方法
-	b. 如果是 UIGestureRecognizerStateFailed, 手势识别对象将触碰事件返回到响应链
-4. 对于连续型手势, 手势识别对象会判断他是 UIGestureRecognizerStateBegan 还是UIGestureRecognizerStateFailed
-	a. 如果是 UIGestureRecognizerStateBegan, 手势识别对象会接收触控事件并调用指定的委托方法. 之后每当手势发生变化时就将状态更新为 UIGestureRecognizerStateChanged, 并始终调用委托方法, 直到最后的触碰事件结束, 此时状态为 UIGestureRecognizerStateEnded. 如果触碰模式不再和期望的手势相匹配, 可以将状态改为 UIGestureRecognizerStateCancelled
-	b. 如果是 UIGestureRecognizerStateFailed, 手势识别对象将触碰事件返回到响应链
-```
 
 
 
@@ -1309,11 +1232,155 @@ pointInside:withEvent:方法判断点在不在当前view上
 
 
 * 接下来，取二者的差集得到无用代码
+
 * 最后，由人工确认无用代码可删除后，进行删除即可
 
+  
+
+# 事件处理
+
+### 事件传递
+
+```
+触摸事件的传递是从父控件传递到子控件，即UIApplication->window->寻找处理事件最合适的view
+
+hitTest:withEvent:方法
+只要事件一传递给一个控件,这个控件就会调用他自己的hitTest:withEvent:方法, 寻找并返回最合适的view
+
+pointInside方法
+pointInside:withEvent:方法判断点在不在当前view上
+
+如何找到最合适的控件来处理事件？
+1. 首先判断主窗口（keyWindow）自己是否能接受触摸事件
+2. 判断触摸点是否在自己身上
+3. 子控件数组中从后往前遍历子控件，重复前面的两个步骤
+4. view，比如叫做fitView，那么会把这个事件交给这个fitView，再遍历这个fitView的子控件，直至没有更合适的view为止。
+如果没有符合条件的子控件，那么就认为自己最合适处理这个事件，也就是自己是最合适的view
+
+```
+
+### 事件响应
+
+```
+1. 如果当前view是控制器的view，那么控制器就是上一个响应者，事件就传递给控制器；如果当前view不是控制器的view，那么父视图就是当前view的上一个响应者，事件就传递给它的父视图
+2. 在视图层次结构的最顶级视图，如果也不能处理收到的事件或消息，则其将事件或消息传递给window对象进行处理
+3. 如果window对象也不处理，则其将事件或消息传递给UIApplication对象
+4. 如果UIApplication也不能处理该事件或消息，则将其丢弃
+```
 
 
-## 组件化
+
+## 手势识别过程
+
+```
+手势识别操作是在常规视图响应链之外的. 首先 UIWindow 会将触碰事件发送到手势识别对象, 他们必须指明无法处理该事件, 之后该事件才会默认向前传到视图的响应链。
+
+事件发生的顺序：
+
+1. 窗口会将触碰事件发送到手势识别对象
+2. 手势识别对象将进入 UIGestureRecognizerStatePossible 状态
+3. 对于离散型手势, 手势识别对象会判断他是 UIGestureRecognizerStateRecognized 还是 UIGestureRecognizerStateFailed 类型
+	a. 如果是 UIGestureRecognizerStateRecognized, 手势识别接收触碰事件并调用指定的委托方法
+	b. 如果是 UIGestureRecognizerStateFailed, 手势识别对象将触碰事件返回到响应链
+4. 对于连续型手势, 手势识别对象会判断他是 UIGestureRecognizerStateBegan 还是UIGestureRecognizerStateFailed
+	a. 如果是 UIGestureRecognizerStateBegan, 手势识别对象会接收触控事件并调用指定的委托方法. 之后每当手势发生变化时就将状态更新为 UIGestureRecognizerStateChanged, 并始终调用委托方法, 直到最后的触碰事件结束, 此时状态为 UIGestureRecognizerStateEnded. 如果触碰模式不再和期望的手势相匹配, 可以将状态改为 UIGestureRecognizerStateCancelled
+	b. 如果是 UIGestureRecognizerStateFailed, 手势识别对象将触碰事件返回到响应链
+
+```
+
+
+
+# 多线程
+
+## GCD
+
+* dispatch_set_target_queue
+
+  变更生成的Dispatch queue的优先级
+
+  ```objective-c
+  dispatch_queue_t serialQueue = dispatch_queue_create("com.gcd.setTargetQueue.serialQueue", NULL);
+  //获取优先级为后台优先级的全局队列
+  dispatch_queue_t globalDefaultQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0);
+  //变更优先级
+  dispatch_set_target_queue(serialQueue, globalDefaultQueue);
+  ```
+
+* dispatch_barrier_async
+
+  dispatch_barrier_async函数会等待追加到并行队列上的任务全部执行完后再将指定的任务追加到该并行队列中
+
+  ```objective-c
+  dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0);
+  
+  dispatch_async(queue, blk0_for_reading)
+  dispatch_async(queue, blk1_for_reading)
+  dispatch_async(queue, blk2_for_reading)
+  dispatch_barrier_async(queue, blk_for_writing);
+  dispatch_async(queue, blk3_for_reading)
+  dispatch_async(queue, blk4_for_reading)
+  dispatch_async(queue, blk5_for_reading)
+  ```
+
+* dispatch_suspend / dispatch_resume
+
+* Dispatch I/O 一次使用多个线程并行读取文件
+
+* Dispatch Source (通过内核函数获取时间, 不会受runloop轮询的影响, 时间更加准确)
+
+  ```objective-c
+  dispatch_source_t timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, queue);
+      dispatch_source_set_timer(timer, DISPATCH_TIME_NOW, timeInterval * NSEC_PER_SEC, start * NSEC_PER_SEC);
+  dispatch_source_set_event_handler(timer, ^{
+          task();
+          if (!repeat) {
+              [self cancelTask:timerKey];
+          }
+      });
+      dispatch_resume(timer);
+  ```
+
+## 锁
+
+* 自旋锁
+
+  ```
+  OSSpinLock 不再安全，主要原因发生在低优先级线程拿到锁时，高优先级线程进入忙等(busy-wait)状态，消耗大量 CPU 时间，从而导致低优先级线程拿不到 CPU 时间，也就无法完成任务并释放锁。这种问题被称为优先级反转。
+  ```
+
+* 互斥锁
+
+  * NSLock
+  * pthread_mutex
+  * @synchronized
+
+* 读写锁
+
+  ```
+  用于解决多线程对公共资源读写问题，读操作可并发重入，写操作是互斥的
+  //加读锁
+  pthread_rwlock_rdlock(&rwlock);
+  //解锁
+  pthread_rwlock_unlock(&rwlock);
+  //加写锁
+  pthread_rwlock_wrlock(&rwlock);
+  //解锁
+  pthread_rwlock_unlock(&rwlock);
+  ```
+
+* 递归锁
+
+  ```
+  同一个线程可以加锁N次而不会引发死锁
+  ```
+
+* 条件锁
+
+* 信号量
+
+
+
+# 组件化
 
 ### 组件分类
 
@@ -1685,6 +1752,10 @@ CTMediator+ZXIM
 @end
 ```
 
+
+
+# 混合开发
+
 ## Hybird层改造
 
 ### 将js能力接口分类
@@ -1766,7 +1837,343 @@ NSString *injectJsPath = [[NSBundle h5bundle] pathForResource:@"hybridBridge.js"
   }
   ```
 
-## 设计模式
+
+
+## Flutter
+
+```dart
+void main() => runApp(_widgetForRoute(window.defaultRouteName));//独立运行传入默认路由
+
+Widget _widgetForRoute(String routeName) {
+  switch (routeName) {
+    case route_name_me_page:
+      return MePage();
+    case route_name_share_page:
+      return SharePage();
+    case "transparent_page":
+      return Test();
+    default:
+      return MaterialApp(
+        home: Scaffold(
+          body: Center(
+            child: Text(""),
+          ),
+        ),
+      );
+  }
+}
+```
+
+### Dart
+
+#### 事件循环
+
+*Dart在Event Loop 驱动下，将需要主线程响应的事件放入Event Queue，不断轮询事件队列，取出事件，然后在主线程同步执行其回调函数。*
+
+* 事件队列和微任务队列
+
+  *Dart中有两个队列，事件队列（Event Queue）和 微任务队列（Microtask Queue）。在每一次事件循环中，Dart 总是先去第一个微任务队列中查询是否有可执行的任务，如果没有，才会处理后续的事件队列的流程。*
+
+  <img src="https://static001.geekbang.org/resource/image/70/bc/70dc4e1c222ddfaee8aa06df85c22bbc.png" alt="70dc4e1c222ddfaee8aa06df85c22bbc" style="zoom:50%;" />
+
+  * 微任务队列
+
+    *表示一个短时间内就会完成的异步任务，在事件循环中的优先级是最高的。（如，手势识别、文本输入、滚动视图、保存页面效果等）*
+
+  * 事件队列
+
+    *如，I/O、绘制、定时器，是通过事件队列驱动主线程执行的*
+
+* Future
+
+  **是Dart 为 Event Queue 任务的建立提供的一层封装**
+
+  *在声明一个 Future 时，Dart 会将异步任务的函数执行体放入事件队列，然后立即返回，后续的代码继续同步执行。而当同步执行的代码执行完毕后，事件队列会按照加入事件队列的顺序（即声明顺序），依次取出事件，最后同步执行 Future 的函数体及后续的 then，then 与 Future 函数体共用一个事件循环。如果 Future 执行体已经执行完毕了，但又拿着这个 Future 的引用，往里面加了一个 then 方法体，这种情况，Dart 会将后续加入的 then 方法体放入微任务队列，尽快执行。*
+
+  ```dart
+  示例：
+  Future(() => print('f1'));//声明一个匿名Future
+  Future fx = Future(() =>  null);//声明Future fx，其执行体为null
+  
+  //声明一个匿名Future，并注册了两个then。在第一个then回调里启动了一个微任务
+  Future(() => print('f2')).then((_) {
+    print('f3');
+    scheduleMicrotask(() => print('f4'));
+  }).then((_) => print('f5'));
+  
+  //声明了一个匿名Future，并注册了两个then。第一个then是一个Future
+  Future(() => print('f6'))
+    .then((_) => Future(() => print('f7')))
+    .then((_) => print('f8'));
+  
+  //声明了一个匿名Future
+  Future(() => print('f9'));
+  
+  //往执行体为null的fx注册了了一个then
+  fx.then((_) => print('f10'));
+  
+  //启动一个微任务
+  scheduleMicrotask(() => print('f11'));
+  print('f12');
+  
+  运行结果：
+  
+  f12
+  f11
+  f1
+  f10
+  f2
+  f3
+  f5
+  f4
+  f6
+  f9
+  f7
+  f8
+  ```
+
+  ![8a1106a01613fa999a35911fc5922e8b](https://static001.geekbang.org/resource/image/8a/8b/8a1106a01613fa999a35911fc5922e8b.gif)
+
+  * 因为其他语句都是异步任务，所以先打印 f12
+  * 剩下的异步任务中，微任务队列优先级最高，因此随后打印 f11；然后按照 Future 声明的先后顺序，打印 f1
+  * 随后到了 fx，由于 fx 的执行体是 null，相当于执行完毕了，Dart 将 fx 的 then 放入微任务队列，由于微任务队列的优先级最高，因此 fx 的 then 还是会最先执行，打印 f10
+  * 然后到了 fx 下面的 f2，打印 f2，然后执行 then，打印 f3。f4 是一个微任务，要到下一个事件循环才执行，因此后续的 then 继续同步执行，打印 f5。本次事件循环结束，下一个事件循环取出 f4 这个微任务，打印 f4
+  * 然后到了 f2 下面的 f6，打印 f6，然后执行 then。这里需要注意的是，这个 then 是一个 Future 异步任务，因此这个 then，以及后续的 then 都被放入到事件队列中了
+  * f6 下面还有 f9，打印 f9
+  * 最后一个事件循环，打印 f7，以及后续的 f8
+
+  *then 会在 Future 函数体执行完毕后立刻执行，无论是共用同一个事件循环还是进入下一个微任务*
+
+#### Isolate
+
+```
+Dart 的多线程机制，每个 Isolate 都有自己的 Event Loop 与 Queue，Isolate 之间不共享任何资源，只能依靠消息机制通信。
+```
+
+#### 混入（Mixin）
+
+*Dart为了支持多重继承，引入了mixin关键字，它最大的特殊处在于：mixin定义的类不能有构造方法，这样可以避免继承多个类而产生的父类构造方法冲突, 通过混入，一个类里可以以非继承的方式使用其他类中的变量与方法*
+
+```dart
+class Point { 
+  num x, y, z; 
+  Point(this.x, this.y) : z = 0; // 初始化变量z 
+  Point.bottom(num x) : this(x, 0); // 重定向构造函数 
+  void printInfo() => print('($x,$y,$z)');
+}
+
+class Coordinate with Point {
+  // 不能有构造方法
+}
+
+var yyy = Coordinate();
+print (yyy is Point); //true
+print(yyy is Coordinate); //true
+
+```
+
+### Widget、Element、RenderObject
+
+#### Widget
+
+*Widget 是 Flutter 世界里对视图的一种结构化描述，里面存储的是有关视图渲染的配置信息，包括布局、渲染属性、事件响应信息等，Widget 被设计成不可变的，当视图渲染的配置信息发生变化时，Flutter 会重建 Widget 树，进行数据更新*
+
+#### Element
+
+*Element 是 Widget 的一个实例化对象，它承载了视图构建的上下文数据，是连接结构化的配置信息到完成最终渲染的桥梁*
+
+```
+Flutter 渲染过程，可以分为这么三步：
+1. 首先，通过 Widget 树生成对应的 Element 树；
+2. 然后，创建相应的 RenderObject 并关联到 Element.renderObject 属性上；
+3. 最后，构建成 RenderObject 树，以完成最终的渲染
+Element 同时持有 Widget 和 RenderObject
+```
+
+#### RenderObject
+
+*RenderObject 是主要负责实现视图渲染的对象, Flutter 通过控件树（Widget 树）中的每个控件（Widget）创建不同类型的渲染对象，组成渲染对象树。布局和绘制在 RenderObject 中完成， 合成和渲染的工作则交给 Skia 搞定。*
+
+### State
+
+*Flutter的视图开发是声明式的，其核心设计思想是将视图和数据分离。在声明式UI编程中，除了设计好Widget布局方案外，还要提前维护一套文案数据集，并为需要变化的Widget绑定数据集中的数据，使Widget根据这个数据集完成渲染。当需要变更界面文案时，只要改变数据集中的文案数据，并通知Flutter框架触发Widget的重新渲染即可。*
+
+* StatelessWidget
+
+  *一旦创建成功就不再关心、也不响应任何数据变化进行重绘*
+
+  <img src="./res/StatelessWidget.png" alt="StatelessWidget" style="zoom:50%;" />
+
+* StatefulWidget
+
+  *Widget的展示，除了父 Widget 初始化时传入的静态配置之外，还需要处理用户的交互或其内部数据的变化，并体现在 UI 上，Widget 创建完成后，还需要关心和响应数据变化来进行重绘。*
+
+  <img src="./res/StatefulWidget.png" alt="StatefulWidget" style="zoom:50%;" />
+
+  *父 Widget 是否能通过初始化参数完全控制其 UI 展示效果，如果能，就使用StatelessWidget，负责使用StatefulWidget*
+
+* StatefulWidget不能替代StatelessWidget的原因
+
+  ```
+  StatefulWidget 的滥用会直接影响 Flutter 应用的渲染性能，Widget 是不可变的，更新则意味着销毁 + 重建（build）。StatelessWidget 是静态的，一旦创建则无需更新；而对于 StatefulWidget 来说，在 State 类中调用 setState 方法更新数据，会触发视图的销毁和重建，也将间接地触发其每个子 Widget 的销毁和重建。如果我们的根布局是一个 StatefulWidget，在其 State 中每调用一次更新 UI，都将是一整个页面所有 Widget 的销毁和重建。
+  ```
+
+### 生命周期
+
+* State 生命周期
+
+  *指关联的 Widget 所经历的，从创建到显示再到更新最后到停止，直至销毁等各个过程阶段。*
+
+  <img src="./res/lifecycle_state.png" alt="lifecycle_state" style="zoom:50%;" />
+
+  1. 创建阶段
+     * Flutter 通过调用 StatefulWidget.createState() 来创建一个 State，通过构造方法，接收父 Widget 传递的初始化 UI 配置数据，决定 Widget 最初的呈现效果。
+     * initState，会在 State 对象被插入视图树的时候调用，它在 State 的生命周期中只会被调用一次，可以在这里做一些初始化工作。
+     * didChangeDependencies 则用来专门处理 State 对象依赖关系变化。
+     * build，作用是构建视图，根据父 Widget 传递过来的初始化配置数据，以及 State 的当前状态，创建一个 Widget 然后返回。
+  2. 更新阶段
+     * setState，当状态数据发生变化时，调用这个方法告诉 Flutter，使用更新后的数据重建 UI。
+     * didChangeDependencies：State对象的依赖关系发生变化后，如系统语言 Locale 或应用主题改变时。
+     * didUpdateWidget，当 Widget 的配置发生变化时，比如，父 Widget 触发重建
+  3. 销毁阶段
+     * 当组件的可见状态发生变化时，deactivate 函数会被调用，这时 State 会被暂时从视图树中移除，值得注意的是，页面切换时，由于 State 对象在视图树中的位置发生了变化，需要先暂时移除后再重新添加，重新触发组件构建，因此这个函数也会被调用。
+     * 当 State 被永久地从视图树中移除时，Flutter 会调用 dispose 函数，可以在这里进行最终的资源释放、移除监听、清理环境，等。
+
+  ### 手势
+
+  手势竞技场
+
+  用来识别究竟哪个手势可以响应用户事件
+
+  *GestureDetector 内部对每一个手势都建立了一个工厂类（Gesture Factory）。而工厂类的内部会使用手势识别类（GestureRecognizer），来确定当前处理的手势。而所有手势的工厂类都会被交给 RawGestureDetector 类，以完成监测手势的工作，使用 Listener 监听原始指针事件，并在状态改变时把信息同步给所有的手势识别器，最后，手势会在竞技场决定最后由谁来响应用户事件*
+
+  ### 跨组件数据传递
+
+  * InheritedWidget
+
+    ```
+    只能在有父子关系的 Widget 之间进行数据共享,自上而下
+    ```
+
+  * Notification
+
+    ```
+    只能在有父子关系的 Widget 之间进行数据共享,自下而上
+    ```
+
+  * EventBus
+
+
+## ReactNative
+
+### 生命周期
+
+![react-life-cycle](./res/react-life-cycle.png)
+
+生命周期方法
+
+* constructor
+
+  ```
+  1. 用于初始化内部状态，很少使用
+  2. 唯一可以直接修改state的地方
+  ```
+
+* getDerivedStateFromProps
+
+  ```
+  1. 当state需要从props初始化时使用
+  2. 尽量不要使用：维护两者状态一致性会增加复杂度
+  3. 每次render都会调用
+  4. 典型场景：表单控件获取默认值
+  ```
+
+* componentDidMount
+
+  ```
+  1. UI渲染完成后调用
+  2. 只执行一次
+  3. 典型场景：获取外部资源
+  ```
+
+* componentWillUnmount
+
+  ```
+  1. 组件移除时被调用
+  2. 典型场景：释放资源
+  ```
+
+* getSnapshotBeforeUpdate
+
+  ```
+  1. 在页面render前调用，state已更新
+  2. 典型场景：获取render前的DOM状态
+  ```
+
+* componentDidUpdate
+
+  ```
+  1. 每次UI更新时被调用
+  2. 典型场景：页面需要根据props变化重新获取数据
+  ```
+
+* shouldComponentUpdate
+
+  ```
+  1. 决定Virtual DOM是否要重绘
+  2. 一般可以由PureComponent自动实现
+  3. 典型场景：性能优化
+  ```
+
+
+### 组件复用的另外两种形式
+
+* 高阶组件
+
+  *高阶组件是一个纯函数，它接受组件作为参数，返回新的组件*
+
+  ```
+  高阶组件是对已有组件的封装，产生一个新的组件，新的组件会包含一些自己的应用逻辑，这些应用逻辑会产生新的状态，这些状态会传给已有的组件；高阶组件一般不会有自己的UI展现，而只是为它封装的组件提供一些额外的功能或数据
+  HOC 在 React 的第三方库中很常见，例如 Redux 的 connect
+  ```
+
+* 函数作为子组件
+
+  ```
+  一个组件如何render它的内容，可以在很大程度上由它的使用者来决定
+  ```
+
+### Context ApI
+
+<img src="./res/context_api.png" alt="context_api" style="zoom:50%;" />
+
+```
+Context ApI 主要用于解决组件间通讯的问题
+```
+
+### immutable
+
+```
+Javascript 中的对象一般是可变的,新的对象简单的引用了原始对象，新旧对象的修改都将影响到彼此, Immutable Data是一旦被创建，就不能被更改的数据。对Immutable 对象的任何修改或添加删除操作都会返回一个新的Immutable 对象。Immutable 实现原理是持久化数据结构（Persistent Data Structure）,也就是使用旧数据创建新数据的同时要保证旧数据的可用且不变。同时又为了避免深拷贝把所有节点都复制一遍带来的性能损耗，Immutable 使用了Structure Sharing(结构共享)，即如果对象树中一个节点发生变化，只修改这个节点和受它影响的父节点，其他节点则进行共享。
+```
+
+### redux
+
+* 同步action
+
+![redux](./res/redux_sync.png)
+
+
+
+* 异步action
+
+  ![redux](./res/redux_async.png)
+
+  
+
+
+
+# 设计模式
 
 ### 创建型
 
@@ -2292,7 +2699,6 @@ NS_ASSUME_NONNULL_BEGIN
 *在对象之间定义一个一对多的依赖，当一个对象状态改变的时候，所有依赖的对象都会自动收到通知。*
 
 ```java
-
 public interface Subject {
   void registerObserver(Observer observer);
   void removeObserver(Observer observer);
@@ -2436,390 +2842,297 @@ public class Application {
 
 
 
-## Swift
+# 算法
 
-### swift中 closure 与OC中block的区别？
+## 排序
 
+### 堆排序
+
+```swift
+class Solution {
+    /// 创建堆
+    /// - Parameter list: 原序列
+    /// - Returns: 堆序列
+    func createHeap(_ list:[Int]) -> [Int] {
+        var heap = Array.init(list)
+        // 从最后一个根元素开始调整堆序
+        var rootIndex = list.count / 2 - 1
+        while rootIndex >= 0 {
+            var index = rootIndex
+            // 调整当前根元素所在子树的堆序
+            while index << 1 + 1 < list.count {
+                let left = index << 1 + 1
+                let right = left + 1
+                let root = heap[index]
+
+                // 获取最小孩子结点
+                var targetIndex = left
+                if right < list.count &&
+                    heap[right] < heap[left] {
+                    targetIndex = right
+                }
+
+                // 调整顺序
+                if heap[targetIndex] < root {
+                    heap[index] = heap[targetIndex]
+                    heap[targetIndex] = root
+                    index = targetIndex
+                } else {
+                    break
+                }
+            }
+            rootIndex = rootIndex - 1
+        }
+        return heap
+    }
+
+    /// 堆排序
+    /// - Parameter list: 原序列
+    /// - Returns: 非递减序列
+    func sort(_ list:[Int]) -> [Int] {
+        // 1. 创建堆
+        var heap = createHeap(list)
+        // 2. 调整堆
+        var result = [Int]()
+        while heap.count > 0 {
+            if let e = heap.first {
+                // 2.1 添加堆顶元素
+                result.append(e)
+                // 2.2 删除堆元素
+                heap[0] = heap[heap.count - 1]
+                heap.removeLast()
+                // 2.3 恢复堆序性
+                var index = 0
+                while index << 1 + 1 < heap.count {
+                    let left = index << 1 + 1
+                    let right = left + 1
+                    var targetIndex = left
+                    if right < heap.count &&
+                        heap[right] < heap[left] {
+                        targetIndex = right
+                    }
+                    if heap[targetIndex] < heap[index] {
+                        let root = heap[index]
+                        heap[index] = heap[targetIndex]
+                        heap[targetIndex] = root
+                        index = targetIndex
+                    } else {
+                        break
+                    }
+                }
+            }
+
+        }
+        return result
+    }
+}
+
+let s = Solution.init()
+//let list = [3, 7, 9, 5, 17, 1, 0, 3]
+//let list = [0, 0, 0, 0, 0, 0]
+//let list = [6, 5, 4, 3, 2, 1]
+let list = [1, 2, 3, 4, 5, 6]
+let result = s.sort(list)
 ```
-1、closure是匿名函数、block是一个结构体对象
-2、closure通过逃逸闭包来在内部修改变量，block 通过 __block 修饰符
-```
-
-### Swift运行时
-
-<img src="./res/dispatch.png" alt="dispatch" style="zoom:50%;" />
-
-* 直接派发
-
-  *直接派发是最快的，原因是调用指令会少，还可以通过编译器进行比如内联等方式的优化。缺点是由于缺少动态性而不支持继承。*
-
-  ```swift
-  struct DragonBallPosition {
-      var x:Int
-      var y:Int
-      func land() {}
-  }
-  func dragonWillFound(_ position:DragonBallPosition) {
-      position.land()
-  }
-  let position = DragonBallPosition(x: 342, y: 213)
-dragonWillFound(position)
-  ```
-
-  编译后, 会直接跳到方法实现的地方, 变成position.land()
-
-* 函数表派发
-
-  *使用数组来存储类声明的每一个函数的指针. 如C++里的virtual table(虚函数表), swift里称之为witness table. 每个类都会维护一个函数表, 记录类的所有函数, 如果父类函数被override的话, 表里面只会保存被override之后的函数. 一个子类新添加的函数, 会被插入到这个数组的最后. 运行时会根据这个表去决定实际调用的函数*
-
-  <img src="./res/function table.png" alt="function table" style="zoom:50%;" />
-
-* 消息机制派发
-
-  <img src="./res/@objc.png" alt="@objc" style="zoom:50%;" />
-
-##  Objective-C 内存管理原则
-
-```
-1. 自己生成的对象，自己持有
-2. 非自己生成的对象，自己也能持有
-3. 不再需要自己持有的对象时释放
-4. 非自己持有的对象无法释放
-```
 
 
 
-## Flutter
+### 快速排序
 
-### 混合开发
+```swift
+class Solution {
 
-```dart
-void main() => runApp(_widgetForRoute(window.defaultRouteName));//独立运行传入默认路由
+    func swap(_ list: inout [Int], _ left:Int, _ right: Int) {
+        let tmp = list[left]
+        list[left] = list[right]
+        list[right] = tmp
+    }
 
-Widget _widgetForRoute(String routeName) {
-  switch (routeName) {
-    case route_name_me_page:
-      return MePage();
-    case route_name_share_page:
-      return SharePage();
-    case "transparent_page":
-      return Test();
-    default:
-      return MaterialApp(
-        home: Scaffold(
-          body: Center(
-            child: Text(""),
-          ),
-        ),
-      );
-  }
+    func median3(_ list:inout [Int], _ left:Int, _ right: Int) -> Int {
+        let center = (left + right) / 2
+        if list[left] > list[center] {
+            swap(&list, left, center)
+        }
+        if list[left] > list[right] {
+            swap(&list, left, right)
+        }
+        if list[center] > list[right] {
+            swap(&list, center, right)
+        }
+        swap(&list, center, right)
+        return list[right]
+    }
+
+    func sort(_ list:inout [Int], _ left:Int, _ right: Int) {
+        if left >= right {
+            return
+        }
+        let pivot = median3(&list, left, right)
+        var i = left
+        var j = right - 1
+        while true {
+            while i <= right - 1 && list[i] <= pivot {
+                i = i + 1
+            }
+            while j >= left && list[j] >= pivot {
+                j = j - 1
+            }
+            if i < j {
+                swap(&list, i, j)
+            } else {
+                break
+            }
+        }
+        swap(&list, i, right)
+        sort(&list, left, i - 1)
+        sort(&list, i + 1, right)
+    }
+
+    func sort(_ list:[Int]) -> [Int] {
+        var result = Array.init(list)
+        sort(&result, 0, result.count - 1)
+        return result
+    }
 }
 ```
 
-### Dart
 
-#### 事件循环
 
-*Dart在Event Loop 驱动下，将需要主线程响应的事件放入Event Queue，不断轮询事件队列，取出事件，然后在主线程同步执行其回调函数。*
+### 前K个高频元素 （LeetCode 347）
 
-* 事件队列和微任务队列
+```swift
+// 给你一个整数数组 nums 和一个整数 k ，请你返回其中出现频率前 k 高的元素。你可以按 任意顺序 返回答案。
+// 输入: nums = [1,1,1,2,2,3], k = 2
+// 输出: [1,2]
 
-  *Dart中有两个队列，事件队列（Event Queue）和 微任务队列（Microtask Queue）。在每一次事件循环中，Dart 总是先去第一个微任务队列中查询是否有可执行的任务，如果没有，才会处理后续的事件队列的流程。*
-
-  <img src="https://static001.geekbang.org/resource/image/70/bc/70dc4e1c222ddfaee8aa06df85c22bbc.png" alt="70dc4e1c222ddfaee8aa06df85c22bbc" style="zoom:50%;" />
-
-  * 微任务队列
-
-    *表示一个短时间内就会完成的异步任务，在事件循环中的优先级是最高的。（如，手势识别、文本输入、滚动视图、保存页面效果等）*
-
-  * 事件队列
-
-    *如，I/O、绘制、定时器，是通过事件队列驱动主线程执行的*
-
-* Future
-
-  **是Dart 为 Event Queue 任务的建立提供的一层封装**
-
-  *在声明一个 Future 时，Dart 会将异步任务的函数执行体放入事件队列，然后立即返回，后续的代码继续同步执行。而当同步执行的代码执行完毕后，事件队列会按照加入事件队列的顺序（即声明顺序），依次取出事件，最后同步执行 Future 的函数体及后续的 then，then 与 Future 函数体共用一个事件循环。如果 Future 执行体已经执行完毕了，但又拿着这个 Future 的引用，往里面加了一个 then 方法体，这种情况，Dart 会将后续加入的 then 方法体放入微任务队列，尽快执行。*
-
-  ```dart
-  示例：
-  Future(() => print('f1'));//声明一个匿名Future
-  Future fx = Future(() =>  null);//声明Future fx，其执行体为null
-  
-  //声明一个匿名Future，并注册了两个then。在第一个then回调里启动了一个微任务
-  Future(() => print('f2')).then((_) {
-    print('f3');
-    scheduleMicrotask(() => print('f4'));
-  }).then((_) => print('f5'));
-  
-  //声明了一个匿名Future，并注册了两个then。第一个then是一个Future
-  Future(() => print('f6'))
-    .then((_) => Future(() => print('f7')))
-    .then((_) => print('f8'));
-  
-  //声明了一个匿名Future
-  Future(() => print('f9'));
-  
-  //往执行体为null的fx注册了了一个then
-  fx.then((_) => print('f10'));
-  
-  //启动一个微任务
-  scheduleMicrotask(() => print('f11'));
-  print('f12');
-  
-  运行结果：
-  
-  f12
-  f11
-  f1
-  f10
-  f2
-  f3
-  f5
-  f4
-  f6
-  f9
-  f7
-  f8
-  ```
-
-  ![8a1106a01613fa999a35911fc5922e8b](https://static001.geekbang.org/resource/image/8a/8b/8a1106a01613fa999a35911fc5922e8b.gif)
-
-  * 因为其他语句都是异步任务，所以先打印 f12
-  * 剩下的异步任务中，微任务队列优先级最高，因此随后打印 f11；然后按照 Future 声明的先后顺序，打印 f1
-  * 随后到了 fx，由于 fx 的执行体是 null，相当于执行完毕了，Dart 将 fx 的 then 放入微任务队列，由于微任务队列的优先级最高，因此 fx 的 then 还是会最先执行，打印 f10
-  * 然后到了 fx 下面的 f2，打印 f2，然后执行 then，打印 f3。f4 是一个微任务，要到下一个事件循环才执行，因此后续的 then 继续同步执行，打印 f5。本次事件循环结束，下一个事件循环取出 f4 这个微任务，打印 f4
-  * 然后到了 f2 下面的 f6，打印 f6，然后执行 then。这里需要注意的是，这个 then 是一个 Future 异步任务，因此这个 then，以及后续的 then 都被放入到事件队列中了
-  * f6 下面还有 f9，打印 f9
-  * 最后一个事件循环，打印 f7，以及后续的 f8
-
-  *then 会在 Future 函数体执行完毕后立刻执行，无论是共用同一个事件循环还是进入下一个微任务*
-
-#### Isolate
-
-```
-Dart 的多线程机制，每个 Isolate 都有自己的 Event Loop 与 Queue，Isolate 之间不共享任何资源，只能依靠消息机制通信。
-```
-
-#### 混入（Mixin）
-
-*Dart为了支持多重继承，引入了mixin关键字，它最大的特殊处在于：mixin定义的类不能有构造方法，这样可以避免继承多个类而产生的父类构造方法冲突, 通过混入，一个类里可以以非继承的方式使用其他类中的变量与方法*
-
-```dart
-class Point { 
-  num x, y, z; 
-  Point(this.x, this.y) : z = 0; // 初始化变量z 
-  Point.bottom(num x) : this(x, 0); // 重定向构造函数 
-  void printInfo() => print('($x,$y,$z)');
+class Solution {
+    func topKFrequent(_ nums: [Int], _ k: Int) -> [Int] {
+        var map = [Int:Int]();
+        
+        for item in nums {
+            if let value = map[item] {
+                map[item] = value + 1;
+            } else {
+                map[item] = 1;
+            }
+        }
+        
+        var frequenceBuckets = Array(repeating: [Int](), count: nums.count + 1);
+        for key in map.keys {
+            if let frequence = map[key] {
+                frequenceBuckets[frequence].append(key);
+            }
+        }
+        
+        var topK = [Int]();
+        var index = frequenceBuckets.count - 1;
+        while index >= 0 {
+            let list = frequenceBuckets[index];
+            if list.count == 0 {
+                index -= 1;
+                continue;
+            } else {
+                if k - topK.count >= list.count {
+                    topK.append(contentsOf: list);
+                } else if k - topK.count > 0 {
+                    topK.append(contentsOf: list[0...(k - topK.count - 1)]);
+                }
+            }
+            index -= 1;
+        }
+        
+        return topK;
+    }
 }
+```
 
-class Coordinate with Point {
-  // 不能有构造方法
+
+
+### 数组中第K个最大元素（LeetCode 215）
+
+```swift
+class Solution {
+    func findKthLargest(_ nums: [Int], _ k: Int) -> Int {
+        var numbers = nums;
+        var stack = [(0, numbers.count - 1)];
+        while stack.count > 0 {
+            let boundary = stack.popLast();
+            guard let left = boundary?.0 else {
+                break;
+            }
+            guard let right = boundary?.1 else {
+                break;
+            }
+            let pivot = median(&numbers, left, right);
+            var i = left;
+            var j = right;
+            while true {
+                while i < right && numbers[i] <= pivot {
+                    i += 1;
+                }
+                while j > left && numbers[j] >= pivot {
+                    j -= 1;
+                }
+                if i < j {
+                    numbers.swapAt(i, j);
+                } else {
+                    break;
+                }
+            }
+            numbers.swapAt(i, right);
+            if numbers.count - i < k {
+                stack.append((left, i - 1));
+            } else if numbers.count - i > k {
+                stack.append((i + 1, right));
+            } else {
+                return numbers[i];
+            }
+        }
+        return 0;
+    }
+
+    func median(_ nums: inout [Int], _ left: Int, _ right: Int) -> Int {
+        let center = (left + right) / 2;
+        if nums[left] > nums[center] {
+            nums.swapAt(left, center);
+        }
+        if nums[left] > nums[right] {
+            nums.swapAt(left, right);
+        }
+        if nums[center] < nums[right] {
+            nums.swapAt(center, right);
+        }
+        return nums[right];
+    }
 }
-
-var yyy = Coordinate();
-print (yyy is Point); //true
-print(yyy is Coordinate); //true
-
 ```
 
-### Widget、Element、RenderObject
 
-#### Widget
 
-*Widget 是 Flutter 世界里对视图的一种结构化描述，里面存储的是有关视图渲染的配置信息，包括布局、渲染属性、事件响应信息等，Widget 被设计成不可变的，当视图渲染的配置信息发生变化时，Flutter 会重建 Widget 树，进行数据更新*
+### 全排列 （LeetCode 46）
 
-#### Element
 
-*Element 是 Widget 的一个实例化对象，它承载了视图构建的上下文数据，是连接结构化的配置信息到完成最终渲染的桥梁*
 
-```
-Flutter 渲染过程，可以分为这么三步：
-1. 首先，通过 Widget 树生成对应的 Element 树；
-2. 然后，创建相应的 RenderObject 并关联到 Element.renderObject 属性上；
-3. 最后，构建成 RenderObject 树，以完成最终的渲染
-Element 同时持有 Widget 和 RenderObject
-```
+## 链表
 
-#### RenderObject
+### 删除链表的倒数第 N 个结点 （LeetCode 19）
 
-*RenderObject 是主要负责实现视图渲染的对象, Flutter 通过控件树（Widget 树）中的每个控件（Widget）创建不同类型的渲染对象，组成渲染对象树。布局和绘制在 RenderObject 中完成， 合成和渲染的工作则交给 Skia 搞定。*
 
-### State
 
-*Flutter的视图开发是声明式的，其核心设计思想是将视图和数据分离。在声明式UI编程中，除了设计好Widget布局方案外，还要提前维护一套文案数据集，并为需要变化的Widget绑定数据集中的数据，使Widget根据这个数据集完成渲染。当需要变更界面文案时，只要改变数据集中的文案数据，并通知Flutter框架触发Widget的重新渲染即可。*
+## 二叉树
 
-* StatelessWidget
+### 从中序与后序遍历构造二叉树
 
-  *一旦创建成功就不再关心、也不响应任何数据变化进行重绘*
 
-  <img src="./res/StatelessWidget.png" alt="StatelessWidget" style="zoom:50%;" />
 
-* StatefulWidget
+### 从前序与中序遍历构造二叉树
 
-  *Widget的展示，除了父 Widget 初始化时传入的静态配置之外，还需要处理用户的交互或其内部数据的变化，并体现在 UI 上，Widget 创建完成后，还需要关心和响应数据变化来进行重绘。*
 
-  <img src="./res/StatefulWidget.png" alt="StatefulWidget" style="zoom:50%;" />
 
-  *父 Widget 是否能通过初始化参数完全控制其 UI 展示效果，如果能，就使用StatelessWidget，负责使用StatefulWidget*
+## 动态规划
 
-* StatefulWidget不能替代StatelessWidget的原因
+### 回溯算法 （八皇后问题）
 
-  ```
-  StatefulWidget 的滥用会直接影响 Flutter 应用的渲染性能，Widget 是不可变的，更新则意味着销毁 + 重建（build）。StatelessWidget 是静态的，一旦创建则无需更新；而对于 StatefulWidget 来说，在 State 类中调用 setState 方法更新数据，会触发视图的销毁和重建，也将间接地触发其每个子 Widget 的销毁和重建。如果我们的根布局是一个 StatefulWidget，在其 State 中每调用一次更新 UI，都将是一整个页面所有 Widget 的销毁和重建。
-  ```
 
-### 生命周期
 
-* State 生命周期
-
-  *指关联的 Widget 所经历的，从创建到显示再到更新最后到停止，直至销毁等各个过程阶段。*
-
-  <img src="./res/lifecycle_state.png" alt="lifecycle_state" style="zoom:50%;" />
-
-  1. 创建阶段
-     * Flutter 通过调用 StatefulWidget.createState() 来创建一个 State，通过构造方法，接收父 Widget 传递的初始化 UI 配置数据，决定 Widget 最初的呈现效果。
-     * initState，会在 State 对象被插入视图树的时候调用，它在 State 的生命周期中只会被调用一次，可以在这里做一些初始化工作。
-     * didChangeDependencies 则用来专门处理 State 对象依赖关系变化。
-     * build，作用是构建视图，根据父 Widget 传递过来的初始化配置数据，以及 State 的当前状态，创建一个 Widget 然后返回。
-  2. 更新阶段
-     * setState，当状态数据发生变化时，调用这个方法告诉 Flutter，使用更新后的数据重建 UI。
-     * didChangeDependencies：State对象的依赖关系发生变化后，如系统语言 Locale 或应用主题改变时。
-     * didUpdateWidget，当 Widget 的配置发生变化时，比如，父 Widget 触发重建
-  3. 销毁阶段
-     * 当组件的可见状态发生变化时，deactivate 函数会被调用，这时 State 会被暂时从视图树中移除，值得注意的是，页面切换时，由于 State 对象在视图树中的位置发生了变化，需要先暂时移除后再重新添加，重新触发组件构建，因此这个函数也会被调用。
-     * 当 State 被永久地从视图树中移除时，Flutter 会调用 dispose 函数，可以在这里进行最终的资源释放、移除监听、清理环境，等。
-
-  ### 手势
-
-  手势竞技场
-
-  用来识别究竟哪个手势可以响应用户事件
-
-  *GestureDetector 内部对每一个手势都建立了一个工厂类（Gesture Factory）。而工厂类的内部会使用手势识别类（GestureRecognizer），来确定当前处理的手势。而所有手势的工厂类都会被交给 RawGestureDetector 类，以完成监测手势的工作，使用 Listener 监听原始指针事件，并在状态改变时把信息同步给所有的手势识别器，最后，手势会在竞技场决定最后由谁来响应用户事件*
-
-  ### 跨组件数据传递
-
-  * InheritedWidget
-
-    ```
-    只能在有父子关系的 Widget 之间进行数据共享,自上而下
-    ```
-
-  * Notification
-
-    ```
-    只能在有父子关系的 Widget 之间进行数据共享,自下而上
-    ```
-
-  * EventBus
-
-
-## ReactNative
-
-### 生命周期
-
-![react-life-cycle](./res/react-life-cycle.png)
-
-生命周期方法
-
-* constructor
-
-  ```
-  1. 用于初始化内部状态，很少使用
-  2. 唯一可以直接修改state的地方
-  ```
-
-* getDerivedStateFromProps
-
-  ```
-  1. 当state需要从props初始化时使用
-  2. 尽量不要使用：维护两者状态一致性会增加复杂度
-  3. 每次render都会调用
-  4. 典型场景：表单控件获取默认值
-  ```
-
-* componentDidMount
-
-  ```
-  1. UI渲染完成后调用
-  2. 只执行一次
-  3. 典型场景：获取外部资源
-  ```
-
-* componentWillUnmount
-
-  ```
-  1. 组件移除时被调用
-  2. 典型场景：释放资源
-  ```
-
-* getSnapshotBeforeUpdate
-
-  ```
-  1. 在页面render前调用，state已更新
-  2. 典型场景：获取render前的DOM状态
-  ```
-
-* componentDidUpdate
-
-  ```
-  1. 每次UI更新时被调用
-  2. 典型场景：页面需要根据props变化重新获取数据
-  ```
-
-* shouldComponentUpdate
-
-  ```
-  1. 决定Virtual DOM是否要重绘
-  2. 一般可以由PureComponent自动实现
-  3. 典型场景：性能优化
-  ```
-
-
-### 组件复用的另外两种形式
-
-* 高阶组件
-
-  *高阶组件是一个纯函数，它接受组件作为参数，返回新的组件*
-
-  ```
-  高阶组件是对已有组件的封装，产生一个新的组件，新的组件会包含一些自己的应用逻辑，这些应用逻辑会产生新的状态，这些状态会传给已有的组件；高阶组件一般不会有自己的UI展现，而只是为它封装的组件提供一些额外的功能或数据
-  HOC 在 React 的第三方库中很常见，例如 Redux 的 connect
-  ```
-
-* 函数作为子组件
-
-  ```
-  一个组件如何render它的内容，可以在很大程度上由它的使用者来决定
-  ```
-
-### Context ApI
-
-<img src="./res/context_api.png" alt="context_api" style="zoom:50%;" />
-
-```
-Context ApI 主要用于解决组件间通讯的问题
-```
-
-### immutable
-
-```
-Javascript 中的对象一般是可变的,新的对象简单的引用了原始对象，新旧对象的修改都将影响到彼此, Immutable Data是一旦被创建，就不能被更改的数据。对Immutable 对象的任何修改或添加删除操作都会返回一个新的Immutable 对象。Immutable 实现原理是持久化数据结构（Persistent Data Structure）,也就是使用旧数据创建新数据的同时要保证旧数据的可用且不变。同时又为了避免深拷贝把所有节点都复制一遍带来的性能损耗，Immutable 使用了Structure Sharing(结构共享)，即如果对象树中一个节点发生变化，只修改这个节点和受它影响的父节点，其他节点则进行共享。
-```
-
-### redux
-
-* 同步action
-
-![redux](./res/redux_sync.png)
-
-
-
-* 异步action
-
-  ![redux](./res/redux_async.png)
-
-  
-
+### 0-1背包问题

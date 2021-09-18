@@ -52,6 +52,8 @@ class ViewController: UIViewController {
   private let bag = DisposeBag()
   private let locationManager = CLLocationManager()
 
+    private var cached:[String:Weather] = [String: Weather]()
+
   var keyTextField: UITextField?
 
   override func viewDidLoad() {
@@ -93,8 +95,11 @@ class ViewController: UIViewController {
       .filter { !$0.isEmpty }
 
     let textSearch = searchInput.flatMap { text in
-      return ApiController.shared.currentWeather(city: text)
-        .catchErrorJustReturn(.empty)
+        return ApiController.shared.currentWeather(city: text).do(onNext: { [weak self] weather in
+            self?.cached[text] = weather
+        }).catchError { [weak self] _ in
+            Observable.just(self?.cached[text] ?? .empty)
+        }
     }
 
     let search = Observable.merge(geoSearch, textSearch)

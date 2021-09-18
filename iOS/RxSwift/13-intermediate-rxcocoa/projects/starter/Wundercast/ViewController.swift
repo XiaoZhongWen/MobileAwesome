@@ -121,6 +121,22 @@ class ViewController: UIViewController {
     search.map(\.cityName)
       .drive(cityNameLabel.rx.text)
       .disposed(by: bag)
+
+    geoLocationButton.rx.tap.subscribe(onNext: { [weak self] in
+        guard let self = self else { return }
+        self.locationManager.requestWhenInUseAuthorization()
+        self.locationManager.startUpdatingLocation()
+    }).disposed(by: bag)
+
+    self.locationManager.rx.didUpdateLocations.subscribe(onNext: { locations in
+        print(locations)
+    }).disposed(by: bag)
+
+    mapButton.rx.tap
+        .subscribe(onNext: {
+            self.mapView.isHidden.toggle()
+        }).disposed(by: bag)
+    mapView.rx.setDelegate(self).disposed(by: bag)
   }
 
   override func viewDidAppear(_ animated: Bool) {
@@ -155,3 +171,16 @@ class ViewController: UIViewController {
     cityNameLabel.textColor = UIColor.cream
   }
 }
+
+extension ViewController: MKMapViewDelegate {
+  func mapView(_ mapView: MKMapView,
+               rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
+    guard let overlay = overlay as? ApiController.Weather.Overlay else {
+      return MKOverlayRenderer()
+    }
+
+    return ApiController.Weather.OverlayView(overlay: overlay,
+                                             overlayIcon: overlay.icon)
+  }
+}
+
