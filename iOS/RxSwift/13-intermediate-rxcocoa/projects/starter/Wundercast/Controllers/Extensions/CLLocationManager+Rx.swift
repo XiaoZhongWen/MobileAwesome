@@ -87,3 +87,15 @@ public extension Reactive where Base: CLLocationManager {
     }
 }
 
+class c {
+    var v: Int?
+}
+
+protocol p:AnyObject {
+    associatedtype t
+    var v:t? {get set}
+}
+
+extension c: p {
+}
+
