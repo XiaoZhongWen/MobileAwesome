@@ -66,32 +66,33 @@ class ViewController: UIViewController {
 
     let search = searchCityName.rx.text.orEmpty
         .filter { !$0.isEmpty }
-        .flatMapLatest { text in
+        .flatMapLatest { text -> Observable<ApiController.Weather> in
+            print("send request Weather")
             return ApiController.shared.currentWeather(for: text)
                 .observeOn(MainScheduler.instance)
                 .catchErrorJustReturn(.empty)
         }
-        .asDriver(onErrorJustReturn: .empty)
-//        .share(replay: 1)
+//        .asDriver(onErrorJustReturn: .empty)
+        .share(replay: 1)
 
-//        .observeOn(MainScheduler.instance)
+        .observeOn(MainScheduler.instance)
 
     search.map {
         "\($0.temperature)° C"
-    }.drive(tempLabel.rx.text)
+    }.bind(to:tempLabel.rx.text)
     .disposed(by: bag)
 
     search.map(\.icon)
-        .drive(iconLabel.rx.text)
+        .bind(to:iconLabel.rx.text)
         .disposed(by: bag)
 
     search.map {
         "\($0.humidity) %"
-    }.drive(humidityLabel.rx.text)
+    }.bind(to:humidityLabel.rx.text)
     .disposed(by: bag)
 
     search.map(\.cityName)
-        .drive(cityNameLabel.rx.text)
+        .bind(to:cityNameLabel.rx.text)
         .disposed(by: bag)
   }
 

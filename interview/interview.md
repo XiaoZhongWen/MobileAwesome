@@ -2010,7 +2010,7 @@ Element 同时持有 Widget 和 RenderObject
 
   <img src="./res/StatefulWidget.png" alt="StatefulWidget" style="zoom:50%;" />
 
-  *父 Widget 是否能通过初始化参数完全控制其 UI 展示效果，如果能，就使用StatelessWidget，负责使用StatefulWidget*
+  *父 Widget 是否能通过初始化参数完全控制其 UI 展示效果，如果能，就使用StatelessWidget，否则使用StatefulWidget*
 
 * StatefulWidget不能替代StatelessWidget的原因
 

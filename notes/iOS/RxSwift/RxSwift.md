@@ -1,4 +1,707 @@
+## Observable
+
+### What is an observable?
+
+An `Observable` is just a sequence, with some special powers. One of these powers — in fact the most important one — is that it is **asynchronous**. Observables produce events over a period of time, which is referred to as **emitting**.
+
+* An observable emits **next** events that contain elements.
+* It can continue to do this until a **terminating event** is emitted, i.e., an **error** or **completed** event.
+* Once an observable is terminated, it can no longer emit events.
+
+### Creating observables
+
+* just
+
+  ```swift
+  public static func just(_ element: Self.Element) -> RxSwift.Observable<Self.Element>
+  Observable<Int>.just(1)
+  ```
+
+  
+
+* of
+
+  ```swift
+  public static func of(_ elements: Element ..., scheduler: ImmediateSchedulerType = CurrentThreadScheduler.instance) -> Observable<Element>
+  Observable.of(1, 2, 3)
+  ```
+
+  
+
+* from
+
+  ```swift
+  public static func from(_ array: [Self.Element], scheduler: RxSwift.ImmediateSchedulerType = CurrentThreadScheduler.instance) -> RxSwift.Observable<Self.Element>
+  Observable.from([1, 2, 3])
+  ```
+
+### Subscribing to observables
+
+```swift
+public func subscribe(_ on: @escaping (RxSwift.Event<Self.Element>) -> Void) -> RxSwift.Disposable
+
+// event为observable发出的事件，event.element为事件中携带的value
+observable.subscribe { event in
+   print(event)
+   if let element = event.element {
+      print(element)
+   }
+}
+```
+
+```swift
+public func subscribe(onNext: ((Self.Element) -> Void)? = nil, onError: ((Error) -> Void)? = nil, onCompleted: (() -> Void)? = nil, onDisposed: (() -> Void)? = nil) -> RxSwift.Disposable
+
+// element为事件中携带的value
+observable.subscribe(onNext: { element in
+  print(element)
+})
+```
+
+### Disposing and terminating
+
+*An observable doesn’t do anything until it receives a subscription. It’s the subscription that triggers an observable’s work, causing it to emit new events until an `error` or `completed` event terminates the observable. However, you can also manually cause an observable to terminate by canceling a subscription to it.*
+
+*If you forget to add a subscription to a dispose bag, or manually call `dispose` on it when you’re done with the subscription, or in some other way cause the observable to terminate at some point, you will probably leak memory.*
+
+* dispose()
+
+  ```swift
+  let subscription = observable.subscribe { event in }
+  subscription.dispose()
+  ```
+
+* disposeBag
+
+  *Managing each subscription individually would be tedious, so RxSwift includes a `DisposeBag` type. A dispose bag holds disposables — typically added using the `disposed(by:)` method — and will call `dispose()` on each one when the dispose bag is about to be deallocated.*
+
+  ```swift
+  let disposeBag = DisposeBag()
+  Observable.of("A", "B", "C")
+    .subscribe {}
+    .disposed(by: disposeBag)
+  ```
+
+### Traits
+
+* Single
+
+  *`Single`s will emit either a `success(value)` or `error(error)` event. `success(value)` is actually a combination of the `next` and `completed` events*
+
+* Completable
+
+  *A `Completable` will only emit a `completed` or `error(error)` event. It will not emit any values*
+
+* Maybe
+
+  *Maybe is a mashup of a Single and Completable. It can either emit a success(value), completed or error(error)*
+
+
+
+## Subject
+
+*Subject can act as both an observable and as an observer*
+
+### PublishSubject
+
+*Starts empty and only emits new elements to subscribers.*
+
+*Publish subjects come in handy when you simply want subscribers to be notified of new events from the point at which they subscribed, until either they unsubscribe, or the subject has terminated with a `completed` or `error` event.*
+
+![image](../../../resources/RxSwift/PublishSubject.png)
+
+```swift
+let subject = PublishSubject<String>()
+let subscriptionOne = subject
+  .subscribe(onNext: { string in
+    print(string)
+  })
+subject.on(.next("1"))
+```
+
+
+
+**subjects, once terminated, will re-emit their stop event to future subscribers**
+
+### BehaviorSubject
+
+*Starts with an initial value and replays it or the latest element to new subscribers.*
+
+![image](../../../resources/RxSwift/BehaviorSubject.png)
+
+
+
+### ReplaySubject
+
+*Initialized with a buffer size and will maintain a buffer of elements up to that size and replay it to new subscribers.*
+
+```swift
+let subject = ReplaySubject<String>.create(bufferSize: 2)
+let disposeBag = DisposeBag()
+
+subject.onNext("1")
+subject.onNext("2")
+subject.onNext("3")
+
+// 3
+subject
+  .subscribe {
+    print(label: "1)", event: $0)
+  }
+  .disposed(by: disposeBag)
+
+subject
+  .subscribe {
+    print(label: "2)", event: $0)
+  }
+  .disposed(by: disposeBag)
+}
+
+```
+
+![image](../../../resources/RxSwift/ReplaySubject.png)
+
+
+
+## Relays
+
+*What sets relays apart from their wrapped subjects is that they are guaranteed to never terminate.*
+
+*you add a value onto a relay by using the `accept(_:)` method. In other words, you don’t use `onNext(_:)`. This is because relays can only `accept` values, i.e., you cannot add an `error` or `completed` event onto them.*
+
+### PublishRelay
+
+*A `PublishRelay` wraps a `PublishSubject`*
+
+```swift
+let relay = PublishRelay<String>()
+let disposeBag = DisposeBag()
+relay
+  .subscribe(onNext: {
+    print($0)
+  })
+  .disposed(by: disposeBag)
+
+relay.accept("1")
+```
+
+
+
+### BehaviorRelay
+
+*A `BehaviorRelay` wraps a `BehaviorSubject`*
+
+```swift
+let relay = BehaviorRelay(value: "Initial value")
+let disposeBag = DisposeBag()
+relay.accept("New initial value")
+relay
+ .subscribe {
+    print(label: "1)", event: $0)
+ }
+ .disposed(by: disposeBag)
+}
+
+```
+
+
+
+## Operators
+
+### filtering
+
+* ignoreElements
+
+  *`ignoreElements` will ignore all `next` events. It will, however, allow stop events through, such as `completed` or `error` events.*
+
+  ![image](../../../resources/RxSwift/ignoreElements.png)
+
+  ```swift
+  let strikes = PublishSubject<String>()
+  let disposeBag = DisposeBag()
+  
+  strikes
+   .ignoreElements()
+   .subscribe { _ in
+     print("You're out!")
+   }
+   .disposed(by: disposeBag)
+  
+  strikes.onNext("X")
+  strikes.onNext("X")
+  strikes.onNext("X")
+  
+  strikes.onCompleted()
+  
+  // output:
+  You're out!
+  ```
+
+* elementAt
+
+  *takes the index of the element you want to receive, and ignores everything else.*
+
+  ![image](../../../resources/RxSwift/elementAt.png)
+
+  ```swift
+  let strikes = PublishSubject<String>()
+  let disposeBag = DisposeBag()
+  strikes
+    .elementAt(2)
+    .subscribe(onNext: { _ in
+      print("You're out!")
+    })
+    .disposed(by: disposeBag)
+  ```
+
+* filter
+
+  *takes a predicate closure and applies it to every element emitted, allowing through only those elements for which the predicate resolves to `true`*
+
+  ![image](../../../resources/RxSwift/filter.png)
+
+  ```swift
+  Observable.of(1, 2, 3, 4, 5, 6)
+    .filter { $0.isMultiple(of: 2) }
+    .subscribe(onNext: {
+      print($0)
+    })
+    .disposed(by: disposeBag)
+  ```
+
+* skip
+
+  *lets you ignore the first n elements, where n is the number you pass as its parameter*
+
+  ![image](../../../resources/RxSwift/skip.png)
+
+  ```swift
+  Observable.of("A", "B", "C", "D", "E", "F")
+    .skip(3)
+    .subscribe(onNext: {
+      print($0)
+    })
+    .disposed(by: disposeBag)
+  ```
+
+* skipWhile
+
+  *`skipWhile` only skips up until something is not skipped, and then it lets everything else through from that point on*
+
+  ![image](../../../resources/RxSwift/skipWhile.png)
+
+* skipUntil
+
+  *keep skipping elements from the source observable — the one you’re subscribing to — until some other trigger observable emits.*
+
+  ![image](../../../resources/RxSwift/skipUntil.png)
+
+* take
+
+  ![image](../../../resources/RxSwift/take.png)
+
+  ```swift
+  Observable.of(1, 2, 3, 4, 5, 6)
+      // 2
+      .take(3)
+      .subscribe(onNext: {
+        print($0)
+      })
+      .disposed(by: disposeBag)
+  ```
+
+* takeWhile
+
+  ![image](../../../resources/RxSwift/takeWhile.png)
+
+* takeUntil
+
+  ![image](../../../resources/RxSwift/takeUntil.png)
+
+* distinctUntilChanged
+
+  *let you prevent duplicate contiguous items from getting through.*
+
+  ![image](../../../resources/RxSwift/distinctUntilChanged.png)
+
+  ```swift
+  Observable.of("A", "A", "B", "B", "A")
+      .distinctUntilChanged()
+      .subscribe(onNext: {
+        print($0)
+      })
+      .disposed(by: disposeBag)
+  ```
+
+
+
+### Transforming
+
+* toArray
+
+  *convert an observable sequence of elements into an array of those elements once the observable completes*
+
+  ![image](../../../resources/RxSwift/toArray.png)
+
+  ```swift
+  Observable.of("A", "B", "C")
+      .toArray()
+      .subscribe(onSuccess: {
+        print($0)
+      })
+      .disposed(by: disposeBag)
+  ```
+
+* map
+
+  ![image](../../../resources/RxSwift/map.png)
+
+* flatMap
+
+  *projects and transforms an observable value of an observable, and then flattens it down to a target observable.*
+
+  ![image](../../../resources/RxSwift/flatMap.png)
+
+  
+
+```swift
+example(of: "flatMap") {
+  let disposeBag = DisposeBag()
+
+  // 1
+  let laura = Student(score: BehaviorSubject(value: 80))
+  let charlotte = Student(score: BehaviorSubject(value: 90))
+
+  // 2
+  let student = PublishSubject<Student>()
+
+  // 3
+  student
+    .flatMap {
+      $0.score
+    }
+    // 4
+    .subscribe(onNext: {
+      print($0)
+    })
+    .disposed(by: disposeBag)
+}
+
+student.onNext(laura)
+laura.score.onNext(85)
+
+// output:
+80
+85
+```
+
+
+
+* flatMapLatest
+
+  *flatMapLatest works just like  flatMap, What makes `flatMapLatest` different is that it will automatically switch to the latest observable and unsubscribe from the previous one*
+
+  ![image](../../../resources/RxSwift/flatMapLatest.png)
+
+  ```swift
+  example(of: "flatMapLatest") {
+    let disposeBag = DisposeBag()
+    let laura = Student(score: BehaviorSubject(value: 80))
+    let charlotte = Student(score: BehaviorSubject(value: 90))
+    let student = PublishSubject<Student>()
+  
+    student
+      .flatMapLatest {
+        $0.score
+      }
+      .subscribe(onNext: {
+        print($0)
+      })
+      .disposed(by: disposeBag)
+  
+    student.onNext(laura)
+    laura.score.onNext(85)
+    student.onNext(charlotte)
+  
+    // 1
+    laura.score.onNext(95)
+    charlotte.score.onNext(100)
+  }
+  
+  // output:
+  80
+  85
+  90
+  100
+  ```
+
+
+
+### Combining
+
+* startWith
+
+  ![image](../../../resources/RxSwift/startWith.png)
+
+  ```swift
+  let numbers = Observable.of(2, 3, 4)
+  let observable = numbers.startWith(1)
+    _ = observable.subscribe(onNext: { value in
+      print(value)
+    })
+  ```
+
+* concat
+
+  ![image](../../../resources/RxSwift/concat.png)
+
+  ```swift
+  let first = Observable.of(1, 2, 3)
+  let second = Observable.of(4, 5, 6)
+  let observable = Observable.concat([first, second])
+  
+  let germanCities = Observable.of("Berlin", "Münich", "Frankfurt")
+  let spanishCities = Observable.of("Madrid", "Barcelona", "Valencia")
+  let observable = germanCities.concat(spanishCities)
+  ```
+
+* concatMap
+
+  ```swift
+  example(of: "concatMap") {
+    // 1
+    let sequences = [
+      "German cities": Observable.of("Berlin", "Münich", "Frankfurt"),
+      "Spanish cities": Observable.of("Madrid", "Barcelona", "Valencia")
+    ]
+  
+    // 2
+    let observable = Observable.of("German cities", "Spanish cities")
+      .concatMap { country in sequences[country] ?? .empty() }
+  
+    // 3
+    _ = observable.subscribe(onNext: { string in
+        print(string)
+      })
+  }
+  ```
+
+* merge
+
+  *A `merge()` observable subscribes to each of the sequences it receives and emits the elements as soon as they arrive — there’s no predefined order*
+
+  ![image](../../../resources/RxSwift/merge.png)
+
+  ```swift
+  let left = PublishSubject<String>()
+  let right = PublishSubject<String>()
+  
+  let source = Observable.of(left.asObservable(), right.asObservable())
+  let observable = source.merge()
+    _ = observable.subscribe(onNext: { value in
+      print(value)
+    })
+  
+    var leftValues = ["Berlin", "Munich", "Frankfurt"]
+    var rightValues = ["Madrid", "Barcelona", "Valencia"]
+    repeat {
+        switch Bool.random() {
+        case true where !leftValues.isEmpty:
+            left.onNext("Left:  " + leftValues.removeFirst())
+        case false where !rightValues.isEmpty:
+            right.onNext("Right: " + rightValues.removeFirst())
+        default:
+            break
+        }
+    } while !leftValues.isEmpty || !rightValues.isEmpty
+  
+  left.onCompleted()
+  right.onCompleted()
+  ```
+
+* combineLatest
+
+  *Every time one of the inner (combined) sequences emits a value, it calls a closure you provide. You receive the last value emitted by each of the inner sequences.*
+
+  ![image](../../../resources/RxSwift/combineLatest.png)
+
+  ```swift
+  let left = PublishSubject<String>()
+  let right = PublishSubject<String>()
+  
+  let observable = Observable.combineLatest(left, right) {
+    lastLeft, lastRight in
+    "\(lastLeft) \(lastRight)"
+  }
+  
+  _ = observable.subscribe(onNext: { value in
+    print(value)
+  })
+  
+  print("> Sending a value to Left")
+  left.onNext("Hello,")
+  print("> Sending a value to Right")
+  right.onNext("world")
+  print("> Sending another value to Right")
+  right.onNext("RxSwift")
+  print("> Sending another value to Left")
+  left.onNext("Have a good day,")
+  
+  left.onCompleted()
+  right.onCompleted()
+  ```
+
+* zip
+
+  ![image](../../../resources/RxSwift/zip.png)
+
+  ```swift
+  example(of: "zip") {
+    enum Weather {
+      case cloudy
+      case sunny
+    }
+    let left: Observable<Weather> = Observable.of(.sunny, .cloudy, .cloudy, .sunny)
+    let right = Observable.of("Lisbon", "Copenhagen", "London", "Madrid", "Vienna")
+    let observable = Observable.zip(left, right) { weather, city in
+      return "It's \(weather) in \(city)"
+    }
+    _ = observable.subscribe(onNext: { value in
+      print(value)
+    })
+  }
+  
+  ——— Example of: zip ———
+  It's sunny in Lisbon
+  It's cloudy in Copenhagen
+  It's cloudy in London
+  It's sunny in Madrid
+  
+  ```
+
+* withLatestFrom
+
+  ![image](../../../resources/RxSwift/withLatestFrom.png)
+
+  ```swift
+  example(of: "withLatestFrom") {
+    // 1
+    let button = PublishSubject<Void>()
+    let textField = PublishSubject<String>()
+  
+    // 2
+    let observable = button.withLatestFrom(textField)
+    _ = observable.subscribe(onNext: { value in
+      print(value)
+    })
+  
+    // 3
+    textField.onNext("Par")
+    textField.onNext("Pari")
+    textField.onNext("Paris")
+    button.onNext(())
+    button.onNext(())
+  }
+  ```
+
+* switchLatest
+
+  *only prints items from the latest sequence pushed to the `source` observable*
+
+  ![image](../../../resources/RxSwift/switchLatest.png)
+
+  ```swift
+  example(of: "switchLatest") {
+    // 1
+    let one = PublishSubject<String>()
+    let two = PublishSubject<String>()
+    let three = PublishSubject<String>()
+  
+    let source = PublishSubject<Observable<String>>()
+    // 2
+    let observable = source.switchLatest()
+    let disposable = observable.subscribe(onNext: { value in
+      print(value)
+    })
+    // 3
+    source.onNext(one)
+    one.onNext("Some text from sequence one")
+    two.onNext("Some text from sequence two")
+  
+    source.onNext(two)
+    two.onNext("More text from sequence two")
+    one.onNext("and also from sequence one")
+  
+    source.onNext(three)
+    two.onNext("Why don't you see me?")
+    one.onNext("I'm alone, help me")
+    three.onNext("Hey it's three. I win.")
+  
+    source.onNext(one)
+    one.onNext("Nope. It's me, one!")
+    disposable.dispose()
+  }
+  ——— Example of: switchLatest ———
+  Some text from sequence one
+  More text from sequence two
+  Hey it's three. I win.
+  Nope. It's me, one!
+  
+  ```
+
+  
+
 ## RxCocoa
+
+### Binding observables
+
+*bind an observable to another entity. It’s required that the consumer conforms to `ObserverType`, a write-only entity that can only accept new events but cannot be subscribed to.*
+
+![image](../../../resources/RxSwift/bind.png)
+
+* A producer, which produces the value.
+* A consumer, which processes the values from the producer.
+
+**`bind(to:)` is an alias, or syntactic sugar, for `subscribe()`. Calling `bind(to: observer)` will internally call `subscribe(observer)`.**
+
+
+
+### share(replay: 1)
+
+*makes your stream reusable and transforms a single-use data source into a multi-use `Observable`.*
+
+![image](../../../resources/RxSwift/share_replay.png)
+
+```swift
+// share(replay: 1) 保证通过flatMapLatest生成的observable被以下四个订阅者共享；否则当有事件发出时，会为每个订阅者生成一个observable，发生四次接口调用
+let search = searchCityName.rx.text.orEmpty
+  .filter { !$0.isEmpty }
+  .flatMapLatest { text in
+    ApiController.shared
+      .currentWeather(for: text)
+      .catchErrorJustReturn(.empty)
+  }
+  .share(replay: 1)
+  .observeOn(MainScheduler.instance)
+
+search.map { "\($0.temperature)° C" }
+  .bind(to: tempLabel.rx.text)
+  .disposed(by: bag)
+
+search.map(\.icon)
+  .bind(to: iconLabel.rx.text)
+  .disposed(by: bag)
+
+search.map { "\($0.humidity)%" }
+  .bind(to: humidityLabel.rx.text)
+  .disposed(by: bag)
+
+search.map(\.cityName)
+  .bind(to: cityNameLabel.rx.text)
+  .disposed(by: bag)
+```
+
+
 
 ### Extension CLLocationManager
 
