@@ -54,6 +54,18 @@ class TasksViewController: UIViewController, BindableType {
 
     configureDataSource()
   }
+
+  override func viewDidAppear(_ animated: Bool) {
+    print()
+  }
+
+  override func viewWillDisappear(_ animated: Bool) {
+    print()
+  }
+
+  override func viewDidDisappear(_ animated: Bool) {
+    print()
+  }
   
   func bindViewModel() {
     viewModel.sectionedItems
@@ -77,6 +89,7 @@ class TasksViewController: UIViewController, BindableType {
     dataSource = RxTableViewSectionedAnimatedDataSource<TaskSection>(
       configureCell: {
         [weak self] dataSource, tableView, indexPath, item in
+        print(item)
         let cell = tableView.dequeueReusableCell(withIdentifier: "TaskItemCell", for: indexPath) as! TaskItemTableViewCell
         if let self = self {
           cell.configure(with: item, action: self.viewModel.onToggle(task: item))

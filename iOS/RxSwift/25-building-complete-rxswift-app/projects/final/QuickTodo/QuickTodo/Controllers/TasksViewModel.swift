@@ -101,6 +101,15 @@ struct TasksViewModel {
 
   lazy var editAction: Action<TaskItem, Swift.Never> = { this in
     return Action { task in
+
+      let action = this.onUpdateTitle(task: task)
+      action.execute("xiaozhongwen")
+      let subject = PublishSubject<Void>()
+      subject.onCompleted()
+      return subject.asObservable()
+        .take(1)
+        .ignoreElements().asObservable()
+
       let editViewModel = EditTaskViewModel(
         task: task,
         coordinator: this.sceneCoordinator,
