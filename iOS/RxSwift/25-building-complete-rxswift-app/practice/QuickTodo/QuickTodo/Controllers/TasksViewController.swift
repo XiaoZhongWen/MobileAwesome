@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import RxDataSources
 
 class TasksViewController:UIViewController, BindableType {
     typealias ViewModelType = TasksViewModel
@@ -16,6 +17,9 @@ class TasksViewController:UIViewController, BindableType {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = .red
+
+        SectionModel
+        AnimatableSectionModel
+
     }
 }
