@@ -1,0 +1,12 @@
+module Hydra {
+  umbrella header "HydraAsync-umbrella.h"
+
+  export *
+  module * { export * }
+}
+
+
+module Hydra.Swift {
+  header "/Volumes/Julien/Mine/MobileAwesome/Flutter/assassin/build/ios/Debug-iphonesimulator/HydraAsync/Swift Compatibility Header/Hydra-Swift.h"
+  requires objc
+}

@@ -233,6 +233,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  font_awesome_flutter:
+    dependency: "direct main"
+    description:
+      name: font_awesome_flutter
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "9.2.0"
   frontend_server_client:
     dependency: transitive
     description:
@@ -324,6 +331,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.0.1"
+  mime_type:
+    dependency: transitive
+    description:
+      name: mime_type
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "1.0.0"
   nested:
     dependency: transitive
     description:
@@ -609,6 +623,27 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "3.0.0"
+  tencent_im_sdk_plugin:
+    dependency: "direct main"
+    description:
+      name: tencent_im_sdk_plugin
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "3.5.6"
+  tencent_im_sdk_plugin_platform_interface:
+    dependency: transitive
+    description:
+      name: tencent_im_sdk_plugin_platform_interface
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.0.5"
+  tencent_im_sdk_plugin_web:
+    dependency: transitive
+    description:
+      name: tencent_im_sdk_plugin_web
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.0.2"
   term_glyph:
     dependency: transitive
     description:

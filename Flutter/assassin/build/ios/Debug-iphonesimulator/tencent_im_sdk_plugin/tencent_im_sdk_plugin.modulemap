@@ -1,0 +1,12 @@
+module tencent_im_sdk_plugin {
+  umbrella header "tencent_im_sdk_plugin-umbrella.h"
+
+  export *
+  module * { export * }
+}
+
+
+module tencent_im_sdk_plugin.Swift {
+  header "/Volumes/Julien/Mine/MobileAwesome/Flutter/assassin/build/ios/Debug-iphonesimulator/tencent_im_sdk_plugin/Swift Compatibility Header/tencent_im_sdk_plugin-Swift.h"
+  requires objc
+}
