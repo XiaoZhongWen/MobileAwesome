@@ -4,6 +4,7 @@ import 'package:flutter_cloud_platform/base/constant/mcs_constant.dart';
 import 'package:flutter_cloud_platform/base/constant/mcs_platform.dart';
 import 'package:flutter_cloud_platform/base/constant/mcs_setting.dart';
 import 'package:flutter_cloud_platform/base/dao/visual_dao.dart';
+import 'package:flutter_cloud_platform/base/models/platform_visual/mcs_route.dart';
 import 'package:flutter_cloud_platform/base/models/platform_visual/mcs_tab.dart';
 import 'package:flutter_cloud_platform/base/models/platform_visual/mcs_visual.dart';
 import 'package:flutter_cloud_platform/base/network/platform_api.dart';
@@ -44,6 +45,10 @@ class VisualProvider extends ChangeNotifier {
   List<MCSTab?>? tabs() {
     List<MCSTab>? tabs = _visual?.appConfig?.pages?.homePage?.tabs;
     return tabs;
+  }
+
+  Map<String, MCSRoute>? pageConfig() {
+    return _visual?.appConfig?.pages?.pageConfig;
   }
 
   void fetchPlatformVisual() async {

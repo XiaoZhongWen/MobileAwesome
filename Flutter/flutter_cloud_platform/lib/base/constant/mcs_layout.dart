@@ -5,9 +5,12 @@ class MCSLayout {
   static double topMargin = 20.0;
   static double padding = 16.0;
   static double maxWidth = 360.0;
-  static double loginCardHeight = 300.0;
+  static double loginCardHeight = 260.0;
 
   static double loginIconWidth = 120.0;
   static double loginIconHeight = 120.0;
   static double tabIconSize = 25.0;
+
+  static double menuIconSize = 20.0;
+  static double listMenuIconSize = 12.0;
 }

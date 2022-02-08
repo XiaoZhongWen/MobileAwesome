@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_cloud_platform/base/models/platform_visual/mcs_route.dart';
 
 class ContactsPage extends StatefulWidget {
-  const ContactsPage({Key? key}) : super(key: key);
+
+  MCSRoute? route;
+
+  ContactsPage({Key? key, this.route}) : super(key: key);
 
   @override
   _ContactsPageState createState() => _ContactsPageState();

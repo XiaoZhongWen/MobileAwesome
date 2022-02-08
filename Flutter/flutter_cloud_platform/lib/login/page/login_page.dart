@@ -121,6 +121,11 @@ class _LoginPageState extends State<LoginPage> {
     String pwd = data.password.md5String();
     bool success = await MCSIMService.singleton.login(userId, pwd);
     Account? account = await AuthApi.singleton.login(userId, pwd);
-    return (success && account != null)? '登录成功': '用户名或密码错误';
+    bool result = success && account != null;
+    if (result) {
+      LaunchProvider provider = Provider.of<LaunchProvider>(context, listen: false);
+      provider.launchType = LaunchType.main;
+    }
+    return result? '登录成功': '用户名或密码错误';
   }
 }
