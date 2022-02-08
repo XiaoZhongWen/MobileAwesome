@@ -3,6 +3,7 @@ import 'package:flutter_cloud_platform/base/constant/mcs_constant.dart';
 import 'package:flutter_cloud_platform/base/constant/mcs_font.dart';
 import 'package:flutter_cloud_platform/base/models/platform_visual/mcs_route.dart';
 import 'package:flutter_cloud_platform/base/models/platform_visual/mcs_route_menu.dart';
+import 'package:flutter_cloud_platform/base/widgets/mcs_button.dart';
 import 'package:flutter_cloud_platform/base/widgets/mcs_image.dart';
 import 'package:flutter_cloud_platform/base/widgets/mcs_title.dart';
 
@@ -23,7 +24,44 @@ class _ConversationPageState extends State<ConversationPage> with AutomaticKeepA
   @override
   void initState() {
     super.initState();
+    _buildActions();
+  }
 
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const MCSTitle('消息'),
+        actions: _actions,
+      ),
+    );
+  }
+
+  void onTapMenu(MCSRouteMenu menu) {
+    String route = menu.route ?? '';
+    if (route.isEmpty) {
+      return;
+    }
+    switch (route) {
+      case search: {
+        break;
+      }
+      case contactsList2: {
+        break;
+      }
+      case selectContacts: {
+        break;
+      }
+      case addFriend: {
+        break;
+      }
+      case scan: {
+        break;
+      }
+    }
+  }
+
+  void _buildActions() {
     Iterable<Widget>? iterable = widget.route?.menus?.where((MCSRouteMenu menu) {
       bool flag = menu.hiddenAction ?? true;
       return !flag;
@@ -56,30 +94,28 @@ class _ConversationPageState extends State<ConversationPage> with AutomaticKeepA
         itemBuilder: (context) {
           return foldMenus!.map((MCSRouteMenu menu) {
             return PopupMenuItem(
-                child: SizedBox(
-                  width: 80,
-                  child: ListTile(
-                    dense: true,
-                    horizontalTitleGap: 0,
-                    minVerticalPadding: 0,
-                    contentPadding: EdgeInsets.zero,
-                    leading: SizedBox(
-                      height: MCSLayout.menuIconSize,
-                      child: MCSImage.cached(
-                        imageUrl: menu.icon ?? '',
-                        width: MCSLayout.listMenuIconSize,
-                        height: MCSLayout.listMenuIconSize,
-                      ),
-                    ),
-                    title: Text(
-                      menu.name ?? '',
-                      style: const TextStyle(
-                          color: Colors.black,
-                          fontSize: fontLevel0
-                      ),
+                padding: EdgeInsets.zero,
+                child: MCSButton(
+                  color: Colors.white,
+                  elevation: 0.0,
+                  highlightElevation: 0.0,
+                  textPadding: const EdgeInsets.symmetric(horizontal: 10.0),
+                  leftIcon: MCSImage.cached(
+                    imageUrl: menu.icon ?? '',
+                    width: MCSLayout.listMenuIconSize,
+                    height: MCSLayout.listMenuIconSize,
+                  ),
+                  label: Text(
+                    menu.name ?? '',
+                    style: const TextStyle(
+                        color: Colors.black,
+                        fontSize: fontLevel0
                     ),
                   ),
-                ),
+                  onPressed: () {
+                    onTapMenu(menu);
+                  },
+                )
             );
           }).toList();
         },
@@ -91,24 +127,6 @@ class _ConversationPageState extends State<ConversationPage> with AutomaticKeepA
       );
       _actions.add(button);
     }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const MCSTitle('消息'),
-        actions: _actions,
-      ),
-    );
-  }
-
-  void onTapMenu(MCSRouteMenu menu) {
-
-  }
-
-  void onTapFoldMenu() {
-
   }
 
   @override

@@ -6,10 +6,10 @@ import '../routes/router.dart';
 
 class LoginRouter extends IRouterProvider {
 
-  static String loginPage = "/login";
+  final String _loginPage = "/login";
 
   @override
   void initRouter(FluroRouter router) {
-    router.define(loginPage, handler: Handler(handlerFunc: (_, __) => Text('')));
+    router.define(_loginPage, handler: Handler(handlerFunc: (_, __) => Text('')));
   }
 }
