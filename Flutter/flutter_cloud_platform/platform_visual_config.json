@@ -1,0 +1,188 @@
+{
+    "productId": "ddfbf3b6f429482ca24bb5a3852ed0d0",
+    "guid": "8e12d6b3bde4463391a267c7ac44c428",
+    "appConfig":
+    {
+        "global":
+        {
+            "contacts":
+            {
+                "circleHead": true,
+                "orgUrl": "https://mapp.chinamye.com/sn-org",
+                "orgSelectUrl": "https://mapp.chinamye.com/sn-org/select",
+                "createGroup": true,
+                "addFriendType": "DEFAULT",
+                "onlyAdminAtAll": false,
+                "allowedChangeName": false
+            },
+            "openSensitiveWord": true,
+            "interceptType": 2,
+            "mainPageAdImage": null,
+            "h5Url": null,
+            "commonTextConfig": null,
+            "android": null,
+            "ios": null
+        },
+        "pages":
+        {
+            "pageConfig":
+            {
+                "/home/conversationList":
+                {
+                    "overflowIcon": "https://ceph.chinamye.com/paas/939063504bfb438d9c9ddf376a027fee/%2B%403x.png",
+                    "menus":
+                    [
+                        {
+                            "hiddenAction": true,
+                            "icon": "https://ceph.chinamye.com/paas/939063504bfb438d9c9ddf376a027fee/img_add_group_chat.png",
+                            "route": "/conversation/pickContactGroupActivity",
+                            "name": "发起聊天",
+                            "type": "native",
+                            "category": "native"
+                        },
+                        {
+                            "hiddenAction": false,
+                            "icon": "https://ceph.chinamye.com/paas/939063504bfb438d9c9ddf376a027fee/%E9%80%9A%E8%AE%AF%E5%BD%95%403x.png",
+                            "route": "/contact/contactsListActivity",
+                            "name": "联系人",
+                            "type": "native",
+                            "category": "native"
+                        },
+                        {
+                            "hiddenAction": true,
+                            "icon": "https://ceph.chinamye.com/paas/939063504bfb438d9c9ddf376a027fee/img_add_friend.png",
+                            "route": "/friends/add",
+                            "name": "添加好友",
+                            "type": "native",
+                            "category": "native"
+                        },
+                        {
+                            "hiddenAction": true,
+                            "icon": "https://ceph.chinamye.com/paas/939063504bfb438d9c9ddf376a027fee/ic_scancode.png",
+                            "route": "/scan/scanActivity",
+                            "name": "扫一扫",
+                            "type": "native",
+                            "category": "native"
+                        },
+                        {
+                            "hiddenAction": false,
+                            "icon": "https://ceph.chinamye.com/paas/939063504bfb438d9c9ddf376a027fee/%E6%90%9C%E7%B4%A2%403x.png",
+                            "route": "/conversation/search",
+                            "name": "搜索",
+                            "type": "native",
+                            "category": "native"
+                        }
+                    ],
+                    "content": "{\"overflowIcon\":\"https://ceph.chinamye.com/paas/939063504bfb438d9c9ddf376a027fee/%2B%403x.png\"}"
+                },
+                "/share/myCircle":
+                {
+                    "overflowIcon": null,
+                    "menus":
+                    [],
+                    "content": null
+                },
+                "/home/contactList":
+                {
+                    "overflowIcon": null,
+                    "menus":
+                    [],
+                    "content": "{\"content\":[{\"text\":\"公众号\",\"type\":\"public_layout\",\"isShow\":true,\"leftIcon\":\"\"},{\"text\":\"群组\",\"type\":\"group_layout\",\"isShow\":true,\"leftIcon\":\"\"},{\"text\":\"组织架构\",\"type\":\"org_layout\",\"isShow\":true,\"leftIcon\":\"\"}]}"
+                },
+                "/common/mine":
+                {
+                    "overflowIcon": null,
+                    "menus":
+                    [],
+                    "content": "{\"isGrid\":true,\"items\":[{\"name\":\"我的空间\",\"icon\":\"\",\"url\":\"\",\"type\":\"0\",\"category\":\"NATIVE\",\"route\":\"/share/mySpaceActivity\"},{\"name\":\"我的审批\",\"icon\":\"\",\"url\":\"\",\"type\":\"9\",\"category\":\"NATIVE\",\"route\":\"/work/myPublishOrOpinionActivity\"},{\"name\":\"我的简报\",\"icon\":\"\",\"url\":\"\",\"type\":\"10\",\"category\":\"NATIVE\",\"route\":\"/work/myPublishOrOpinionActivity\"},{\"name\":\"我的任务\",\"icon\":\"\",\"url\":\"\",\"type\":\"11\",\"category\":\"NATIVE\",\"route\":\"/work/myPublishOrOpinionActivity\"},{\"name\":\"我的云盘\",\"icon\":\"\",\"url\":\"\",\"type\":\"3\",\"category\":\"NATIVE\",\"route\":\"/clouddisk/myCloudDiskActivity\"},{\"name\":\"我的群发\",\"icon\":\"\",\"url\":\"\",\"type\":\"4\",\"category\":\"NATIVE\",\"route\":\"/mass/remoteMassActivity\"},{\"name\":\"我的收藏\",\"icon\":\"\",\"url\":\"\",\"type\":\"6\",\"category\":\"NATIVE\",\"route\":\"/collect/myCollectActivity\"},{\"name\":\"健康打卡\",\"icon\":\"https://ceph.chinamye.com/paas/939063504bfb438d9c9ddf376a027fee/%E6%89%93%E5%8D%A1%281%29.png\",\"url\":\"https://dk.chinamye.com\",\"type\":\"\",\"category\":\"H5\",\"route\":\"/common/webviewActivity\"},{\"name\":\"CRM\",\"icon\":\"https://ceph.chinamye.com/paas/939063504bfb438d9c9ddf376a027fee/ddfbf3b6f429482ca24bb5a3852ed0d0/CRM%402x%20%282%29.png\",\"url\":\"https://crm.chinamye.com/mobile\",\"type\":\"\",\"category\":\"H5\",\"route\":\"/common/webviewActivity\"},{\"name\":\"培训\",\"icon\":\"https://ceph.chinamye.com/paas/939063504bfb438d9c9ddf376a027fee/ddfbf3b6f429482ca24bb5a3852ed0d0/%E5%9F%B9%E8%AE%AD.png\",\"url\":\"https://zxt-m.chinamye.com\",\"type\":\"\",\"category\":\"H5\",\"route\":\"/common/webviewActivity\"},{\"name\":\"直播\",\"icon\":\"https://ceph.chinamye.com/paas/939063504bfb438d9c9ddf376a027fee/2.png\",\"url\":\"https://zb.chinamye.com/mobile\",\"type\":\"\",\"category\":\"H5\",\"route\":\"/common/webviewActivity\"},{\"name\":\"我的会议\",\"icon\":\"\",\"url\":\"\",\"type\":\"8\",\"category\":\"NATIVE\",\"route\":\"/meeting/AIMeetingListActivity\"},{\"name\":\"我的机密文件\",\"icon\":\"\",\"url\":\"\",\"type\":\"12\",\"category\":\"NATIVE\",\"route\":\"/clouddisk/mySecretCloudDiskActivity\"},{\"name\":\"设置\",\"icon\":\"\",\"url\":\"\",\"type\":\"7\",\"category\":\"NATIVE\",\"route\":\"/common/setting\"}]}"
+                },
+                "/conversation/message":
+                {
+                    "overflowIcon": null,
+                    "menus":
+                    [],
+                    "content": "{\"needTextInputLayout\":true,\"msgTypes\":null,\"chatWatermark\":true}"
+                },
+                "e0f983f23f9149518c4516e284c9cdaa":
+                {
+                    "overflowIcon": null,
+                    "menus":
+                    [],
+                    "content": "{}"
+                },
+                "/work/myWork":
+                {
+                    "overflowIcon": null,
+                    "menus":
+                    [],
+                    "content": null
+                }
+            },
+            "homePage":
+            {
+                "h5Url": null,
+                "tabs":
+                [
+                    {
+                        "id": "b9350adfce024781842c8aea7bf611b5",
+                        "name": "消息",
+                        "num": 1608542414296,
+                        "route": "/home/conversationList",
+                        "selIcon": "",
+                        "unselIcon": "",
+                        "showMessageNotify": 0,
+                        "category": "NATIVE"
+                    },
+                    {
+                        "id": "5c3ac354a18a4e25b562db8e2b69a8cc",
+                        "name": "办公",
+                        "num": 1608542420789,
+                        "route": "/work/myWork",
+                        "selIcon": "",
+                        "unselIcon": "",
+                        "showMessageNotify": 0,
+                        "category": "NATIVE"
+                    },
+                    {
+                        "id": "fa1f0ba82f2f4070b44c18dedf24c9b5",
+                        "name": "分享",
+                        "num": 1608542427009,
+                        "route": "/share/myCircle",
+                        "selIcon": "",
+                        "unselIcon": "",
+                        "showMessageNotify": 0,
+                        "category": "NATIVE"
+                    },
+                    {
+                        "id": "2388c506dd33408295b0cc60f3338644",
+                        "name": "我",
+                        "num": 1608542432063,
+                        "route": "/common/mine",
+                        "selIcon": "",
+                        "unselIcon": "",
+                        "showMessageNotify": 0,
+                        "category": "NATIVE"
+                    }
+                ]
+            },
+            "loginPage":
+            {
+                "registerUrl": null,
+                "resetPwdUrl": null,
+                "changePwdUrl": null,
+                "showLastAvatar": true,
+                "loginUrl": null,
+                "showScanButton": true
+            }
+        }
+    },
+    "version": 97,
+    "useable": true,
+    "themeConfig":
+    {
+        "patch": false,
+        "themeUrl": "https://ceph.chinamye.com/paas/ddfbf3b6f429482ca24bb5a3852ed0d0/18/iosTheme.zip",
+        "md5": "b035d751a753597140ee3f5d713bf02e",
+        "themeVersion": 18
+    }
+}
