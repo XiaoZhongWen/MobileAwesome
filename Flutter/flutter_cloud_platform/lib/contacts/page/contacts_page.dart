@@ -1,19 +1,50 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_cloud_platform/base/constant/mcs_constant.dart';
 import 'package:flutter_cloud_platform/base/models/platform_visual/mcs_route.dart';
+import 'package:flutter_cloud_platform/base/providers/provider.dart';
+import 'package:flutter_cloud_platform/base/widgets/mcs_title.dart';
+import 'package:flutter_cloud_platform/contacts/models/contacts_group.dart';
+import 'package:flutter_cloud_platform/contacts/providers/contacts_provider.dart';
+import 'package:provider/provider.dart';
 
 class ContactsPage extends StatefulWidget {
 
-  MCSRoute? route;
-
-  ContactsPage({Key? key, this.route}) : super(key: key);
+  ContactsPage({Key? key}) : super(key: key);
 
   @override
   _ContactsPageState createState() => _ContactsPageState();
 }
 
 class _ContactsPageState extends State<ContactsPage> {
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Container();
+    VisualProvider visualProvider = Provider.of<VisualProvider>(context, listen:false);
+    MCSRoute? route = visualProvider.fetchRoute(contactsList1);
+    return Scaffold(
+      appBar: AppBar(
+        title: const MCSTitle('联系人'),
+      ),
+      body: FutureProvider<ContactsProvider>(
+        initialData: ContactsProvider(route?.content),
+        create: (_) => _buildContactsProvider(route?.content),
+        child: Consumer(builder: (_, contactsProvider, __) {
+          return Container();
+        }),
+      ),
+    );
+  }
+
+  Future<ContactsProvider> _buildContactsProvider(String? content) async {
+    ContactsProvider contactsProvider = ContactsProvider(content);
+    await contactsProvider.fetchContactList();
+    return contactsProvider;
   }
 }

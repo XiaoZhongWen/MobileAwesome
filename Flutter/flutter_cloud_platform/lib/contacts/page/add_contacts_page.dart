@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_cloud_platform/base/widgets/mcs_title.dart';
 
 class AddContactsPage extends StatefulWidget {
-  const AddContactsPage({Key? key}) : super(key: key);
+  AddContactsPage({Key? key}) : super(key: key);
 
   @override
   _AddContactsPageState createState() => _AddContactsPageState();
@@ -10,6 +11,10 @@ class AddContactsPage extends StatefulWidget {
 class _AddContactsPageState extends State<AddContactsPage> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold(
+      appBar: AppBar(
+        title: const MCSTitle('添加好友'),
+      ),
+    );
   }
 }

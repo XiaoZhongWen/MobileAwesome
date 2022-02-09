@@ -33,6 +33,7 @@ class MCSButton extends MaterialButton {
     bool enableFeedback = true,
     EdgeInsetsGeometry textPadding = EdgeInsets.zero,
     Widget? label,
+    MainAxisAlignment mainAxisAlignment = MainAxisAlignment.center,
     this.leftIcon,
     this.topIcon,
     this.rightIcon,
@@ -83,8 +84,8 @@ class MCSButton extends MaterialButton {
                 child: topIcon,
               ),
               Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: mainAxisAlignment,
+                mainAxisSize: MainAxisSize.max,
                 children: [
                   Offstage(
                     offstage: leftIcon == null,

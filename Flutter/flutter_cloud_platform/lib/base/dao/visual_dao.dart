@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'package:flutter_cloud_platform/base/constant/mcs_constant.dart';
 import 'package:flutter_cloud_platform/base/models/platform_visual/mcs_visual.dart';
 import '../db/mcs_db_service.dart';
-import '../../base/extension/extension.dart';
 
 class VisualDao {
 

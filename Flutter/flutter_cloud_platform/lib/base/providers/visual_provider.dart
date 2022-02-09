@@ -47,8 +47,9 @@ class VisualProvider extends ChangeNotifier {
     return tabs;
   }
 
-  Map<String, MCSRoute>? pageConfig() {
-    return _visual?.appConfig?.pages?.pageConfig;
+  MCSRoute? fetchRoute(String route) {
+    Map<String, MCSRoute>? map = _visual?.appConfig?.pages?.pageConfig;
+    return map?[route];
   }
 
   void fetchPlatformVisual() async {

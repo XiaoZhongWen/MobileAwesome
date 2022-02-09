@@ -42,7 +42,7 @@ class _MainPageState extends State<MainPage> with RestorationMixin {
   @override
   Widget build(BuildContext context) {
     return Consumer<VisualProvider>(builder: (_, visualProvider, __) {
-      List<Widget> pageList = _buildPageList(visualProvider.tabs(), visualProvider.pageConfig());
+      List<Widget> pageList = _buildPageList(visualProvider.tabs());
       List<BottomNavigationBarItem> items = _buildBottomNavigationBarItems(
           visualProvider.tabs(),
           visualProvider.tabIconTable(),
@@ -112,21 +112,20 @@ class _MainPageState extends State<MainPage> with RestorationMixin {
     return list;
   }
 
-  List<Widget> _buildPageList(List<MCSTab?>? tabs, Map<String, MCSRoute>? pageConfig) {
+  List<Widget> _buildPageList(List<MCSTab?>? tabs) {
     List<Widget> list = [];
     int tabCount = tabs?.length ?? 0;
     for(int i = 0; i < tabCount; i++) {
       MCSTab? tab = tabs?[i];
       String route = tab?.route ?? '';
       Widget? page;
-      MCSRoute? pageRoute = pageConfig?[route];
       switch (route) {
         case contactsList1:{
-          page = ContactsPage(route: pageRoute);
+          page = ContactsPage();
           break;
         }
         case conversation: {
-          page = ConversationPage(route: pageRoute);
+          page = ConversationPage();
           break;
         }
         case share1: {

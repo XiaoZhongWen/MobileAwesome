@@ -10,8 +10,11 @@ class ThemeProvider extends ChangeNotifier {
       primaryColor: MCSColors.mainColor,
       brightness: themeMode,
       appBarTheme: const AppBarTheme(
-          color: Colors.white,
-          centerTitle: true,
+        color: Colors.white,
+        centerTitle: true,
+        iconTheme: IconThemeData(
+          color: Colors.black
+        )
       ),
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
