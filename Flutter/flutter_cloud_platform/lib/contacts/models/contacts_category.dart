@@ -9,6 +9,12 @@ class WorkStatus {
     return WorkStatus(id, workStatus, expireTime);
   }
 
+  Map<String, dynamic> toJson() => {
+    'id':id,
+    'workStatus':workStatus,
+    'expireTime':expireTime
+  };
+
   String? id;
   String? workStatus;
   String? expireTime;
