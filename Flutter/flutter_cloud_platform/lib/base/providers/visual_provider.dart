@@ -56,10 +56,14 @@ class VisualProvider extends ChangeNotifier {
     VisualDao visualDao = VisualDao();
     MCSVisual? visual = await visualDao.fetchVisualWithId(GUID);
     if (inProduction || visual == null) {
-      Response response = await PlatformApi.singleton.fetchPlatformVisual();
-      visual = MCSVisual.fromJson(response.data);
-      visualDao.saveVisualData(visual);
+      Response? response = await PlatformApi.singleton.fetchPlatformVisual();
+      if (response != null) {
+        visual = MCSVisual.fromJson(response.data);
+        visualDao.saveVisualData(visual);
+      }
     }
-    set(visual);
+    if (visual != null) {
+      set(visual);
+    }
   }
 }

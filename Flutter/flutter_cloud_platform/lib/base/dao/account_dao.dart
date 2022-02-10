@@ -75,4 +75,6 @@ class AccountDao {
   Future<void>? deleteAccountWithUserId(String userId) async {
     await MCSDBService.singleton.delete(accountTableName, where: 'userId = ?', whereArgs: [userId]);
   }
+
+
 }

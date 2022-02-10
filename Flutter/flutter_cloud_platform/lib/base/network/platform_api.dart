@@ -23,8 +23,10 @@ class PlatformApi {
       'configVersion': 0,
       'themeVersion': 0
     };
-    Response response = await _dio.post(path, data: params);
-    return response;
+    try {
+      Response response = await _dio.post(path, data: params);
+      return response;
+    } on DioError catch(e) {}
   }
 }
 

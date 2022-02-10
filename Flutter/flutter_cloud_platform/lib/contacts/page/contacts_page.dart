@@ -28,16 +28,15 @@ class _ContactsPageState extends State<ContactsPage> {
   Widget build(BuildContext context) {
     VisualProvider visualProvider = Provider.of<VisualProvider>(context, listen:false);
     MCSRoute? route = visualProvider.fetchRoute(contactsList1);
-    return Scaffold(
-      appBar: AppBar(
-        title: const MCSTitle('联系人'),
-      ),
-      body: FutureProvider<ContactsProvider>(
-        initialData: ContactsProvider(route?.content),
-        create: (_) => _buildContactsProvider(route?.content),
-        child: Consumer(builder: (_, contactsProvider, __) {
-          return Container();
-        }),
+
+    return FutureProvider.value(
+      value: _buildContactsProvider(route?.content),
+      initialData: ContactsProvider(route?.content),
+      child: Scaffold(
+        appBar: AppBar(
+          title: const MCSTitle('联系人'),
+        ),
+        body: Container(),
       ),
     );
   }

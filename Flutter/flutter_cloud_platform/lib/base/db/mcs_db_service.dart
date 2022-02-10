@@ -12,7 +12,7 @@ class MCSDBService {
   // final String createVersionTable = 'CREATE TABLE IF NOT EXISTS tb_version (id INTEGER PRIMARY KEY AUTOINCREMENT, version INTEGER DEFAULT 1)';
   final String createVisualTable = 'CREATE TABLE IF NOT EXISTS $visualTableName (id INTEGER PRIMARY KEY AUTOINCREMENT, version INTEGER, useable INTEGER, productId TEXT, guid TEXT, mcs_visual TEXT)';
   final String createAccountTable = 'CREATE TABLE IF NOT EXISTS $accountTableName (id INTEGER PRIMARY KEY AUTOINCREMENT, userId TEXT, password TEXT, nickname TEXT, headUrl TEXT, active INTEGER, timestamp INTEGER, accessToken TEXT, refreshToken TEXT, expire INTEGER)';
-  final String createContactsTable = 'CREATE TABLE IF NOT EXIST $contactsTableName (id INTEGER PRIMARY KEY AUTOINCREMENT, displayName TEXT, headUrl TEXT, username TEXT, workStatus TEXT, tag TEXT, type INTEGER, card TEXT, depts TEXT)';
+  final String createContactsTable = 'CREATE TABLE IF NOT EXISTS $contactsTableName (id INTEGER PRIMARY KEY AUTOINCREMENT, displayName TEXT, headUrl TEXT, username TEXT, workStatus TEXT, tag TEXT, type INTEGER, card TEXT, depts TEXT)';
 
   static final MCSDBService singleton = MCSDBService._();
   MCSDBService._() {}
