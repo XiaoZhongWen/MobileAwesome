@@ -14,6 +14,7 @@ MCSGlobalContacts _$MCSGlobalContactsFromJson(Map<String, dynamic> json) =>
       json['allowedChangeName'] as bool?,
       json['orgUrl'] as String?,
       json['orgSelectUrl'] as String?,
+      json['addFriendType'] as String?,
     );
 
 Map<String, dynamic> _$MCSGlobalContactsToJson(MCSGlobalContacts instance) =>
@@ -24,4 +25,5 @@ Map<String, dynamic> _$MCSGlobalContactsToJson(MCSGlobalContacts instance) =>
       'allowedChangeName': instance.allowedChangeName,
       'orgUrl': instance.orgUrl,
       'orgSelectUrl': instance.orgSelectUrl,
+      'addFriendType':instance.addFriendType
     };

@@ -11,7 +11,8 @@ class MCSGlobalContacts {
       this.onlyAdminAtAll,
       this.allowedChangeName,
       this.orgUrl,
-      this.orgSelectUrl);
+      this.orgSelectUrl,
+      this.addFriendType);
 
   bool? circleHead;
   bool? createGroup;
@@ -19,6 +20,7 @@ class MCSGlobalContacts {
   bool? allowedChangeName;
   String? orgUrl;
   String? orgSelectUrl;
+  String? addFriendType;
 
   factory MCSGlobalContacts.fromJson(Map<String, dynamic> json) => _$MCSGlobalContactsFromJson(json);
   Map<String, dynamic> toJson() => _$MCSGlobalContactsToJson(this);

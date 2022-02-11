@@ -13,4 +13,6 @@ class MCSLayout {
 
   static double menuIconSize = 20.0;
   static double listMenuIconSize = 12.0;
+
+  static SizedBox gap0 = const SizedBox(height: 0);
 }

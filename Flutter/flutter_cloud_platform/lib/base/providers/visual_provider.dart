@@ -66,4 +66,12 @@ class VisualProvider extends ChangeNotifier {
       set(visual);
     }
   }
+
+  String? fetchAddFriendType() {
+    return _visual?.appConfig?.global?.contacts?.addFriendType;
+  }
+
+  String? fetchOrgUrl() {
+    return _visual?.appConfig?.global?.contacts?.orgUrl;
+  }
 }

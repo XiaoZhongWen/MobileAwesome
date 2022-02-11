@@ -3,7 +3,21 @@ import 'package:flutter_cloud_platform/base/constant/mcs_constant.dart';
 import 'package:flutter_cloud_platform/base/db/mcs_db_service.dart';
 import 'package:flutter_cloud_platform/contacts/models/contacts_category.dart';
 
+enum ContactsCategoryType {
+  publicAccount,
+  friend
+}
+
+extension on ContactsCategoryType {
+  int get value => [1, 3][index];
+}
+
 class ContactsDao {
+  /*
+  * 保存联系人
+  * type=1 公众账号
+  * type=3 我的好友
+  * */
   void saveContacts(ContactsCategoryItem item, {int? type, String? tag}) async {
     String username = item.username ?? '';
     if (username.isEmpty) {
@@ -17,16 +31,16 @@ class ContactsDao {
       'headUrl':item.headUrl,
       'workStatus':json.encode(item.workStatus?.toJson())
     };
-    List list = await MCSDBService.singleton.query(contactsTableName, where: 'username = ', whereArgs: [username]);
+    List list = await MCSDBService.singleton.query(contactsTableName, where: 'username = ?', whereArgs: [username]);
     if (list.isEmpty) {
       MCSDBService.singleton.insert(contactsTableName, map);
     } else {
-      MCSDBService.singleton.update(contactsTableName, map, where: 'username = ', whereArgs: [username]);
+      MCSDBService.singleton.update(contactsTableName, map, where: 'username = ?', whereArgs: [username]);
     }
   }
 
-  Future<List<ContactsCategoryItem>> fetchContactsCategory(int type) async {
-    List list = await MCSDBService.singleton.query(contactsTableName, where: 'type = ', whereArgs: [type]);
+  Future<List<ContactsCategoryItem>> fetchContactsCategory(ContactsCategoryType type) async {
+    List list = await MCSDBService.singleton.query(contactsTableName, where: 'type = ?', whereArgs: [type.value]);
     if (list.isEmpty) {
       return [];
     } else {
@@ -48,21 +62,21 @@ class ContactsDao {
   }
 
   void deleteContact(String username) {
-    MCSDBService.singleton.delete(contactsTableName, where: 'username = ', whereArgs: [username]);
+    MCSDBService.singleton.delete(contactsTableName, where: 'username = ?', whereArgs: [username]);
   }
 
-  void updateContact(ContactsCategoryItem item, {int? type}) {
+  void updateContact(ContactsCategoryItem item, {ContactsCategoryType? type}) {
     String username = item.username ?? '';
     if (username.isEmpty) {
       return;
     }
     Map<String, dynamic> map = {
-      'type':type,
+      'type':type?.value,
       'username':item.username,
       'displayName':item.displayName,
       'headUrl':item.headUrl,
       'workStatus':json.encode(item.workStatus?.toJson())
     };
-    MCSDBService.singleton.update(contactsTableName, map, where: 'username = ', whereArgs: [username]);
+    MCSDBService.singleton.update(contactsTableName, map, where: 'username = ?', whereArgs: [username]);
   }
 }
