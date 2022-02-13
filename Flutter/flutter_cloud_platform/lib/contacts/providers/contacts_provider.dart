@@ -17,6 +17,18 @@ class ContactsProvider extends ChangeNotifier {
 
   ContactsGroup? _contactsGroup;
   List<ContactsCategory>? _categories;
+  bool isFold = true;
+  String? searchKey;
+
+  set fold(bool value) {
+    isFold = value;
+    notifyListeners();
+  }
+
+  set search(String key) {
+    searchKey = key;
+    notifyListeners();
+  }
 
   Future<void> fetchContactList() async {
     Response? response = await ContactsApi.singleton.fetchContactList();
@@ -52,29 +64,61 @@ class ContactsProvider extends ChangeNotifier {
   * addFriendType:DEFAULT 表示添加好友时不需要对方确认
   * addFriendType:CONFIRM 表示添加好友时需要对方确认
   * */
-  List<MCSGroupedDataItem> fetchContactsListDataSource({String? addFriendType, bool showOrg = false}) {
-    List<MCSGroupedDataItem> list = [];
-    String groupA = '';
-    String groupB = '我的好友';
+  List<MCSGroupedDataItem<ContactsGroupType, dynamic>> fetchContactsListDataSource({String? addFriendType, bool showOrg = false}) {
+    List<MCSGroupedDataItem<ContactsGroupType, dynamic>> list = [];
+
+    if (searchKey != null && searchKey!.isNotEmpty) {
+      _categories?.forEach((category) {
+        if (category.type == 3) {
+          category.items?.forEach((element) {
+            String username = element.username ?? '';
+            if (username.contains(searchKey!)) {
+              list.add(MCSGroupedDataItem<ContactsGroupType, ContactsCategoryItem>(
+                  ContactsGroupType.friend, element)
+              );
+            }
+          });
+        }
+      });
+      list.add(MCSGroupedDataItem<ContactsGroupType, ContactsCategoryItem?>(
+          ContactsGroupType.other, null)
+      );
+      return list;
+    }
+
     if (addFriendType != null && addFriendType == 'CONFIRM') {
-      list.add(MCSGroupedDataItem(groupA, ContactsGroupItem('新的好友', 'new_friends_layout', true, '')));
+      list.add(
+          MCSGroupedDataItem<ContactsGroupType, ContactsGroupItem>(
+              ContactsGroupType.other, ContactsGroupItem('新的好友', 'new_friends_layout', true, '')
+          )
+      );
     }
 
     _contactsGroup?.content?.forEach((element) {
       if ((element.isShow ?? false)) {
         if (!(element.type == 'org_layout' && !showOrg)) {
-          list.add(MCSGroupedDataItem(groupA, element));
+          list.add(MCSGroupedDataItem<ContactsGroupType, ContactsGroupItem>(
+              ContactsGroupType.other, element)
+          );
         }
       }
     });
 
-    _categories?.forEach((category) {
-      if (category.type == 3) {
-        category.items?.forEach((element) {
-          list.add(MCSGroupedDataItem(groupB, element));
-        });
-      }
-    });
+    list.add(MCSGroupedDataItem<ContactsGroupType, ContactsCategoryItem?>(
+        ContactsGroupType.friend, null)
+    );
+
+    if (!isFold) {
+      _categories?.forEach((category) {
+        if (category.type == 3) {
+          category.items?.forEach((element) {
+            list.add(MCSGroupedDataItem<ContactsGroupType, ContactsCategoryItem>(
+                ContactsGroupType.friend, element)
+            );
+          });
+        }
+      });
+    }
 
     return list;
   }

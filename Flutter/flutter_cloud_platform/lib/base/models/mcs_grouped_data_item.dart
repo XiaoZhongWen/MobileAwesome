@@ -1,7 +1,7 @@
-class MCSGroupedDataItem {
+class MCSGroupedDataItem<E, T> {
 
-  MCSGroupedDataItem(this.groupName, this.data);
+  MCSGroupedDataItem(this.groupType, this.data);
 
-  String groupName;
-  dynamic data;
+  E groupType;
+  T data;
 }

@@ -1,5 +1,14 @@
 import 'package:flutter_cloud_platform/contacts/models/contacts_group_item.dart';
 
+enum ContactsGroupType {
+  other,
+  friend
+}
+
+extension GroupName on ContactsGroupType {
+  String get value => ['', '我的好友'][index];
+}
+
 class ContactsGroup {
 
   ContactsGroup(this.content);

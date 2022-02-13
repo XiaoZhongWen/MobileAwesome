@@ -16,16 +16,21 @@ class ThemeProvider extends ChangeNotifier {
           color: Colors.black
         )
       ),
+      textSelectionTheme: const TextSelectionThemeData(
+        cursorColor: MCSColors.mainColor
+      ),
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
+        contentPadding: MCSLayout.inputContentPadding,
         fillColor: Color.alphaBlend(primaryOrWhite.withOpacity(.07), Colors.grey.withOpacity(.04)),
         labelStyle: TextStyle(color: blackOrWhite),
+        floatingLabelBehavior: FloatingLabelBehavior.never,
         enabledBorder:OutlineInputBorder(
           borderSide: const BorderSide(color: Colors.transparent),
           borderRadius: roundBorderRadius
         ),
         focusedBorder: OutlineInputBorder(
-          borderSide: const BorderSide(color: MCSColors.mainColor),
+          borderSide: const BorderSide(color: Colors.transparent),
           borderRadius: roundBorderRadius
         ),
         disabledBorder: OutlineInputBorder(
@@ -39,7 +44,7 @@ class ThemeProvider extends ChangeNotifier {
         focusedErrorBorder: OutlineInputBorder(
             borderSide: const BorderSide(color: Colors.red, width: 1.5),
             borderRadius: roundBorderRadius
-        )
+        ),
       ),
       textTheme: const TextTheme(
         button: TextStyle(color: Colors.white)

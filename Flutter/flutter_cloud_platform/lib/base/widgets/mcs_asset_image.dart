@@ -7,6 +7,7 @@ class MCSAssetImage extends StatelessWidget {
     this.width,
     this.height,
     this.color,
+    this.fit,
     this.format = MCSImageFormat.png
   }) : super(key: key);
 
@@ -15,6 +16,7 @@ class MCSAssetImage extends StatelessWidget {
   final double? height;
   final Color? color;
   final MCSImageFormat format;
+  final BoxFit? fit;
 
   String pathForAssetImage() {
     return 'assets/images/' + image + '.' + format.value;
@@ -27,6 +29,7 @@ class MCSAssetImage extends StatelessWidget {
       width: width,
       height: height,
       color: color,
+      fit: fit,
     );
   }
 }
