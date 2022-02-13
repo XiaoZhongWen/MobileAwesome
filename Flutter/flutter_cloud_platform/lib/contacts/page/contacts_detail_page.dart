@@ -23,13 +23,17 @@ class _ContactsDetailPageState extends State<ContactsDetailPage> {
       ),
       body: ChangeNotifierProvider.value(
         value: ContactsDetailProvider(widget.userId),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            _buildHeader(),
-            _buildFooter()
-          ],
-        ),
+        child: Consumer(
+          builder: (_, contactsDetailProvider, __) {
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                _buildHeader(),
+                _buildFooter()
+              ],
+            );
+          },
+        )
       ),
     );
   }

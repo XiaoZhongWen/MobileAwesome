@@ -1,14 +1,18 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:flutter_cloud_platform/base/constant/mcs_platform.dart';
 import 'package:flutter_cloud_platform/base/network/api_options.dart';
 import 'package:flutter_cloud_platform/base/network/interceptors/auth_interceptor.dart';
+import 'package:flutter_cloud_platform/contacts/models/contacts_category.dart';
 
 class ContactsApi {
-  final String _baseUrl = HTTP_PREFIX_APIS + HTTPDOMAIN + '/address/';
+  final String _baseUrl = HTTP_PREFIX_APIS + HTTPDOMAIN;
   late Dio _dio;
   static final ContactsApi singleton = ContactsApi._();
 
-  final String _contactListPath = 'listAll';
+  final String _contactListPath = '/address/listAll';
+  final String _contactDetailPath = '/users/showOther';
 
   ContactsApi._() {
     BaseOptions options = baseOptions.copyWith(baseUrl: _baseUrl);
@@ -20,8 +24,26 @@ class ContactsApi {
     try {
       Response response = await _dio.post(_contactListPath);
       return response;
-    } on DioError catch(e) {
-      print(e);
-    }
+    } on DioError catch(e) {}
+  }
+
+  // String? username;
+  // String? displayName;
+  // String? headUrl;
+  // WorkStatus? workStatus;
+  // Map<String, String>? card;
+  Future<dynamic> fetchContactDetail(String userId) async {
+    try {
+      Response response = await _dio.post(_contactDetailPath, data: {'username':userId});
+      Map<String, dynamic> map = {
+        'username':response.data['username'] as String?,
+        'displayName':response.data['cnname'] as String?,
+        'headUrl':response.data['headUrl'] as String?,
+        'card':json.decode(response.data['card']) as Map<String, dynamic>?,
+        'workStatus':response.data['workStatus'] as Map<String, dynamic>?,
+      };
+      response.data = map;
+      return response;
+    } on DioError catch(e) {}
   }
 }

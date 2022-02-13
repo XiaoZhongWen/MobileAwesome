@@ -22,7 +22,7 @@ class WorkStatus {
 
 class ContactsCategoryItem {
 
-  ContactsCategoryItem(this.username, this.displayName, this.headUrl, this.workStatus);
+  ContactsCategoryItem(this.username, this.displayName, this.headUrl, this.workStatus, this.card);
 
   factory ContactsCategoryItem.fromJson(Map<String, dynamic> map) {
     String? username = map['username'] as String?;
@@ -33,13 +33,15 @@ class ContactsCategoryItem {
     if (json != null) {
       workStatus = WorkStatus.fromJson(json);
     }
-    return ContactsCategoryItem(username, displayName, headUrl, workStatus);
+    Map<String, dynamic>? card = map['card'] as Map<String, dynamic>?;
+    return ContactsCategoryItem(username, displayName, headUrl, workStatus, card);
   }
 
   String? username;
   String? displayName;
   String? headUrl;
   WorkStatus? workStatus;
+  Map<String, dynamic>? card;
 }
 
 class ContactsCategory {

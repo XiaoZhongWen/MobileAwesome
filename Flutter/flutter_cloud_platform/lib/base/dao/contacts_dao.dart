@@ -15,6 +15,7 @@ extension on ContactsCategoryType {
 class ContactsDao {
   /*
   * 保存联系人
+  * type=0 普通联系人
   * type=1 公众账号
   * type=3 我的好友
   * */
@@ -24,15 +25,18 @@ class ContactsDao {
       return;
     }
     Map<String, dynamic> map = {
-      'type':type,
       'tag':tag,
       'username':item.username,
       'displayName':item.displayName,
       'headUrl':item.headUrl,
-      'workStatus':json.encode(item.workStatus?.toJson())
+      'workStatus':json.encode(item.workStatus?.toJson()),
+      'card':json.encode(item.card),
     };
     List list = await MCSDBService.singleton.query(contactsTableName, where: 'username = ?', whereArgs: [username]);
     if (list.isEmpty) {
+      if (type == null) {
+        map['type'] = 0;
+      }
       MCSDBService.singleton.insert(contactsTableName, map);
     } else {
       MCSDBService.singleton.update(contactsTableName, map, where: 'username = ?', whereArgs: [username]);
@@ -49,11 +53,13 @@ class ContactsDao {
         String? displayName = e['displayName'];
         String? headUrl = e['headUrl'];
         Map<String, dynamic>? workStatus = json.decode(e['workStatus']);
+        Map<String, dynamic>? card = json.decode(e['card']);
         Map<String, dynamic> m = {
           'username':username,
           'displayName':displayName,
           'headUrl':headUrl,
           'workStatus':workStatus,
+          'card':card
         };
         return ContactsCategoryItem.fromJson(m);
       }).toList();
