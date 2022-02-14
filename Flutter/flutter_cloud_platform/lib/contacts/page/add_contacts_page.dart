@@ -13,7 +13,7 @@ class _AddContactsPageState extends State<AddContactsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const MCSTitle('添加好友'),
+        title: MCSTitle('添加好友', type: MCSTitleType.barTitle,),
       ),
     );
   }

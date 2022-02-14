@@ -35,11 +35,16 @@ class ContactsApi {
   Future<dynamic> fetchContactDetail(String userId) async {
     try {
       Response response = await _dio.post(_contactDetailPath, data: {'username':userId});
+      String? card = response.data['card'];
+      Map<String, dynamic>? cardMap;
+      if (card != null && card.isNotEmpty) {
+        cardMap = json.decode(card) as Map<String, dynamic>?;
+      }
       Map<String, dynamic> map = {
         'username':response.data['username'] as String?,
         'displayName':response.data['cnname'] as String?,
         'headUrl':response.data['headUrl'] as String?,
-        'card':json.decode(response.data['card']) as Map<String, dynamic>?,
+        'card':cardMap,
         'workStatus':response.data['workStatus'] as Map<String, dynamic>?,
       };
       response.data = map;

@@ -67,6 +67,11 @@ class ContactsDao {
     }
   }
 
+  Future<ContactsCategoryItem?> fetchContacts(String userId) async {
+    List list = await MCSDBService.singleton.query(contactsTableName, where: 'username = ?', whereArgs: [userId]);
+    return list.first;
+  }
+
   void deleteContact(String username) {
     MCSDBService.singleton.delete(contactsTableName, where: 'username = ?', whereArgs: [username]);
   }

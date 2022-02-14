@@ -13,7 +13,7 @@ class _SearchPageState extends State<SearchPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const MCSTitle('搜索'),
+        title: MCSTitle('搜索', type: MCSTitleType.barTitle,),
       ),
     );
   }

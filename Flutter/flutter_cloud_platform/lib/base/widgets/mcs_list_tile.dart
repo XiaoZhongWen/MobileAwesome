@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_cloud_platform/base/constant/mcs_constant.dart';
 import 'package:flutter_cloud_platform/base/widgets/mcs_asset_image.dart';
 import 'package:flutter_cloud_platform/base/widgets/mcs_image.dart';
-import 'package:flutter_cloud_platform/base/widgets/mcs_list_subtitle.dart';
-import 'package:flutter_cloud_platform/base/widgets/mcs_list_title.dart';
+import 'package:flutter_cloud_platform/base/widgets/mcs_title.dart';
 
 class MCSListTile extends StatelessWidget {
   MCSListTile({
@@ -13,6 +12,10 @@ class MCSListTile extends StatelessWidget {
     this.subTitle,
     this.onTap,
     this.gap,
+    this.titleType,
+    this.subtitleType,
+    this.trialing,
+    this.showIcon = true,
     String? placeholder,
     required this.height
   }) : super(key: key) {
@@ -28,38 +31,49 @@ class MCSListTile extends StatelessWidget {
   final String? subTitle;
   final double? gap;
   final double height;
+  final MCSTitleType? titleType;
+  final MCSTitleType? subtitleType;
+  final Widget? trialing;
+  final bool? showIcon;
   String? placeholder;
   GestureTapCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
     double iconSize = height * 4/5;
+
+    Widget header = MCSLayout.hGap0;
+    if (showIcon ?? true) {
+      if (iconUrl != null && iconUrl!.isNotEmpty) {
+        header = ClipOval(
+            child: MCSImage.cached(
+                imageUrl: iconUrl!,
+                width: iconSize,
+                height: iconSize,
+                fit: BoxFit.cover
+            )
+        );
+      } else {
+        header = ClipOval(
+            child: MCSAssetImage(
+                placeholder!,
+                width: iconSize,
+                height: iconSize,
+                fit: BoxFit.cover
+            )
+        );
+      }
+    }
+
     return Container(
       height: height,
-      padding: EdgeInsets.symmetric(horizontal: MCSLayout.padding),
       child: InkWell(
         onTap: onTap,
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            (iconUrl != null && iconUrl!.isNotEmpty) ?
-            ClipOval(
-                child: MCSImage.cached(
-                    imageUrl: iconUrl!,
-                    width: iconSize,
-                    height: iconSize,
-                    fit: BoxFit.cover
-                )
-            ) :
-            ClipOval(
-              child: MCSAssetImage(
-                  placeholder!,
-                  width: iconSize,
-                  height: iconSize,
-                  fit: BoxFit.cover
-              ),
-            ),
-            MCSLayout.hGap10,
+            header,
+            (showIcon ?? true)? MCSLayout.hGap10: MCSLayout.hGap0,
             Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -67,6 +81,10 @@ class MCSListTile extends StatelessWidget {
                   children: _buildTitles(),
                 )
             ),
+            Padding(
+              padding: EdgeInsets.only(left: MCSLayout.padding),
+              child: trialing,
+            )
           ],
         ),
       )
@@ -75,10 +93,10 @@ class MCSListTile extends StatelessWidget {
 
   List<Widget> _buildTitles() {
     List<Widget> list = [];
-    list.add(MCSListTitle(title ?? ''));
+    list.add(MCSTitle(title ?? '', type: titleType,));
     if (subTitle != null && (subTitle?.isNotEmpty ?? false)) {
       list.add(gap != null? SizedBox(height: gap,): MCSLayout.vGap5);
-      list.add(MCSListSubtitle(subTitle!));
+      list.add(MCSTitle(subTitle!, type: subtitleType));
     }
     return list;
   }

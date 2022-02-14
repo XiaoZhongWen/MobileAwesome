@@ -13,7 +13,7 @@ class _SelectContactsPageState extends State<SelectContactsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const MCSTitle('选择联系人'),
+        title: MCSTitle('选择联系人', type: MCSTitleType.barTitle,),
       ),
     );
   }

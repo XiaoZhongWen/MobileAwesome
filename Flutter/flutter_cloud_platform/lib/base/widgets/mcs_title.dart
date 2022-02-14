@@ -2,9 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_cloud_platform/base/constant/mcs_font.dart';
 
 enum MCSTitleType {
-  small,
-  list,
-  profile
+  barTitle,
+  listTitleSmall,
+  listTitleNormal,
+  listSubTitleSmall,
+  listSubTitleNormal,
+  cardTitle,
+  cardSubTitle,
+  btnTitleNormal,
+  btnTitleGray
 }
 
 class MCSTitle extends StatelessWidget {
@@ -12,7 +18,7 @@ class MCSTitle extends StatelessWidget {
   final String title;
   final MCSTitleType? type;
 
-  const MCSTitle(this.title, {Key? key, this.type}) : super(key: key);
+  MCSTitle(this.title, {Key? key, this.type}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,23 +26,59 @@ class MCSTitle extends StatelessWidget {
     double fontSize = titleFontSize;
     FontWeight fontWeight = titleFontWeight;
 
-    MCSTitleType titleType = type ?? MCSTitleType.list;
+    MCSTitleType titleType = type ?? MCSTitleType.barTitle;
     switch (titleType) {
-      case MCSTitleType.small:{
+      case MCSTitleType.barTitle:{
+        color = Colors.black;
+        fontSize = fontLevel4;
+        fontWeight = FontWeight.bold;
+        break;
+      }
+      case MCSTitleType.listTitleSmall: {
         color = Colors.black87;
         fontSize = fontLevel1;
         fontWeight = FontWeight.normal;
         break;
       }
-      case MCSTitleType.list: {
+      case MCSTitleType.listTitleNormal: {
         color = Colors.black;
-        fontSize = titleFontSize;
-        fontWeight = titleFontWeight;
+        fontSize = fontLevel3;
+        fontWeight = FontWeight.normal;
         break;
       }
-      case MCSTitleType.profile: {
-        color = Colors.black87;
+      case MCSTitleType.listSubTitleSmall: {
+        color = Colors.grey;
+        fontSize = fontLevel1;
+        fontWeight = FontWeight.normal;
+        break;
+      }
+      case MCSTitleType.listSubTitleNormal: {
+        color = Colors.grey;
+        fontSize = fontLevel2;
+        fontWeight = FontWeight.normal;
+        break;
+      }
+      case MCSTitleType.cardTitle: {
+        color = Colors.black;
         fontSize = fontLevel5;
+        fontWeight = FontWeight.normal;
+        break;
+      }
+      case MCSTitleType.cardSubTitle: {
+        color = Colors.black;
+        fontSize = fontLevel2;
+        fontWeight = FontWeight.normal;
+        break;
+      }
+      case MCSTitleType.btnTitleNormal: {
+        color = Colors.black;
+        fontSize = fontLevel1;
+        fontWeight = FontWeight.normal;
+        break;
+      }
+      case MCSTitleType.btnTitleGray: {
+        color = Colors.grey;
+        fontSize = fontLevel1;
         fontWeight = FontWeight.normal;
         break;
       }

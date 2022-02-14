@@ -9,7 +9,7 @@ class NotFoundPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const MCSTitle('页面不存在'),
+        title: MCSTitle('页面不存在', type: MCSTitleType.barTitle,),
       ),
       body: const Center(
         child: Text('页面不存在',

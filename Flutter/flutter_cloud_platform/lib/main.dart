@@ -3,6 +3,7 @@ import 'package:flutter_cloud_platform/base/db/mcs_db_service.dart';
 import 'package:flutter_cloud_platform/base/providers/account_provider.dart';
 import 'package:flutter_cloud_platform/base/utils/mcs_sp_util.dart';
 import 'package:flutter_cloud_platform/base/providers/provider.dart';
+import 'package:flutter_cloud_platform/contacts/providers/contacts_provider.dart';
 import 'package:flutter_cloud_platform/login/login.dart';
 import 'package:provider/provider.dart';
 import 'routes/router.dart';
@@ -41,6 +42,7 @@ class Assassin extends StatelessWidget {
         ChangeNotifierProvider.value(value: LaunchProvider()),
         ChangeNotifierProvider.value(value: ConnectStatusProvider()),
         ChangeNotifierProvider.value(value: AccountProvider()),
+        ChangeNotifierProvider.value(value: ContactsProvider()),
         ChangeNotifierProvider.value(value: _visualProvider)
       ],
       child: Consumer2<ThemeProvider, LaunchProvider>(

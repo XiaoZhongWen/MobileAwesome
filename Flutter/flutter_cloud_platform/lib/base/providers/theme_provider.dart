@@ -19,6 +19,14 @@ class ThemeProvider extends ChangeNotifier {
       textSelectionTheme: const TextSelectionThemeData(
         cursorColor: MCSColors.mainColor
       ),
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ButtonStyle(
+          backgroundColor: MaterialStateProperty.all(MCSColors.mainColor),
+          shape: MaterialStateProperty.all(RoundedRectangleBorder(
+            borderRadius: roundBorderRadius
+          ))
+        )
+      ),
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
         contentPadding: MCSLayout.inputContentPadding,

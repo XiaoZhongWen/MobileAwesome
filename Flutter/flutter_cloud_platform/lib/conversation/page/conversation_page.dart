@@ -37,7 +37,7 @@ class _ConversationPageState extends State<ConversationPage> with AutomaticKeepA
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const MCSTitle('消息'),
+        title: MCSTitle('消息', type: MCSTitleType.barTitle,),
         actions: _actions,
       ),
     );

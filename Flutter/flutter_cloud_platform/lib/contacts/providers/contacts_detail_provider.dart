@@ -11,14 +11,29 @@ class ContactsDetailProvider extends ChangeNotifier {
   }
 
   String? userId;
+  ContactsCategoryItem? contactDetail;
+
+  void updateContactDetail(ContactsCategoryItem item) {
+    contactDetail = item;
+    notifyListeners();
+  }
 
   Future<void> _init() async {
-    Response? response = await ContactsApi.singleton.fetchContactDetail(userId ?? '');
+    if (userId == null) {
+      return;
+    }
+    Response? response = await ContactsApi.singleton.fetchContactDetail(userId!);
+    ContactsDao dao = ContactsDao();
+    ContactsCategoryItem? item;
     if (response != null) {
       Map<String, dynamic> map = response.data as Map<String, dynamic>;
-      ContactsCategoryItem item = ContactsCategoryItem.fromJson(map);
-      ContactsDao dao = ContactsDao();
+      item = ContactsCategoryItem.fromJson(map);
       dao.saveContacts(item);
+    } else {
+      item = await dao.fetchContacts(userId!);
+    }
+    if (item != null) {
+      updateContactDetail(item);
     }
   }
 }

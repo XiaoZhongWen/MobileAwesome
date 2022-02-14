@@ -42,34 +42,32 @@ class _ContactsPageState extends State<ContactsPage> {
   @override
   Widget build(BuildContext context) {
     VisualProvider visualProvider = Provider.of<VisualProvider>(context, listen:false);
-    MCSRoute? route = visualProvider.fetchRoute(contactsList1);
     String? addFriendType = visualProvider.fetchAddFriendType();
     bool showOrg = (visualProvider.fetchOrgUrl() ?? '').isNotEmpty;
+
     return Scaffold(
-      appBar: AppBar(
-        title: const MCSTitle('联系人'),
-      ),
-      body: SmartRefresher(
-        onRefresh: () async {
-          await _contactsProvider?.fetchContactList();
-          _refreshController.refreshCompleted();
-        },
-        controller: _refreshController,
-        child: CustomScrollView(
-          slivers: [
-            SliverToBoxAdapter(
-              child: _buildSearchHeader(),
-            ),
-            ChangeNotifierProvider.value(
-                value: ContactsProvider(route?.content),
-                child: Consumer<ContactsProvider>(builder: (_, contactsProvider, __) {
+        appBar: AppBar(
+          title: MCSTitle('联系人', type: MCSTitleType.barTitle,),
+        ),
+        body: SmartRefresher(
+            onRefresh: () async {
+              await _contactsProvider?.fetchContactList();
+              _refreshController.refreshCompleted();
+            },
+            controller: _refreshController,
+            child: CustomScrollView(
+              slivers: [
+                SliverToBoxAdapter(
+                  child: _buildSearchHeader(),
+                ),
+                Consumer<ContactsProvider>(builder: (_, contactsProvider, __) {
+                  contactsProvider.fetchContactList();
                   List<MCSGroupedDataItem<ContactsGroupType, dynamic>> datasource = contactsProvider.fetchContactsListDataSource(addFriendType: addFriendType, showOrg: showOrg);
                   return _buildSliverList(datasource, contactsProvider);
                 })
+              ],
             )
-          ],
         )
-      )
     );
   }
 
@@ -124,15 +122,20 @@ class _ContactsPageState extends State<ContactsPage> {
 
             return Column(
               children: [
-                MCSListTile(
-                  height: MCSLayout.listTileHeight,
-                  iconUrl: iconUrl,
-                  placeholder: placeholder,
-                  title: title,
-                  subTitle: subTitle,
-                  onTap: () {
-                    MCSNavigator.push(context, ContactsRouter.contactsDetailPage, parameter: userId);
-                  },
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: MCSLayout.padding),
+                  child: MCSListTile(
+                    height: MCSLayout.listTileHeight,
+                    iconUrl: iconUrl,
+                    placeholder: placeholder,
+                    title: title,
+                    subTitle: subTitle,
+                    titleType: MCSTitleType.listTitleNormal,
+                    subtitleType: MCSTitleType.listSubTitleNormal,
+                    onTap: () {
+                      MCSNavigator.push(context, ContactsRouter.contactsDetailPage, parameter: userId);
+                    },
+                  ),
                 ),
                 Divider(
                   height: 1.0,

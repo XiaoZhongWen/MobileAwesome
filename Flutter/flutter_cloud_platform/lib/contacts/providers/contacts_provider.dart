@@ -1,20 +1,19 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_cloud_platform/base/constant/mcs_constant.dart';
+import 'package:flutter_cloud_platform/base/constant/mcs_platform.dart';
 import 'package:flutter_cloud_platform/base/dao/contacts_dao.dart';
+import 'package:flutter_cloud_platform/base/dao/visual_dao.dart';
 import 'package:flutter_cloud_platform/base/models/mcs_grouped_data_item.dart';
+import 'package:flutter_cloud_platform/base/models/platform_visual/mcs_route.dart';
+import 'package:flutter_cloud_platform/base/models/platform_visual/mcs_visual.dart';
 import 'package:flutter_cloud_platform/base/network/contacts_api.dart';
 import 'package:flutter_cloud_platform/contacts/models/contacts_category.dart';
 import 'package:flutter_cloud_platform/contacts/models/contacts_group.dart';
 import 'package:flutter_cloud_platform/contacts/models/contacts_group_item.dart';
 
 class ContactsProvider extends ChangeNotifier {
-  ContactsProvider(String? content) {
-    Map<String, dynamic> map = json.decode(content ?? '');
-    _contactsGroup = ContactsGroup.fromJson(map);
-    fetchContactList();
-  }
-
   ContactsGroup? _contactsGroup;
   List<ContactsCategory>? _categories;
   bool isFold = true;
@@ -30,7 +29,27 @@ class ContactsProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  bool isFriend(String userId) {
+    bool result = false;
+    _categories?.forEach((category) {
+      if (category.type == 3) {
+        category.items?.forEach((element) {
+          if (element.username == userId) {
+            result = true;
+          }
+        });
+      }
+    });
+    return result;
+  }
+
   Future<void> fetchContactList() async {
+    VisualDao visualDao = VisualDao();
+    MCSVisual? visual = await visualDao.fetchVisualWithId(GUID);
+    MCSRoute? route = visual?.appConfig?.pages?.pageConfig?[contactsList1];
+    Map<String, dynamic> map = json.decode(route?.content ?? '');
+    _contactsGroup = ContactsGroup.fromJson(map);
+
     Response? response = await ContactsApi.singleton.fetchContactList();
     ContactsDao dao = ContactsDao();
 
@@ -66,7 +85,6 @@ class ContactsProvider extends ChangeNotifier {
   * */
   List<MCSGroupedDataItem<ContactsGroupType, dynamic>> fetchContactsListDataSource({String? addFriendType, bool showOrg = false}) {
     List<MCSGroupedDataItem<ContactsGroupType, dynamic>> list = [];
-
     if (searchKey != null && searchKey!.isNotEmpty) {
       _categories?.forEach((category) {
         if (category.type == 3) {

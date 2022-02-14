@@ -15,11 +15,14 @@ class MCSLayout {
 
   static double menuIconSize = 20.0;
   static double listMenuIconSize = 12.0;
+  static double arrowSize = 15.0;
+  static double cardSize = 100.0;
 
   static double listHeaderHeight = 40.0;
   static double listTileHeight = 60.0;
   static double listIndent = 60.0;
 
+  static SizedBox hGap0 = const SizedBox(width: 0.0);
   static SizedBox hGap5 = const SizedBox(width: 5.0);
   static SizedBox hGap10 = const SizedBox(width: 10.0);
 

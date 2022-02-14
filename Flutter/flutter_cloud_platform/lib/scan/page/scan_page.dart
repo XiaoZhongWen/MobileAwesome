@@ -13,7 +13,7 @@ class _ScanPageState extends State<ScanPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const MCSTitle('扫一扫'),
+        title: MCSTitle('扫一扫', type: MCSTitleType.barTitle,),
       ),
     );
   }
