@@ -6,6 +6,8 @@ import 'package:flutter_cloud_platform/base/widgets/mcs_title.dart';
 import 'package:flutter_cloud_platform/contacts/models/contacts_category.dart';
 import 'package:flutter_cloud_platform/contacts/providers/contacts_detail_provider.dart';
 import 'package:flutter_cloud_platform/contacts/providers/contacts_provider.dart';
+import 'package:flutter_cloud_platform/conversation/conversation_router.dart';
+import 'package:flutter_cloud_platform/routes/mcs_navigator.dart';
 import 'package:provider/provider.dart';
 
 enum EventType {
@@ -18,6 +20,8 @@ enum EventType {
 extension on EventType {
   String get value => ['打电话', '发消息', '添加好友', '删除好友'][index];
 }
+
+const double bottomHeight = 100;
 
 class ContactsDetailPage extends StatefulWidget {
   ContactsDetailPage({Key? key, this.userId}) : super(key: key);
@@ -170,7 +174,7 @@ class _ContactsDetailPageState extends State<ContactsDetailPage> {
     }
 
     return Container(
-      height: 100,
+      height: bottomHeight,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: children,
@@ -182,6 +186,7 @@ class _ContactsDetailPageState extends State<ContactsDetailPage> {
   void onEvent(EventType type) {
     switch (type) {
       case EventType.message: {
+        MCSNavigator.push(context, ConversationRouter.chatPage, parameter: widget.userId);
         break;
       }
       case EventType.call: {

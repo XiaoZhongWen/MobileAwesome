@@ -30,7 +30,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-  tencent_im_sdk_plugin: ^3.5.6
+  tencent_im_sdk_plugin: ^3.6.9
   shared_preferences: ^2.0.9
   json_annotation: ^4.3.0
   dio: ^4.0.4
@@ -85,6 +85,7 @@ flutter:
     - assets/images/
     - assets/images/tabs/
     - assets/images/contacts/
+    - assets/images/chat/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

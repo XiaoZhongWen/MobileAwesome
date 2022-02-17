@@ -40,6 +40,14 @@ class _ContactsPageState extends State<ContactsPage> {
   }
 
   @override
+  void dispose() {
+    _focusNode.dispose();
+    _controller.dispose();
+    _refreshController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     VisualProvider visualProvider = Provider.of<VisualProvider>(context, listen:false);
     String? addFriendType = visualProvider.fetchAddFriendType();

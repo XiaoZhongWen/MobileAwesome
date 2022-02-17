@@ -8,6 +8,7 @@ class ThemeProvider extends ChangeNotifier {
     final blackOrWhite = themeMode == Brightness.light? Colors.black54: Colors.white;
     return ThemeData(
       primaryColor: MCSColors.mainColor,
+      scaffoldBackgroundColor: MCSColors.backgroundColor,
       brightness: themeMode,
       appBarTheme: const AppBarTheme(
         color: Colors.white,
@@ -30,7 +31,6 @@ class ThemeProvider extends ChangeNotifier {
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
         contentPadding: MCSLayout.inputContentPadding,
-        fillColor: Color.alphaBlend(primaryOrWhite.withOpacity(.07), Colors.grey.withOpacity(.04)),
         labelStyle: TextStyle(color: blackOrWhite),
         floatingLabelBehavior: FloatingLabelBehavior.never,
         enabledBorder:OutlineInputBorder(

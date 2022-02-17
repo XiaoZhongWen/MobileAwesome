@@ -5,11 +5,12 @@ import 'package:flutter_cloud_platform/contacts/models/contacts_category.dart';
 
 enum ContactsCategoryType {
   publicAccount,
-  friend
+  friend,
+  normal
 }
 
-extension on ContactsCategoryType {
-  int get value => [1, 3][index];
+extension Type on ContactsCategoryType {
+  int get value => [1, 3, 0][index];
 }
 
 class ContactsDao {
@@ -40,6 +41,32 @@ class ContactsDao {
       MCSDBService.singleton.insert(contactsTableName, map);
     } else {
       MCSDBService.singleton.update(contactsTableName, map, where: 'username = ?', whereArgs: [username]);
+    }
+  }
+
+  Future<List<ContactsCategoryItem>> fetchAllContacts() async {
+    List list = await MCSDBService.singleton.query(contactsTableName);
+    if (list.isEmpty) {
+      return [];
+    } else {
+      List<ContactsCategoryItem> contacts = list.map((e) {
+        String? username = e['username'];
+        String? displayName = e['displayName'];
+        String? headUrl = e['headUrl'];
+        int? type = e['type'];
+        Map<String, dynamic>? workStatus = json.decode(e['workStatus']);
+        Map<String, dynamic>? card = json.decode(e['card']);
+        Map<String, dynamic> m = {
+          'username':username,
+          'displayName':displayName,
+          'headUrl':headUrl,
+          'workStatus':workStatus,
+          'card':card,
+          'type':type
+        };
+        return ContactsCategoryItem.fromJson(m);
+      }).toList();
+      return contacts;
     }
   }
 

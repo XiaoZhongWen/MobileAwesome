@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 class MCSLayout {
   static double margin = 10.0;
   static double topMargin = 20.0;
+  static double smallPadding = 5.0;
   static double vPadding = 8.0;
   static double padding = 16.0;
   static double maxWidth = 360.0;

@@ -1,13 +1,17 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_cloud_platform/base/constant/mcs_constant.dart';
 import 'package:flutter_cloud_platform/base/constant/mcs_setting.dart';
 import 'package:flutter_cloud_platform/base/utils/generate_user_sig.dart';
+import 'package:tencent_im_sdk_plugin/enum/V2TimAdvancedMsgListener.dart';
 import 'package:tencent_im_sdk_plugin/enum/V2TimSDKListener.dart';
-import 'package:tencent_im_sdk_plugin/enum/log_level.dart';
+import 'package:tencent_im_sdk_plugin/enum/log_level_enum.dart';
 import 'package:tencent_im_sdk_plugin/models/v2_tim_callback.dart';
+import 'package:tencent_im_sdk_plugin/models/v2_tim_message.dart';
+import 'package:tencent_im_sdk_plugin/models/v2_tim_message_receipt.dart';
+import 'package:tencent_im_sdk_plugin/models/v2_tim_msg_create_info_result.dart';
 import 'package:tencent_im_sdk_plugin/models/v2_tim_user_full_info.dart';
 import 'package:tencent_im_sdk_plugin/models/v2_tim_value_callback.dart';
 import 'package:tencent_im_sdk_plugin/tencent_im_sdk_plugin.dart';
+import 'package:flutter_cloud_platform/base/extension/extension.dart';
 
 class MCSIMService {
   static final MCSIMService singleton = MCSIMService._();
@@ -23,7 +27,7 @@ class MCSIMService {
   }) {
     return TencentImSDKPlugin.v2TIMManager.initSDK(
         sdkAppID: sdkAppID,
-        loglevel: inProduction?LogLevel.V2TIM_LOG_NONE:LogLevel.V2TIM_LOG_DEBUG,
+        loglevel: inProduction?LogLevelEnum.V2TIM_LOG_NONE:LogLevelEnum.V2TIM_LOG_DEBUG,
         listener: V2TimSDKListener(
         onConnectFailed: onConnectFailed,
         onConnectSuccess: onConnectSuccess,
@@ -31,6 +35,22 @@ class MCSIMService {
         onKickedOffline: onKickedOffline,
         onSelfInfoUpdated: onSelfInfoUpdated,
         onUserSigExpired: onUserSigExpired
+    ));
+  }
+
+  void addEventListener({
+    void Function(List<V2TimMessageReceipt> receiptList)? onRecvC2CReadReceipt,
+    void Function(String msgID)? onRecvMessageRevoked,
+    void Function(V2TimMessage msg)? onRecvNewMessage,
+    void Function(V2TimMessage message, int progress)? onSendMessageProgress
+  }) {
+    TencentImSDKPlugin.v2TIMManager
+        .getMessageManager()
+        .addAdvancedMsgListener(listener: V2TimAdvancedMsgListener(
+      onRecvC2CReadReceipt: onRecvC2CReadReceipt,
+      onRecvMessageRevoked: onRecvMessageRevoked,
+      onRecvNewMessage: onRecvNewMessage,
+      onSendMessageProgress: onSendMessageProgress
     ));
   }
 
@@ -45,4 +65,24 @@ class MCSIMService {
     V2TimCallback callback = await TencentImSDKPlugin.v2TIMManager.login(userID: userId, userSig: userSig);
     return callback.code == 0;
   }
+
+  Future<String?> createTextMessage(String text) async {
+    V2TimValueCallback<V2TimMsgCreateInfoResult> createMessage = await TencentImSDKPlugin.v2TIMManager
+        .getMessageManager()
+        .createTextMessage(text: text);
+    String? id = createMessage.data?.id;
+    return id;
+  }
+
+  void sendMessage(String id, String to) async {
+    String receiver = '';
+    String groupID = '';
+    (to.isGroupId() || to.isMassId())?
+        groupID = to:
+        receiver = to;
+    V2TimValueCallback<V2TimMessage> message = await TencentImSDKPlugin.v2TIMManager
+        .getMessageManager()
+        .sendMessage(id: id, receiver: receiver, groupID: groupID);
+  }
+
 }

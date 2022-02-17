@@ -16,6 +16,7 @@ import 'package:flutter_cloud_platform/contacts/models/contacts_group_item.dart'
 class ContactsProvider extends ChangeNotifier {
   ContactsGroup? _contactsGroup;
   List<ContactsCategory>? _categories;
+  List<ContactsCategoryItem>? _allContacts = [];
   bool isFold = true;
   String? searchKey;
 
@@ -32,7 +33,7 @@ class ContactsProvider extends ChangeNotifier {
   bool isFriend(String userId) {
     bool result = false;
     _categories?.forEach((category) {
-      if (category.type == 3) {
+      if (category.type == ContactsCategoryType.friend.value) {
         category.items?.forEach((element) {
           if (element.username == userId) {
             result = true;
@@ -41,6 +42,43 @@ class ContactsProvider extends ChangeNotifier {
       }
     });
     return result;
+  }
+
+  String fetchNickname(String userId) {
+    String? nickname;
+    _categories?.forEach((category) {
+      if (category.type == ContactsCategoryType.friend.value) {
+        category.items?.forEach((element) {
+          if (element.username == userId) {
+            nickname = element.displayName;
+          }
+        });
+      }
+    });
+    if (nickname == null) {
+      updateContacts(userId);
+    }
+    return nickname ?? userId;
+  }
+
+  void updateContacts(String userId) async {
+    Response? response = await ContactsApi.singleton.fetchContactDetail(userId);
+    ContactsDao dao = ContactsDao();
+    ContactsCategoryItem item;
+    if (response != null) {
+      Map<String, dynamic> map = response.data as Map<String, dynamic>;
+      item = ContactsCategoryItem.fromJson(map);
+      dao.saveContacts(item);
+      _allContacts?.removeWhere((item) => item.username == userId);
+      _allContacts?.add(item);
+      _categories?.forEach((category) {
+        if (category.type == item.type) {
+          category.items?.removeWhere((item) => item.username == userId);
+          category.items?.add(item);
+        }
+      });
+      notifyListeners();
+    }
   }
 
   Future<void> fetchContactList() async {
@@ -53,12 +91,17 @@ class ContactsProvider extends ChangeNotifier {
     Response? response = await ContactsApi.singleton.fetchContactList();
     ContactsDao dao = ContactsDao();
 
+    List<ContactsCategoryItem> publicContacts = [];
+    List<ContactsCategoryItem> friends = [];
     if (response != null) {
       List<dynamic>? list = response.data as List<dynamic>?;
       _categories = list?.map((e) {
         Map<String, dynamic> map = (e as Map<String, dynamic>?) ?? {};
         ContactsCategory contactsCategory = ContactsCategory.fromJson(map);
         contactsCategory.items?.forEach((item) {
+          if (!(_allContacts?.contains(item) ?? false)) {
+            _allContacts?.add(item);
+          }
           dao.saveContacts(item, type: contactsCategory.type, tag: contactsCategory.tag);
         });
         return contactsCategory;
@@ -67,10 +110,24 @@ class ContactsProvider extends ChangeNotifier {
         notifyListeners();
       }
     } else {
-      List<ContactsCategoryItem> publicContacts = await dao.fetchContactsCategory(ContactsCategoryType.publicAccount);
-      List<ContactsCategoryItem> friends = await dao.fetchContactsCategory(ContactsCategoryType.friend);
-      ContactsCategory publicCategory = ContactsCategory(1, '公众账号', publicContacts);
-      ContactsCategory friendCategory = ContactsCategory(3, '我的好友', friends);
+      List<ContactsCategoryItem> contacts = await dao.fetchAllContacts();
+      for (var item in contacts) {
+        if (!(_allContacts?.contains(item) ?? false)) {
+          _allContacts?.add(item);
+        }
+        if (item.type == ContactsCategoryType.publicAccount.value) {
+          if (!(publicContacts.contains(item))) {
+            publicContacts.add(item);
+          }
+        }
+        if (item.type == ContactsCategoryType.friend.value) {
+          if (!(friends.contains(item))) {
+            friends.add(item);
+          }
+        }
+      }
+      ContactsCategory publicCategory = ContactsCategory(ContactsCategoryType.publicAccount.value, '公众账号', publicContacts);
+      ContactsCategory friendCategory = ContactsCategory(ContactsCategoryType.friend.value, '我的好友', friends);
       _categories = [publicCategory, friendCategory];
       if (_categories?.isNotEmpty ?? false) {
         notifyListeners();
@@ -87,7 +144,7 @@ class ContactsProvider extends ChangeNotifier {
     List<MCSGroupedDataItem<ContactsGroupType, dynamic>> list = [];
     if (searchKey != null && searchKey!.isNotEmpty) {
       _categories?.forEach((category) {
-        if (category.type == 3) {
+        if (category.type == ContactsCategoryType.friend.value) {
           category.items?.forEach((element) {
             String username = element.username ?? '';
             if (username.contains(searchKey!)) {
@@ -128,7 +185,7 @@ class ContactsProvider extends ChangeNotifier {
 
     if (!isFold) {
       _categories?.forEach((category) {
-        if (category.type == 3) {
+        if (category.type == ContactsCategoryType.friend.value) {
           category.items?.forEach((element) {
             list.add(MCSGroupedDataItem<ContactsGroupType, ContactsCategoryItem>(
                 ContactsGroupType.friend, element)
@@ -137,7 +194,6 @@ class ContactsProvider extends ChangeNotifier {
         }
       });
     }
-
     return list;
   }
 }
