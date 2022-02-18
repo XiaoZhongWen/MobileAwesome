@@ -1,12 +1,17 @@
+import 'dart:convert';
+import 'package:flutter_cloud_platform/base/cache/mcs_memory_cache.dart';
 import 'package:flutter_cloud_platform/base/constant/mcs_constant.dart';
+import 'package:flutter_cloud_platform/base/constant/mcs_message_type.dart';
 import 'package:flutter_cloud_platform/base/constant/mcs_setting.dart';
+import 'package:flutter_cloud_platform/base/dao/message_dao.dart';
 import 'package:flutter_cloud_platform/base/utils/generate_user_sig.dart';
+import 'package:flutter_cloud_platform/conversation/models/mcs_message.dart';
+import 'package:flutter_cloud_platform/conversation/models/mcs_text_elem.dart';
 import 'package:tencent_im_sdk_plugin/enum/V2TimAdvancedMsgListener.dart';
 import 'package:tencent_im_sdk_plugin/enum/V2TimSDKListener.dart';
 import 'package:tencent_im_sdk_plugin/enum/log_level_enum.dart';
 import 'package:tencent_im_sdk_plugin/models/v2_tim_callback.dart';
 import 'package:tencent_im_sdk_plugin/models/v2_tim_message.dart';
-import 'package:tencent_im_sdk_plugin/models/v2_tim_message_receipt.dart';
 import 'package:tencent_im_sdk_plugin/models/v2_tim_msg_create_info_result.dart';
 import 'package:tencent_im_sdk_plugin/models/v2_tim_user_full_info.dart';
 import 'package:tencent_im_sdk_plugin/models/v2_tim_value_callback.dart';
@@ -22,7 +27,7 @@ class MCSIMService {
     void Function()? onConnectSuccess,
     void Function()? onConnecting,
     void Function()? onKickedOffline,
-    void Function(V2TimUserFullInfo info)? onSelfInfoUpdated,
+    void Function()? onSelfInfoUpdated,
     void Function()? onUserSigExpired
   }) {
     return TencentImSDKPlugin.v2TIMManager.initSDK(
@@ -33,24 +38,32 @@ class MCSIMService {
         onConnectSuccess: onConnectSuccess,
         onConnecting: onConnecting,
         onKickedOffline: onKickedOffline,
-        onSelfInfoUpdated: onSelfInfoUpdated,
+        onSelfInfoUpdated: (V2TimUserFullInfo info) {
+          if (onSelfInfoUpdated != null) {
+            onSelfInfoUpdated();
+          }
+        },
         onUserSigExpired: onUserSigExpired
     ));
   }
 
   void addEventListener({
-    void Function(List<V2TimMessageReceipt> receiptList)? onRecvC2CReadReceipt,
-    void Function(String msgID)? onRecvMessageRevoked,
-    void Function(V2TimMessage msg)? onRecvNewMessage,
-    void Function(V2TimMessage message, int progress)? onSendMessageProgress
+    void Function(MCSMessage message)? onRecvNewMessage,
+    void Function(String msgID, int progress)? onSendMessageProgress
   }) {
     TencentImSDKPlugin.v2TIMManager
         .getMessageManager()
         .addAdvancedMsgListener(listener: V2TimAdvancedMsgListener(
-      onRecvC2CReadReceipt: onRecvC2CReadReceipt,
-      onRecvMessageRevoked: onRecvMessageRevoked,
-      onRecvNewMessage: onRecvNewMessage,
-      onSendMessageProgress: onSendMessageProgress
+      onRecvNewMessage: (V2TimMessage msg) {
+        if (onRecvNewMessage != null) {
+          onRecvNewMessage(convert(msg, false)!);
+        }
+      },
+      onSendMessageProgress: (V2TimMessage message, int progress) {
+        if (onSendMessageProgress != null) {
+          onSendMessageProgress(message.msgID!, progress);
+        }
+      }
     ));
   }
 
@@ -66,23 +79,75 @@ class MCSIMService {
     return callback.code == 0;
   }
 
-  Future<String?> createTextMessage(String text) async {
-    V2TimValueCallback<V2TimMsgCreateInfoResult> createMessage = await TencentImSDKPlugin.v2TIMManager
-        .getMessageManager()
-        .createTextMessage(text: text);
-    String? id = createMessage.data?.id;
-    return id;
-  }
-
-  void sendMessage(String id, String to) async {
+  Future<MCSMessage?> sendMessage(String to, String body) async {
     String receiver = '';
     String groupID = '';
     (to.isGroupId() || to.isMassId())?
         groupID = to:
         receiver = to;
-    V2TimValueCallback<V2TimMessage> message = await TencentImSDKPlugin.v2TIMManager
-        .getMessageManager()
-        .sendMessage(id: id, receiver: receiver, groupID: groupID);
+    V2TimValueCallback<V2TimMsgCreateInfoResult> customMessage = await TencentImSDKPlugin.v2TIMManager.getMessageManager().createCustomMessage(data: body);
+    String? id = customMessage.data?.id;
+    if (id != null) {
+      V2TimValueCallback<V2TimMessage> message = await TencentImSDKPlugin.v2TIMManager
+          .getMessageManager()
+          .sendMessage(id: id, receiver: receiver, groupID: groupID);
+      return convert(message.data, true);
+    }
+    return null;
   }
 
+  MCSMessage? convert(V2TimMessage? msg, bool isSelf) {
+    if (msg == null) {
+      return null;
+    }
+    String? msgID = msg.msgID;
+    String? sender = msg.sender;
+    String? receiver = MCSMemoryCache.singleton.fetchAccountId();
+    double? timestamp = msg.timestamp?.toDouble();
+    String data = msg.customElem?.data ?? '';
+    if (msg.elemType == 2 && data.isNotEmpty) {
+      // 自定义消息
+      Map<String, dynamic>? map = json.decode(data) as Map<String, dynamic>?;
+      String? msgType = map?['type'] as String?;
+      Map<String, dynamic>? msgData = map?['data'] as Map<String, dynamic>?;
+      Map<String, dynamic>? header = map?['header'] as Map<String, dynamic>?;
+      MCSMessageStatus status = (msg.status == 2)?
+        (isSelf? MCSMessageStatus.sendSuccess: MCSMessageStatus.receivingSuccess):
+        (isSelf? MCSMessageStatus.sending: MCSMessageStatus.receiving);
+      String? senderName = header?['senderName'];
+      String? receiverName = header?['receiverName'];
+      bool isRead = isSelf;
+      bool isPeerRead = false;
+      MCSMessageType type = MCSMessageType.unknown;
+      MCSTextElem? textElem;
+      if (msgType == plainText) {
+        textElem = (msgData != null)? MCSTextElem.fromJson(msgData): null;
+        type = MCSMessageType.text;
+      }
+      if ((msgID == null || msgID.isEmpty) ||
+          (sender == null || sender.isEmpty) ||
+          (receiver == null || receiver.isEmpty) ||
+          timestamp == null ||
+          (textElem == null)) {
+        return null;
+      }
+      MCSMessage message = MCSMessage(
+          msgID,
+          sender,
+          receiver,
+          timestamp,
+          type,
+          status,
+          senderName: senderName,
+          receiverName: receiverName,
+          isRead: isRead,
+          isPeerRead: isPeerRead,
+          textElem: textElem
+      );
+      MessageDao dao = MessageDao();
+      dao.saveMessage(message);
+      return message;
+    }
+    return null;
+  }
 }

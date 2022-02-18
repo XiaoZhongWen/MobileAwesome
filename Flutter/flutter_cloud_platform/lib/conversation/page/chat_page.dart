@@ -5,6 +5,7 @@ import 'package:flutter_cloud_platform/base/constant/mcs_routes.dart';
 import 'package:flutter_cloud_platform/base/models/platform_visual/mcs_chat_route_setting.dart';
 import 'package:flutter_cloud_platform/base/models/platform_visual/mcs_route.dart';
 import 'package:flutter_cloud_platform/base/providers/account_provider.dart';
+import 'package:flutter_cloud_platform/base/providers/im_provider.dart';
 import 'package:flutter_cloud_platform/base/providers/visual_provider.dart';
 import 'package:flutter_cloud_platform/base/widgets/mcs_asset_image.dart';
 import 'package:flutter_cloud_platform/base/widgets/mcs_button.dart';
@@ -12,6 +13,7 @@ import 'package:flutter_cloud_platform/base/widgets/mcs_image.dart';
 import 'package:flutter_cloud_platform/base/widgets/mcs_title.dart';
 import 'package:flutter_cloud_platform/contacts/providers/contacts_provider.dart';
 import 'package:flutter_cloud_platform/conversation/models/chat_operation_menu_item.dart';
+import 'package:flutter_cloud_platform/conversation/models/mcs_message.dart';
 import 'package:flutter_cloud_platform/conversation/providers/chat_provider.dart';
 import 'package:flutter_cloud_platform/base/extension/extension.dart';
 import 'package:provider/provider.dart';
@@ -97,6 +99,8 @@ class _ChatPageState extends State<ChatPage> with SingleTickerProviderStateMixin
 
   Widget _buildInputContainer() {
     double iconSize = 30.0;
+    IMProvider imProvider = Provider.of<IMProvider>(context, listen: false);
+    ContactsProvider contactsProvider = Provider.of<ContactsProvider>(context, listen: false);
     return Container(
       padding: EdgeInsets.symmetric(vertical: MCSLayout.smallPadding),
       decoration: const BoxDecoration(
@@ -109,11 +113,20 @@ class _ChatPageState extends State<ChatPage> with SingleTickerProviderStateMixin
             onPressed: () {},
             icon: MCSAssetImage('chat/voice_input', width: iconSize, height: iconSize,),
           ),
-          const Expanded(
+          Expanded(
             child: TextField(
               minLines: 1,
               maxLines: 5,
               enabled: true,
+              textInputAction: TextInputAction.send,
+              onSubmitted: (String text) {
+                imProvider.sendMessage(
+                    widget.userId,
+                    MCSMessageType.text,
+                    text: text,
+                    receiverName: contactsProvider.fetchNickname(widget.userId)
+                );
+              },
               decoration: InputDecoration(
                 labelText: '输入发送内容'
               ),

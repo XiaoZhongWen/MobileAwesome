@@ -10,9 +10,45 @@ class MCSDBService {
   final int version = 1;
 
   // final String createVersionTable = 'CREATE TABLE IF NOT EXISTS tb_version (id INTEGER PRIMARY KEY AUTOINCREMENT, version INTEGER DEFAULT 1)';
-  final String createVisualTable = 'CREATE TABLE IF NOT EXISTS $visualTableName (id INTEGER PRIMARY KEY AUTOINCREMENT, version INTEGER, useable INTEGER, productId TEXT, guid TEXT, mcs_visual TEXT)';
-  final String createAccountTable = 'CREATE TABLE IF NOT EXISTS $accountTableName (id INTEGER PRIMARY KEY AUTOINCREMENT, userId TEXT, password TEXT, nickname TEXT, headUrl TEXT, active INTEGER, timestamp INTEGER, accessToken TEXT, refreshToken TEXT, expire INTEGER)';
-  final String createContactsTable = 'CREATE TABLE IF NOT EXISTS $contactsTableName (id INTEGER PRIMARY KEY AUTOINCREMENT, displayName TEXT, headUrl TEXT, username TEXT, workStatus TEXT, tag TEXT, type INTEGER, card TEXT, depts TEXT)';
+  final String createVisualTable = 'CREATE TABLE IF NOT EXISTS $visualTableName ('
+      'id INTEGER PRIMARY KEY AUTOINCREMENT, '
+      'version INTEGER, useable INTEGER, '
+      'productId TEXT, guid TEXT, '
+      'mcs_visual TEXT)';
+  final String createAccountTable = 'CREATE TABLE IF NOT EXISTS $accountTableName ('
+      'id INTEGER PRIMARY KEY AUTOINCREMENT, '
+      'userId TEXT, password TEXT, '
+      'nickname TEXT, '
+      'headUrl TEXT, '
+      'active INTEGER, '
+      'timestamp INTEGER, '
+      'accessToken TEXT, '
+      'refreshToken TEXT, '
+      'expire INTEGER)';
+  final String createContactsTable = 'CREATE TABLE IF NOT EXISTS $contactsTableName ('
+      'id INTEGER PRIMARY KEY AUTOINCREMENT, '
+      'displayName TEXT, '
+      'headUrl TEXT, '
+      'username TEXT, '
+      'workStatus TEXT, '
+      'tag TEXT, '
+      'type INTEGER, '
+      'card TEXT, '
+      'depts TEXT)';
+  final String createMessageTable = 'CREATE TABLE IF NOT EXISTS $messageTableName ('
+      'id INTEGER PRIMARY KEY AUTOINCREMENT, '
+      'msgID TEXT NOT NULL, '
+      'sender TEXT NOT NULL, '
+      'receiver TEXT NOT NULL, '
+      'peerID TEXT NOT NULL, '
+      'senderName TEXT, '
+      'receiverName TEXT, '
+      'timestamp DOUBLE NOT NULL, '
+      'type INTEGER NOT NULL, '
+      'status INTEGER NOT NULL, '
+      'isRead BOOLEAN DEFAULT false, '
+      'isPeerRead BOOLEAN DEFAULT false, '
+      'body TEXT NOT NULL)';
 
   static final MCSDBService singleton = MCSDBService._();
   MCSDBService._() {}
@@ -32,6 +68,8 @@ class MCSDBService {
         await db.execute(createAccountTable);
         // 4. 创建tb_contacts表
         await db.execute(createContactsTable);
+        // 4. 创建tb_message表
+        await db.execute(createMessageTable);
       },
       onUpgrade: (Database db, int oldVersion, int newVersion) async {
         for (int i = oldVersion + 1; i <= newVersion; i++) {

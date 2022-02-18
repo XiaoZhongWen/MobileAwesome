@@ -45,8 +45,8 @@ class AuthInterceptor extends Interceptor {
   @override
   void onError(DioError err, ErrorInterceptorHandler handler) async {
     FormatException exception = err.error;
-    String source = (exception.source as String?) ?? '';
-    if (source == _invalidateToken) {
+    dynamic source = exception.source;
+    if (source is String && source == _invalidateToken) {
       // 重新获取accessToken
       AccountDao dao = AccountDao();
       Account? account = await dao.fetchLastTimeAccount();

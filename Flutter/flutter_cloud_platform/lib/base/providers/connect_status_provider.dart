@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_cloud_platform/base/service/mcs_im_service.dart';
-import 'package:tencent_im_sdk_plugin/models/v2_tim_user_full_info.dart';
 
 enum ConnectStatus {
   unknown,
@@ -57,7 +56,7 @@ class ConnectStatusProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void onSelfInfoUpdated(V2TimUserFullInfo info) {
+  void onSelfInfoUpdated() {
     _status = ConnectStatus.selfInfoUpdated;
     notifyListeners();
   }

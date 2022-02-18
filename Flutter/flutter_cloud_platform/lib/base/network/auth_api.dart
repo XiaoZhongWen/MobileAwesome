@@ -41,8 +41,10 @@ class AuthApi {
         };
 
         int timestamp = DateTime.now().millisecondsSinceEpoch ~/ 1000;
-        MCSMemoryCache.singleton.store(accessTokenKey, response.data['access_token']);
-        MCSMemoryCache.singleton.store(expireKey, response.data['expires_in'] + timestamp);
+        MCSMemoryCache.singleton.store(accessTokenKey, response.data[accessTokenKey]);
+        MCSMemoryCache.singleton.store(expireKey, response.data[expireKey] + timestamp);
+        MCSMemoryCache.singleton.store(userIdKey, userId);
+        MCSMemoryCache.singleton.store(nicknameKey, response.data[nicknameKey]);
 
         Account account = Account.fromJson(json);
         AccountDao dao = AccountDao();

@@ -7,6 +7,8 @@ const String messageTableName = 'tb_message';
 
 const String accessTokenKey = 'access_token';
 const String expireKey = 'expires_in';
+const String userIdKey = 'userId';
+const String nicknameKey = 'cnname';
 
 const String prefixGroupId = '_group_';
 const String prefixMassId = '_mas_';
