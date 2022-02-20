@@ -61,6 +61,11 @@ class ContactsProvider extends ChangeNotifier {
     return nickname ?? userId;
   }
 
+  String fetchIconUrl(String userId) {
+    String? iconUrl;
+    return iconUrl;
+  }
+
   void updateContacts(String userId) async {
     Response? response = await ContactsApi.singleton.fetchContactDetail(userId);
     ContactsDao dao = ContactsDao();

@@ -16,6 +16,7 @@ import 'package:flutter_cloud_platform/conversation/models/chat_operation_menu_i
 import 'package:flutter_cloud_platform/conversation/models/mcs_message.dart';
 import 'package:flutter_cloud_platform/conversation/providers/chat_provider.dart';
 import 'package:flutter_cloud_platform/base/extension/extension.dart';
+import 'package:flutter_cloud_platform/conversation/widgets/message_container_widget.dart';
 import 'package:provider/provider.dart';
 
 class ChatPage extends StatefulWidget {
@@ -83,8 +84,17 @@ class _ChatPageState extends State<ChatPage> with SingleTickerProviderStateMixin
   }
 
   Widget _buildChatList() {
+    IMProvider imProvider = Provider.of<IMProvider>(context, listen: false);
+    imProvider.peerID = widget.userId;
+    imProvider.fetchMessageList(async: true);
     return Container(
-
+      child: Consumer<IMProvider>(builder: (_, imProvider, __) {
+        List<MCSMessage> datasource = imProvider.fetchMessageList();
+        return ListView.builder(
+          itemBuilder: (_, index) => MessageContainerWidget(datasource[index]),
+          itemCount: datasource.length,
+        );
+      }),
     );
   }
 
@@ -193,7 +203,6 @@ class _ChatPageState extends State<ChatPage> with SingleTickerProviderStateMixin
             start + itemCount:
             list.length;
             List<ChatOperationMenuItem> subList = list.sublist(start, end);
-            print(height);
             return GridView.count(
               crossAxisCount: itemCount ~/ 2,
               childAspectRatio: ratio,

@@ -2,9 +2,9 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_cloud_platform/base/cache/mcs_memory_cache.dart';
 import 'package:flutter_cloud_platform/base/constant/mcs_message_type.dart';
+import 'package:flutter_cloud_platform/base/dao/message_dao.dart';
 import 'package:flutter_cloud_platform/base/service/mcs_im_service.dart';
 import 'package:flutter_cloud_platform/conversation/models/mcs_message.dart';
-import 'package:tencent_im_sdk_plugin/models/v2_tim_message_receipt.dart';
 
 class IMProvider extends ChangeNotifier {
   IMProvider() {
@@ -16,13 +16,48 @@ class IMProvider extends ChangeNotifier {
   * */
   String? peerID;
 
-  Map<String, Map<String, dynamic>> _datasource = {};
+  final Map<String, Map<String, MCSMessage>> _datasource = {};
 
   void _init() {
     MCSIMService.singleton.addEventListener(
       onRecvNewMessage:onRecvNewMessage,
       onSendMessageProgress:onSendMessageProgress
     );
+  }
+
+  List<MCSMessage> fetchMessageList({int? offset, bool? async = false}) {
+    List<MCSMessage> list = [];
+    if (peerID == null || peerID!.isEmpty) {
+      return list;
+    }
+    List<MCSMessage> cache = _datasource[peerID]?.values.toList() ?? [];
+    if (async ?? false) {
+      MessageDao dao = MessageDao();
+      dao.fetchMessages(peerID!, offset ?? 0).then((messages) => addMessages(messages));
+    } else {
+      cache.sort((a, b) => a.timestamp.compareTo(b.timestamp));
+      list.addAll(cache);
+    }
+    return list;
+  }
+
+  void addMessages(List<MCSMessage> messages) {
+    if (peerID == null || peerID!.isEmpty) {
+      return;
+    }
+    Map<String, MCSMessage> map = {};
+    if (_datasource[peerID] == null) {
+      _datasource[peerID!] = map;
+    } else {
+      map = _datasource[peerID!]!;
+    }
+    List<String> keys = map.keys.toList();
+    for (var msg in messages) {
+      if (!keys.contains(msg.msgID)) {
+        map[msg.msgID] = msg;
+      }
+    }
+    notifyListeners();
   }
 
   /*
@@ -37,7 +72,7 @@ class IMProvider extends ChangeNotifier {
         String? receiverName,
         String? text
       }) {
-    switch (type) {
+    switch(type) {
       case MCSMessageType.text: {
         if (text != null) {
           _sendTextMessage(receiver, text, receiverName: receiverName);
@@ -67,16 +102,19 @@ class IMProvider extends ChangeNotifier {
         'text':text
       }
     };
-    MCSIMService.singleton.sendMessage(receiver, json.encode(map));
+    MCSMessage? message = await MCSIMService.singleton.sendMessage(receiver, json.encode(map));
+    if (message != null) {
+      addMessages([message]);
+    }
   }
 
-  void onRecvC2CReadReceipt(List<V2TimMessageReceipt> receiptList) {
-
-  }
-
-  void onRecvMessageRevoked(String msgID) {
-
-  }
+  // void onRecvC2CReadReceipt(List<V2TimMessageReceipt> receiptList) {
+  //
+  // }
+  //
+  // void onRecvMessageRevoked(String msgID) {
+  //
+  // }
 
   void onRecvNewMessage(MCSMessage msg) {
 

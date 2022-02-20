@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:flutter_cloud_platform/base/cache/mcs_memory_cache.dart';
 import 'package:flutter_cloud_platform/base/constant/mcs_constant.dart';
 import 'package:flutter_cloud_platform/base/constant/mcs_message_type.dart';
 import 'package:flutter_cloud_platform/base/constant/mcs_setting.dart';
@@ -101,8 +100,6 @@ class MCSIMService {
       return null;
     }
     String? msgID = msg.msgID;
-    String? sender = msg.sender;
-    String? receiver = MCSMemoryCache.singleton.fetchAccountId();
     double? timestamp = msg.timestamp?.toDouble();
     String data = msg.customElem?.data ?? '';
     if (msg.elemType == 2 && data.isNotEmpty) {
@@ -114,8 +111,11 @@ class MCSIMService {
       MCSMessageStatus status = (msg.status == 2)?
         (isSelf? MCSMessageStatus.sendSuccess: MCSMessageStatus.receivingSuccess):
         (isSelf? MCSMessageStatus.sending: MCSMessageStatus.receiving);
+      String? sender = header?['sender'];
+      String? receiver = header?['receiver'];
       String? senderName = header?['senderName'];
       String? receiverName = header?['receiverName'];
+      String? peerID = isSelf? receiver: sender;
       bool isRead = isSelf;
       bool isPeerRead = false;
       MCSMessageType type = MCSMessageType.unknown;
@@ -127,6 +127,7 @@ class MCSIMService {
       if ((msgID == null || msgID.isEmpty) ||
           (sender == null || sender.isEmpty) ||
           (receiver == null || receiver.isEmpty) ||
+          (peerID == null || peerID.isEmpty) ||
           timestamp == null ||
           (textElem == null)) {
         return null;
@@ -135,6 +136,7 @@ class MCSIMService {
           msgID,
           sender,
           receiver,
+          peerID,
           timestamp,
           type,
           status,

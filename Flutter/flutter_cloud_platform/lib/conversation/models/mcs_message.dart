@@ -20,6 +20,7 @@ class MCSMessage {
       this.msgID,
       this.sender,
       this.receiver,
+      this.peerID,
       this.timestamp,
       this.type,
       this.status, {
@@ -34,6 +35,7 @@ class MCSMessage {
     String msgID = map['msgID'];
     String sender = map['sender'];
     String receiver = map['receiver'];
+    String peerID = map['peerID'];
     double timestamp = map['timestamp'];
     int type = map['type'];
     int status = map['status'];
@@ -46,6 +48,7 @@ class MCSMessage {
       msgID,
       sender,
       receiver,
+      peerID,
       timestamp,
       MCSMessageType.values[type],
       MCSMessageStatus.values[status],
@@ -61,6 +64,7 @@ class MCSMessage {
     'msgID': msgID,
     'sender': sender,
     'receiver': receiver,
+    'peerID': peerID,
     'timestamp': timestamp,
     'type': type,
     'status': status,
@@ -74,6 +78,7 @@ class MCSMessage {
   String msgID;
   String sender;
   String receiver;
+  String peerID;
   double timestamp;
   MCSMessageType type;
   MCSMessageStatus status;

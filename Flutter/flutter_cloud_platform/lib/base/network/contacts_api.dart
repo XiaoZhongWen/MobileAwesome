@@ -1,10 +1,8 @@
 import 'dart:convert';
-
 import 'package:dio/dio.dart';
 import 'package:flutter_cloud_platform/base/constant/mcs_platform.dart';
 import 'package:flutter_cloud_platform/base/network/api_options.dart';
 import 'package:flutter_cloud_platform/base/network/interceptors/auth_interceptor.dart';
-import 'package:flutter_cloud_platform/contacts/models/contacts_category.dart';
 
 class ContactsApi {
   final String _baseUrl = HTTP_PREFIX_APIS + HTTPDOMAIN;
@@ -27,11 +25,6 @@ class ContactsApi {
     } on DioError catch(e) {}
   }
 
-  // String? username;
-  // String? displayName;
-  // String? headUrl;
-  // WorkStatus? workStatus;
-  // Map<String, String>? card;
   Future<dynamic> fetchContactDetail(String userId) async {
     try {
       Response response = await _dio.post(_contactDetailPath, data: {'username':userId});

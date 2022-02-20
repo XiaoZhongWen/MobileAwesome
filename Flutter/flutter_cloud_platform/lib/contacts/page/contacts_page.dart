@@ -50,8 +50,10 @@ class _ContactsPageState extends State<ContactsPage> {
   @override
   Widget build(BuildContext context) {
     VisualProvider visualProvider = Provider.of<VisualProvider>(context, listen:false);
+    _contactsProvider = Provider.of<ContactsProvider>(context, listen:false);
     String? addFriendType = visualProvider.fetchAddFriendType();
     bool showOrg = (visualProvider.fetchOrgUrl() ?? '').isNotEmpty;
+    _contactsProvider?.fetchContactList();
 
     return Scaffold(
         appBar: AppBar(
@@ -69,7 +71,6 @@ class _ContactsPageState extends State<ContactsPage> {
                   child: _buildSearchHeader(),
                 ),
                 Consumer<ContactsProvider>(builder: (_, contactsProvider, __) {
-                  contactsProvider.fetchContactList();
                   List<MCSGroupedDataItem<ContactsGroupType, dynamic>> datasource = contactsProvider.fetchContactsListDataSource(addFriendType: addFriendType, showOrg: showOrg);
                   return _buildSliverList(datasource, contactsProvider);
                 })
@@ -82,7 +83,6 @@ class _ContactsPageState extends State<ContactsPage> {
   Widget _buildSliverList(
       List<MCSGroupedDataItem<ContactsGroupType, dynamic>> datasource,
       ContactsProvider contactsProvider) {
-    _contactsProvider = contactsProvider;
     return SliverList(
       delegate: SliverChildBuilderDelegate(
               (_, index) {

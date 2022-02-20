@@ -8,7 +8,8 @@ class MessageDao {
   final int _limit = 20;
 
   void saveMessage(MCSMessage message) {
-    MCSDBService.singleton.insert(messageTableName, message.toJson());
+    Map<String, dynamic> map = _toRecord(message);
+    MCSDBService.singleton.insert(messageTableName, map);
   }
 
   void deleteMessage(String msgID) {
@@ -19,9 +20,10 @@ class MessageDao {
   }
 
   void updateMessage(MCSMessage message) {
+    Map<String, dynamic> map = _toRecord(message);
     MCSDBService.singleton.update(
         messageTableName,
-        message.toJson(),
+        map,
         where: 'msgID = ?',
         whereArgs: [message.msgID]);
   }
@@ -39,12 +41,30 @@ class MessageDao {
     } else {
       list = list.reversed.toList();
       List<MCSMessage> messages = list.map((e) {
-        Map<String, dynamic> map = Map.from(e);
-        String body = map['body'];
-        map['body'] = json.decode(body);
+        Map<String, dynamic> map = _tojson(e);
         return MCSMessage.fromJson(map);
       }).toList();
       return messages;
     }
+  }
+
+  Map<String, dynamic> _toRecord(MCSMessage message) {
+    Map<String, dynamic> map = Map.from(message.toJson());
+    map['type'] = message.type.index;
+    map['status'] = message.status.index;
+    map['isRead'] = (message.isRead ?? false)? 1: 0;
+    map['isPeerRead'] = (message.isPeerRead ?? false)? 1: 0;
+    map['body'] = json.encode(map['body']);
+    return map;
+  }
+
+  Map<String, dynamic> _tojson(Map<String, dynamic> record) {
+    Map<String, dynamic> map = Map.from(record);
+    int isRead = map['isRead'] ?? 0;
+    int isPeerRead = map['isPeerRead'] ?? 0;
+    map['body'] = json.decode(record['body']);
+    map['isRead'] = isRead == 1? true: false;
+    map['isPeerRead'] = isPeerRead == 1? true: false;
+    return map;
   }
 }
