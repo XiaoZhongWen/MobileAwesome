@@ -18,6 +18,7 @@ class MCSLayout {
   static double listMenuIconSize = 12.0;
   static double arrowSize = 15.0;
   static double cardSize = 100.0;
+  static double listIconSize = 30.0;
 
   static double listHeaderHeight = 40.0;
   static double listTileHeight = 60.0;

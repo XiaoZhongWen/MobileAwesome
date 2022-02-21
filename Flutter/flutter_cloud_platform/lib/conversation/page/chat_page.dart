@@ -33,6 +33,8 @@ class _ChatPageState extends State<ChatPage> with SingleTickerProviderStateMixin
   late ChatProvider _chatProvider;
   late Animation<double> _animation;
   late AnimationController _animationController;
+  final TextEditingController _editingController = TextEditingController();
+  final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
@@ -48,6 +50,8 @@ class _ChatPageState extends State<ChatPage> with SingleTickerProviderStateMixin
   @override
   void dispose() {
     _animationController.dispose();
+    _scrollController.dispose();
+    _editingController.dispose();
     super.dispose();
   }
 
@@ -91,6 +95,7 @@ class _ChatPageState extends State<ChatPage> with SingleTickerProviderStateMixin
       child: Consumer<IMProvider>(builder: (_, imProvider, __) {
         List<MCSMessage> datasource = imProvider.fetchMessageList();
         return ListView.builder(
+          controller: _scrollController,
           itemBuilder: (_, index) => MessageContainerWidget(datasource[index]),
           itemCount: datasource.length,
         );
@@ -128,6 +133,7 @@ class _ChatPageState extends State<ChatPage> with SingleTickerProviderStateMixin
               minLines: 1,
               maxLines: 5,
               enabled: true,
+              controller: _editingController,
               textInputAction: TextInputAction.send,
               onSubmitted: (String text) {
                 imProvider.sendMessage(
@@ -136,6 +142,7 @@ class _ChatPageState extends State<ChatPage> with SingleTickerProviderStateMixin
                     text: text,
                     receiverName: contactsProvider.fetchNickname(widget.userId)
                 );
+                _editingController.clear();
               },
               decoration: InputDecoration(
                 labelText: '输入发送内容'

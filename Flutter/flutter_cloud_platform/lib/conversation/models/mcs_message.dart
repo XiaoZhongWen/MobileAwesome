@@ -1,9 +1,12 @@
 import 'package:flutter_cloud_platform/base/constant/mcs_message_type.dart';
 import 'package:flutter_cloud_platform/conversation/models/mcs_text_elem.dart';
+import 'package:uuid/uuid.dart';
+import 'package:uuid/uuid_util.dart';
 
 enum MCSMessageType {
   unknown,
-  text
+  text,
+  time
 }
 
 enum MCSMessageStatus {
@@ -12,7 +15,8 @@ enum MCSMessageStatus {
   sendSuccess,
   receiving,
   receivingFailure,
-  receivingSuccess
+  receivingSuccess,
+  unknown,
 }
 
 class MCSMessage {
@@ -60,6 +64,17 @@ class MCSMessage {
     );
   }
 
+  factory MCSMessage.time(double timestamp) {
+    return MCSMessage(
+        const Uuid().v1(),
+        '',
+        '',
+        '',
+        timestamp,
+        MCSMessageType.time,
+        MCSMessageStatus.unknown);
+  }
+
   Map<String, dynamic> toJson() => {
     'msgID': msgID,
     'sender': sender,
@@ -75,11 +90,11 @@ class MCSMessage {
     'body': textElem?.toJson()
   };
 
-  String msgID;
-  String sender;
-  String receiver;
-  String peerID;
-  double timestamp;
+  final String msgID;
+  final String sender;
+  final String receiver;
+  final String peerID;
+  final double timestamp;
   MCSMessageType type;
   MCSMessageStatus status;
   String? senderName;
@@ -90,9 +105,9 @@ class MCSMessage {
 }
 
 extension ExMCSMessageType on MCSMessageType {
-  String get value => [unknown, plainText][index];
+  String get value => [unknown, plainText, timeText][index];
 }
 
 extension ExMCSMessageStatus on MCSMessageStatus {
-  int get value => [0, 1, 2, 3, 4, 5][index];
+  int get value => [0, 1, 2, 3, 4, 5, 6][index];
 }

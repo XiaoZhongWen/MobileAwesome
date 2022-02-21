@@ -63,7 +63,19 @@ class ContactsProvider extends ChangeNotifier {
 
   String fetchIconUrl(String userId) {
     String? iconUrl;
-    return iconUrl;
+    _categories?.forEach((category) {
+      if (category.type == ContactsCategoryType.friend.value) {
+        category.items?.forEach((element) {
+          if (element.username == userId) {
+            iconUrl = element.headUrl;
+          }
+        });
+      }
+    });
+    if (iconUrl == null) {
+      updateContacts(userId);
+    }
+    return iconUrl ?? '';
   }
 
   void updateContacts(String userId) async {

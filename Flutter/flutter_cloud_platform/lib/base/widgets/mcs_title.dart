@@ -7,6 +7,7 @@ enum MCSTitleType {
   listTitleNormal,
   listSubTitleSmall,
   listSubTitleNormal,
+  listInfoTitle,
   cardTitle,
   cardSubTitle,
   btnTitleNormal,
@@ -55,6 +56,12 @@ class MCSTitle extends StatelessWidget {
       case MCSTitleType.listSubTitleNormal: {
         color = Colors.grey;
         fontSize = fontLevel2;
+        fontWeight = FontWeight.normal;
+        break;
+      }
+      case MCSTitleType.listInfoTitle: {
+        color = Colors.white;
+        fontSize = fontLevel1;
         fontWeight = FontWeight.normal;
         break;
       }

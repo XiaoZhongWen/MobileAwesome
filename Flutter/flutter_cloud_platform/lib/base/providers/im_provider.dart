@@ -36,9 +36,26 @@ class IMProvider extends ChangeNotifier {
       dao.fetchMessages(peerID!, offset ?? 0).then((messages) => addMessages(messages));
     } else {
       cache.sort((a, b) => a.timestamp.compareTo(b.timestamp));
-      list.addAll(cache);
+      list.addAll(addTime(cache));
     }
     return list;
+  }
+
+  List<MCSMessage> addTime(List<MCSMessage> list) {
+    List<MCSMessage> messages = [];
+    double timestamp = 0.0;
+    for (MCSMessage msg in list) {
+      if (timestamp == 0.0) {
+        // 第一条消息前插入时间消息
+        messages.add(MCSMessage.time(msg.timestamp));
+      } else if (msg.timestamp - timestamp > 60.0) {
+        // 超过一分钟插入时间消息
+        messages.add(MCSMessage.time(msg.timestamp));
+      }
+      messages.add(msg);
+      timestamp = msg.timestamp;
+    }
+    return messages;
   }
 
   void addMessages(List<MCSMessage> messages) {
@@ -108,16 +125,8 @@ class IMProvider extends ChangeNotifier {
     }
   }
 
-  // void onRecvC2CReadReceipt(List<V2TimMessageReceipt> receiptList) {
-  //
-  // }
-  //
-  // void onRecvMessageRevoked(String msgID) {
-  //
-  // }
-
   void onRecvNewMessage(MCSMessage msg) {
-
+    addMessages([msg]);
   }
 
   void onSendMessageProgress(String msgID, int progress) {
