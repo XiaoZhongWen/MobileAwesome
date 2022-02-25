@@ -9,19 +9,10 @@ class ChatProvider extends ChangeNotifier {
 
   final String userId;
   String? _nickname;
-  bool? _isFold;
   List<ChatOperationMenuItem> _allMenuItems = [];
 
   String get nickname {
     return _nickname ?? userId;
-  }
-
-  bool get isFold {
-    return _isFold ?? true;
-  }
-
-  set isFold(bool value) {
-    _isFold = value;
   }
 
   List<ChatOperationMenuItem> fetchOperationItems({

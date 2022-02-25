@@ -10,6 +10,6 @@ class SharePage extends StatefulWidget {
 class _SharePageState extends State<SharePage> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold();
   }
 }

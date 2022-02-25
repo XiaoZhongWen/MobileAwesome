@@ -15,7 +15,6 @@ import 'package:flutter_cloud_platform/contacts/providers/contacts_provider.dart
 import 'package:flutter_cloud_platform/conversation/models/chat_operation_menu_item.dart';
 import 'package:flutter_cloud_platform/conversation/models/mcs_message.dart';
 import 'package:flutter_cloud_platform/conversation/providers/chat_provider.dart';
-import 'package:flutter_cloud_platform/base/extension/extension.dart';
 import 'package:flutter_cloud_platform/conversation/widgets/message_container_widget.dart';
 import 'package:provider/provider.dart';
 
@@ -35,6 +34,17 @@ class _ChatPageState extends State<ChatPage> with SingleTickerProviderStateMixin
   late AnimationController _animationController;
   final TextEditingController _editingController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
+  final FocusNode _focusNode = FocusNode();
+  bool _isFold = true;
+
+  /*
+  * 从左到右
+  * 显示键盘、隐藏键盘、显示菜单、隐藏菜单
+  *
+  * */
+  // int _actionType = 0x00;
+  // final int _showKeyboard = 0x10;
+  // final int _showOperationMenu = 0x01;
 
   @override
   void initState() {
@@ -45,6 +55,12 @@ class _ChatPageState extends State<ChatPage> with SingleTickerProviderStateMixin
       vsync: this
     );
     _animation = CurvedAnimation(parent: _animationController, curve: Curves.easeInOut);
+    // _focusNode.addListener(() {
+    //   if (_focusNode.hasFocus && !_isFold) {
+    //     _isFold = true;
+    //     _animationController.reverse();
+    //   }
+    // });
   }
 
   @override
@@ -52,6 +68,7 @@ class _ChatPageState extends State<ChatPage> with SingleTickerProviderStateMixin
     _animationController.dispose();
     _scrollController.dispose();
     _editingController.dispose();
+    _focusNode.dispose();
     super.dispose();
   }
 
@@ -70,18 +87,29 @@ class _ChatPageState extends State<ChatPage> with SingleTickerProviderStateMixin
           ),
         ),
         body: SafeArea(
-          child: Stack(
-            children: [
-              Column(
-                children: [
-                  Expanded(
-                    child: _buildChatList(),
-                  ),
-                  _buildChatFooter()
-                ],
-              )
-            ],
-          ),
+          child: GestureDetector(
+            onTap: () {
+              if (_focusNode.hasFocus) {
+                _focusNode.unfocus();
+              }
+              if (!_isFold) {
+                _isFold = true;
+                _animationController.reverse();
+              }
+            },
+            child: Stack(
+              children: [
+                Column(
+                  children: [
+                    Expanded(
+                      child: _buildChatList(),
+                    ),
+                    _buildChatFooter()
+                  ],
+                )
+              ],
+            ),
+          )
         )
       ),
     );
@@ -91,15 +119,19 @@ class _ChatPageState extends State<ChatPage> with SingleTickerProviderStateMixin
     IMProvider imProvider = Provider.of<IMProvider>(context, listen: false);
     imProvider.peerID = widget.userId;
     imProvider.fetchMessageList(async: true);
-    return Container(
+
+    return Align(
+      alignment: Alignment.topCenter,
       child: Consumer<IMProvider>(builder: (_, imProvider, __) {
         List<MCSMessage> datasource = imProvider.fetchMessageList();
         return ListView.builder(
+          reverse: true,
+          shrinkWrap: true,
           controller: _scrollController,
           itemBuilder: (_, index) => MessageContainerWidget(datasource[index]),
           itemCount: datasource.length,
         );
-      }),
+      })
     );
   }
 
@@ -133,8 +165,10 @@ class _ChatPageState extends State<ChatPage> with SingleTickerProviderStateMixin
               minLines: 1,
               maxLines: 5,
               enabled: true,
+              focusNode: _focusNode,
               controller: _editingController,
               textInputAction: TextInputAction.send,
+              onEditingComplete: () {},
               onSubmitted: (String text) {
                 imProvider.sendMessage(
                     widget.userId,
@@ -143,6 +177,7 @@ class _ChatPageState extends State<ChatPage> with SingleTickerProviderStateMixin
                     receiverName: contactsProvider.fetchNickname(widget.userId)
                 );
                 _editingController.clear();
+                scrollToBottom();
               },
               decoration: InputDecoration(
                 labelText: '输入发送内容'
@@ -151,8 +186,11 @@ class _ChatPageState extends State<ChatPage> with SingleTickerProviderStateMixin
           ),
           IconButton(
             onPressed: () {
-              _chatProvider.isFold = !(_chatProvider.isFold);
-              _chatProvider.isFold?
+              if (_focusNode.hasFocus) {
+                _focusNode.unfocus();
+              }
+              _isFold = !_isFold;
+              _isFold?
                 _animationController.reverse():
                 _animationController.forward();
             },
@@ -177,7 +215,8 @@ class _ChatPageState extends State<ChatPage> with SingleTickerProviderStateMixin
     );
 
     double ratio = 1.2;
-    double height = (context.width / 4) / ratio;
+    // double height = (context.width / 4) / ratio;
+    double height = 81.25;
     double end = 2 * height + MCSLayout.padding * 2;
     _animation = Tween(begin: 0.0, end: end)
         .animate(_animation);
@@ -232,6 +271,13 @@ class _ChatPageState extends State<ChatPage> with SingleTickerProviderStateMixin
           itemCount: pageCount
       )
     );
+  }
+
+  void scrollToBottom() {
+    _scrollController.animateTo(
+        0.0,
+        duration: const Duration(milliseconds: 250),
+        curve: Curves.ease);
   }
 }
 

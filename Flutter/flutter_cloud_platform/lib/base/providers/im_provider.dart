@@ -36,7 +36,7 @@ class IMProvider extends ChangeNotifier {
       dao.fetchMessages(peerID!, offset ?? 0).then((messages) => addMessages(messages));
     } else {
       cache.sort((a, b) => a.timestamp.compareTo(b.timestamp));
-      list.addAll(addTime(cache));
+      list.addAll(addTime(cache).reversed);
     }
     return list;
   }

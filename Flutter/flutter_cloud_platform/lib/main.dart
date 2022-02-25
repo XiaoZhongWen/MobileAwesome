@@ -50,7 +50,7 @@ class Assassin extends StatelessWidget {
         builder: (_, themeProvider, launchProvider, __) {
           return MaterialApp(
             theme: themeProvider.getTheme(),
-            home: launchProvider.launchPage()
+            home: launchProvider.launchPage(),
           );
         },
       )
