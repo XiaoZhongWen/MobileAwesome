@@ -41,4 +41,20 @@ class MCSMemoryCache {
     String? nickname = cache[nicknameKey] as String?;
     return nickname;
   }
+
+  /*
+  * 获取屏幕宽度
+  * */
+  double? fetchScreenWidth() {
+    double? width = cache[screenWidthKey] as double?;
+    return width;
+  }
+
+  /*
+  * 获取屏幕高度
+  * */
+  double? fetchScreenHeight() {
+    double? height = cache[screenHeightKey] as double?;
+    return height;
+  }
 }

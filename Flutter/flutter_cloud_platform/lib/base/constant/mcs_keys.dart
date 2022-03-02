@@ -9,6 +9,8 @@ const String accessTokenKey = 'access_token';
 const String expireKey = 'expires_in';
 const String userIdKey = 'userId';
 const String nicknameKey = 'cnname';
+const String screenWidthKey = 'screenWidthKey';
+const String screenHeightKey = 'screenHeightKey';
 
 const String prefixGroupId = '_group_';
 const String prefixMassId = '_mas_';

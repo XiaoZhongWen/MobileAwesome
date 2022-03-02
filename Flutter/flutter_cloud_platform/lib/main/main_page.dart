@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_cloud_platform/base/cache/mcs_memory_cache.dart';
 import 'package:flutter_cloud_platform/base/constant/mcs_constant.dart';
 import 'package:flutter_cloud_platform/base/constant/mcs_font.dart';
 import 'package:flutter_cloud_platform/base/dao/account_dao.dart';
@@ -15,6 +16,7 @@ import 'package:flutter_cloud_platform/mine/page/mine_page.dart';
 import 'package:flutter_cloud_platform/office/page/office_page.dart';
 import 'package:flutter_cloud_platform/share/page/share_page.dart';
 import 'package:flutter_cloud_platform/web/page/web_page.dart';
+import 'package:flutter_cloud_platform/base/extension/extension.dart';
 import 'package:provider/provider.dart';
 
 class MainPage extends StatefulWidget {
@@ -41,6 +43,8 @@ class _MainPageState extends State<MainPage> with RestorationMixin {
 
   @override
   Widget build(BuildContext context) {
+    MCSMemoryCache.singleton.store(screenWidthKey, context.width);
+    MCSMemoryCache.singleton.store(screenHeightKey, context.height);
     return Consumer<VisualProvider>(builder: (_, visualProvider, __) {
       List<Widget> pageList = _buildPageList(visualProvider.tabs());
       List<BottomNavigationBarItem> items = _buildBottomNavigationBarItems(

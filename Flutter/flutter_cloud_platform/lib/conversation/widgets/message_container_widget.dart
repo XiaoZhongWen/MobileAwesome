@@ -61,7 +61,7 @@ class _MessageContainerWidget extends State<MessageContainerWidget> {
         return iconUrl.isEmpty?
             ClipOval(
               child: MCSAssetImage(
-                'contacts/new_friends',
+                'contacts/contacts_header',
                 width: MCSLayout.listIconSize,
                 height: MCSLayout.listIconSize,
                 fit: BoxFit.cover,

@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter_cloud_platform/base/cache/mcs_memory_cache.dart';
 import 'package:flutter_cloud_platform/base/constant/mcs_constant.dart';
 import 'package:flutter_cloud_platform/base/constant/mcs_routes.dart';
 import 'package:flutter_cloud_platform/base/models/platform_visual/mcs_chat_route_setting.dart';
@@ -15,6 +16,8 @@ import 'package:flutter_cloud_platform/contacts/providers/contacts_provider.dart
 import 'package:flutter_cloud_platform/conversation/models/chat_operation_menu_item.dart';
 import 'package:flutter_cloud_platform/conversation/models/mcs_message.dart';
 import 'package:flutter_cloud_platform/conversation/providers/chat_provider.dart';
+import 'package:flutter_cloud_platform/conversation/providers/input_status_provider.dart';
+import 'package:flutter_cloud_platform/conversation/widgets/input_container_widget.dart';
 import 'package:flutter_cloud_platform/conversation/widgets/message_container_widget.dart';
 import 'package:provider/provider.dart';
 
@@ -30,12 +33,11 @@ class ChatPage extends StatefulWidget {
 class _ChatPageState extends State<ChatPage> with SingleTickerProviderStateMixin {
 
   late ChatProvider _chatProvider;
+  final InputStatusProvider _inputStatusProvider = InputStatusProvider();
   late Animation<double> _animation;
   late AnimationController _animationController;
-  final TextEditingController _editingController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
   final FocusNode _focusNode = FocusNode();
-  bool _isFold = true;
 
   /*
   * 从左到右
@@ -55,19 +57,12 @@ class _ChatPageState extends State<ChatPage> with SingleTickerProviderStateMixin
       vsync: this
     );
     _animation = CurvedAnimation(parent: _animationController, curve: Curves.easeInOut);
-    // _focusNode.addListener(() {
-    //   if (_focusNode.hasFocus && !_isFold) {
-    //     _isFold = true;
-    //     _animationController.reverse();
-    //   }
-    // });
   }
 
   @override
   void dispose() {
     _animationController.dispose();
     _scrollController.dispose();
-    _editingController.dispose();
     _focusNode.dispose();
     super.dispose();
   }
@@ -89,13 +84,7 @@ class _ChatPageState extends State<ChatPage> with SingleTickerProviderStateMixin
         body: SafeArea(
           child: GestureDetector(
             onTap: () {
-              if (_focusNode.hasFocus) {
-                _focusNode.unfocus();
-              }
-              if (!_isFold) {
-                _isFold = true;
-                _animationController.reverse();
-              }
+              _fold();
             },
             child: Stack(
               children: [
@@ -145,58 +134,27 @@ class _ChatPageState extends State<ChatPage> with SingleTickerProviderStateMixin
   }
 
   Widget _buildInputContainer() {
-    double iconSize = 30.0;
     IMProvider imProvider = Provider.of<IMProvider>(context, listen: false);
     ContactsProvider contactsProvider = Provider.of<ContactsProvider>(context, listen: false);
-    return Container(
-      padding: EdgeInsets.symmetric(vertical: MCSLayout.smallPadding),
-      decoration: const BoxDecoration(
-        border: topGreyBorder,
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          IconButton(
-            onPressed: () {},
-            icon: MCSAssetImage('chat/voice_input', width: iconSize, height: iconSize,),
-          ),
-          Expanded(
-            child: TextField(
-              minLines: 1,
-              maxLines: 5,
-              enabled: true,
-              focusNode: _focusNode,
-              controller: _editingController,
-              textInputAction: TextInputAction.send,
-              onEditingComplete: () {},
-              onSubmitted: (String text) {
-                imProvider.sendMessage(
-                    widget.userId,
-                    MCSMessageType.text,
-                    text: text,
-                    receiverName: contactsProvider.fetchNickname(widget.userId)
-                );
-                _editingController.clear();
-                scrollToBottom();
-              },
-              decoration: InputDecoration(
-                labelText: '输入发送内容'
-              ),
-            ),
-          ),
-          IconButton(
-            onPressed: () {
-              if (_focusNode.hasFocus) {
-                _focusNode.unfocus();
-              }
-              _isFold = !_isFold;
-              _isFold?
-                _animationController.reverse():
-                _animationController.forward();
-            },
-            icon: MCSAssetImage('chat/unfold_input', width: iconSize, height: iconSize,),
-          ),
-        ],
+    return ChangeNotifierProvider.value(
+      value: _inputStatusProvider,
+      child: InputContainerWidget(
+        sendTextMessage: (text) {
+          imProvider.sendMessage(
+              widget.userId,
+              MCSMessageType.text,
+              text: text,
+              receiverName: contactsProvider.fetchNickname(widget.userId)
+          );
+          _scrollToBottom();
+        },
+        switchKeyboard: (isKeyboard) {
+          _animationController.reverse();
+        },
+        switchFoldStatus: (isFold) {
+          isFold? _animationController.reverse(): _animationController.forward();
+        },
+        focusNode: _focusNode,
       ),
     );
   }
@@ -215,8 +173,8 @@ class _ChatPageState extends State<ChatPage> with SingleTickerProviderStateMixin
     );
 
     double ratio = 1.2;
-    // double height = (context.width / 4) / ratio;
-    double height = 81.25;
+    double screenWidth = MCSMemoryCache.singleton.fetchScreenWidth() ?? 320.0;
+    double height = (screenWidth / 4) / ratio;
     double end = 2 * height + MCSLayout.padding * 2;
     _animation = Tween(begin: 0.0, end: end)
         .animate(_animation);
@@ -273,11 +231,21 @@ class _ChatPageState extends State<ChatPage> with SingleTickerProviderStateMixin
     );
   }
 
-  void scrollToBottom() {
+  void _scrollToBottom() {
     _scrollController.animateTo(
         0.0,
         duration: const Duration(milliseconds: 250),
         curve: Curves.ease);
+  }
+
+  void _fold() {
+    if (!_inputStatusProvider.isFold) {
+      _inputStatusProvider.fold = true;
+      _animationController.reverse();
+    }
+    if (_focusNode.hasFocus) {
+      _focusNode.unfocus();
+    }
   }
 }
 
