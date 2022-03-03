@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_cloud_platform/base/constant/mcs_constant.dart';
+import 'package:flutter_cloud_platform/base/service/mcs_sound_service.dart';
 import 'package:flutter_cloud_platform/base/widgets/mcs_asset_image.dart';
 import 'package:flutter_cloud_platform/base/widgets/mcs_button.dart';
 import 'package:flutter_cloud_platform/base/widgets/mcs_title.dart';
@@ -88,9 +89,23 @@ class _InputContainerWidgetState extends State<InputContainerWidget> {
                     decoration: const InputDecoration(
                         labelText: '输入发送内容'
                     ),
-                  ):MCSButton(
-                    label: MCSTitle('按住说话', type: MCSTitleType.btnTitleNormal,),
-                    disabledColor: MCSColors.shallowGrey,
+                  ):GestureDetector(
+                    onLongPressStart: (_) {
+                      MCSSoundService.singleton.startRecorder();
+                    },
+                    onLongPress: () {
+                      print('onLongPress');
+                    },
+                    onLongPressEnd: (_) async {
+                      String? path = await MCSSoundService.singleton.stopRecorder();
+                      if (path != null) {
+                        MCSSoundService.singleton.getDuration(path);
+                      }
+                    },
+                    child: MCSButton(
+                      label: MCSTitle('按住说话', type: MCSTitleType.btnTitleNormal,),
+                      disabledColor: MCSColors.shallowGrey,
+                    ),
                   )
               ),
               IconButton(

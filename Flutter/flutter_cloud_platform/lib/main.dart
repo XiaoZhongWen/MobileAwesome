@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_cloud_platform/base/db/mcs_db_service.dart';
 import 'package:flutter_cloud_platform/base/providers/account_provider.dart';
 import 'package:flutter_cloud_platform/base/providers/im_provider.dart';
+import 'package:flutter_cloud_platform/base/service/mcs_sound_service.dart';
 import 'package:flutter_cloud_platform/base/utils/mcs_sp_util.dart';
 import 'package:flutter_cloud_platform/base/providers/provider.dart';
 import 'package:flutter_cloud_platform/contacts/providers/contacts_provider.dart';
@@ -23,6 +24,8 @@ class Assassin extends StatelessWidget {
     RouterService.shared.initRoutes();
     // 打开数据库
     startDB();
+    // 开启音频服务
+    MCSSoundService.singleton.startService();
   }
 
   void startDB() async {
