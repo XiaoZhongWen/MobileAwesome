@@ -1,7 +1,4 @@
 import 'dart:io';
-
-import 'package:flutter_ffmpeg/flutter_ffmpeg.dart';
-import 'package:flutter_ffmpeg/media_information.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:uuid/uuid.dart';
@@ -10,24 +7,29 @@ import 'package:flutter_sound_platform_interface/flutter_sound_recorder_platform
 
 class MCSSoundService {
   final FlutterSoundRecorder _soundRecorder = FlutterSoundRecorder();
-  final FlutterFFprobe _fFprobe = FlutterFFprobe();
+  final FlutterSoundHelper _soundHelper = FlutterSoundHelper();
 
   static final MCSSoundService singleton = MCSSoundService._();
-  final String audioCacheDirName = 'audio';
+  final String _audioCacheDirName = 'audio';
+  final int _sample = 8000;
   late String _rootDirPath;
 
   MCSSoundService._();
 
   void startService() async {
-    await _soundRecorder.openRecorder();
+    await _soundRecorder.openAudioSession(
+      focus: AudioFocus.requestFocusTransient,
+      category: SessionCategory.playAndRecord,
+      mode: SessionMode.modeDefault,
+      device: AudioDevice.speaker
+    );
     Directory dir = await getApplicationDocumentsDirectory();
-    _rootDirPath = join(dir.path, audioCacheDirName);
+    _rootDirPath = join(dir.path, _audioCacheDirName);
     Directory audioDir = Directory(_rootDirPath);
     bool isExist = await audioDir.exists();
     if (!isExist) {
       await audioDir.create();
     }
-    _soundRecorder.onProgress?.listen((event) { });
   }
 
   bool startRecorder() {
@@ -39,19 +41,46 @@ class MCSSoundService {
       codec: Codec.pcm16,
       toFile: path,
       audioSource: AudioSource.microphone,
-      sampleRate: 8000
+      sampleRate: _sample
     );
     return true;
   }
 
-  Future<String?> stopRecorder() async {
+  Future<String?> stopRecorder({bool cancel = false}) async {
     String? url = await _soundRecorder.stopRecorder();
-    return url;
+    String? wav = url?.replaceFirst('.pcm', '.wav');
+    String? amr = url?.replaceFirst('.pcm', '.amr');
+    if (url != null) {
+      File pcm = File(url);
+      bool pcmIsExist = await pcm.exists();
+      if (cancel) {
+        if (pcmIsExist) {
+          pcm.delete();
+        }
+        return null;
+      }
+      await _soundHelper.pcmToWave(inputFile: url, outputFile: wav!, sampleRate: _sample);
+      await _soundHelper.convertFile(wav, Codec.pcm16, amr!, Codec.amrNB);
+      pcm.delete();
+      File pcmWav = File(wav);
+      bool pcmWavIsExist = await pcmWav.exists();
+      if (pcmWavIsExist) {
+        pcmWav.delete();
+      }
+    }
+    return amr;
   }
 
-  void getDuration(String path) async {
-    MediaInformation information = await _fFprobe.getMediaInformation(path);
-    Map<dynamic, dynamic>? properties = information.getMediaProperties();
-    properties?['duration'];
+  Future<int> getDuration(String path) async {
+    Duration? duration = await _soundHelper.duration(path);
+    int sec = duration?.inSeconds ?? 0;
+    if (sec == 0) {
+      File amr = File(path);
+      bool exist = await amr.exists();
+      if (exist) {
+        amr.delete();
+      }
+    }
+    return sec;
   }
 }

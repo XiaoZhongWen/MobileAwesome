@@ -69,37 +69,55 @@ class _ChatPageState extends State<ChatPage> with SingleTickerProviderStateMixin
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider.value(
-      value: _chatProvider,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider.value(value: _chatProvider),
+        ChangeNotifierProvider.value(value: _inputStatusProvider),
+      ],
       child: Scaffold(
-        appBar: AppBar(
-          title: Selector<ContactsProvider, String>(
-            selector: (_, contactsProvider) => contactsProvider.fetchNickname(widget.userId),
-            shouldRebuild: (prev, next) => prev != next,
-            builder: (_, nickname, __) {
-              return MCSTitle(nickname, type: MCSTitleType.barTitle,);
-            },
-          ),
-        ),
-        body: SafeArea(
-          child: GestureDetector(
-            onTap: () {
-              _fold();
-            },
-            child: Stack(
-              children: [
-                Column(
-                  children: [
-                    Expanded(
-                      child: _buildChatList(),
-                    ),
-                    _buildChatFooter()
-                  ],
-                )
-              ],
+          appBar: AppBar(
+            title: Selector<ContactsProvider, String>(
+              selector: (_, contactsProvider) => contactsProvider.fetchNickname(widget.userId),
+              shouldRebuild: (prev, next) => prev != next,
+              builder: (_, nickname, __) {
+                return MCSTitle(nickname, type: MCSTitleType.barTitle,);
+              },
             ),
+          ),
+          body: SafeArea(
+              child: GestureDetector(
+                onTap: () {
+                  _fold();
+                },
+                child: Stack(
+                  alignment: AlignmentDirectional.center,
+                  children: [
+                    Column(
+                      children: [
+                        Expanded(
+                          child: _buildChatList(),
+                        ),
+                        _buildChatFooter()
+                      ],
+                    ),
+                    Selector<InputStatusProvider, RecordStatus>(
+                        selector: (_, provider) => provider.status,
+                        shouldRebuild: (prev, next) => prev != next,
+                        builder: (_, status, __) {
+                          return Visibility(
+                            child: Container(
+                              width: 100,
+                              height: 100,
+                              color: Colors.amber,
+                            ),
+                            visible: (status == RecordStatus.recording ||
+                                status == RecordStatus.canceling),
+                          );
+                        })
+                  ],
+                ),
+              )
           )
-        )
       ),
     );
   }
