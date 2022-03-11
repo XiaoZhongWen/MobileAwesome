@@ -4,6 +4,7 @@ import 'package:flutter_cloud_platform/base/constant/mcs_message_type.dart';
 import 'package:flutter_cloud_platform/base/constant/mcs_setting.dart';
 import 'package:flutter_cloud_platform/base/dao/message_dao.dart';
 import 'package:flutter_cloud_platform/base/utils/generate_user_sig.dart';
+import 'package:flutter_cloud_platform/conversation/models/mcs_audio_elem.dart';
 import 'package:flutter_cloud_platform/conversation/models/mcs_message.dart';
 import 'package:flutter_cloud_platform/conversation/models/mcs_text_elem.dart';
 import 'package:tencent_im_sdk_plugin/enum/V2TimAdvancedMsgListener.dart';
@@ -16,6 +17,7 @@ import 'package:tencent_im_sdk_plugin/models/v2_tim_user_full_info.dart';
 import 'package:tencent_im_sdk_plugin/models/v2_tim_value_callback.dart';
 import 'package:tencent_im_sdk_plugin/tencent_im_sdk_plugin.dart';
 import 'package:flutter_cloud_platform/base/extension/extension.dart';
+import 'package:uuid/uuid.dart';
 
 class MCSIMService {
   static final MCSIMService singleton = MCSIMService._();
@@ -78,6 +80,54 @@ class MCSIMService {
     return callback.code == 0;
   }
 
+  MCSMessage? createMessage(Map<String, dynamic> map) {
+    String msgId = const Uuid().v1();
+    int timestamp = DateTime.now().millisecondsSinceEpoch ~/ 1000;
+    Map<String, dynamic>? header = map['header'] as Map<String, dynamic>?;
+    String? sender = header?['sender'];
+    String? receiver = header?['receiver'];
+    String? senderName = header?['senderName'];
+    String? receiverName = header?['receiverName'];
+    String? msgType = map['type'] as String?;
+    Map<String, dynamic>? msgData = map['data'] as Map<String, dynamic>?;
+    MCSMessageType type = MCSMessageType.unknown;
+    MCSTextElem? textElem;
+    MCSAudioElem? audioElem;
+    switch (msgType) {
+      case plainText: {
+        textElem = (msgData != null)? MCSTextElem.fromJson(msgData): null;
+        type = MCSMessageType.text;
+        break;
+      }
+      case audioText: {
+        audioElem = (msgData != null)? MCSAudioElem.fromJson(msgData): null;
+        type = MCSMessageType.audio;
+        break;
+      }
+    }
+    if (sender != null && receiver != null && msgType != null) {
+      MCSMessage message = MCSMessage(
+          msgId,
+          sender,
+          receiver,
+          receiver,
+          timestamp.toDouble(),
+          type,
+          MCSMessageStatus.sending,
+          senderName: senderName,
+          receiverName: receiverName,
+          isRead: true,
+          isPeerRead: false,
+          textElem: textElem,
+          audioElem: audioElem
+      );
+      MessageDao dao = MessageDao();
+      dao.saveMessage(message);
+      return message;
+    }
+    return null;
+  }
+
   Future<MCSMessage?> sendMessage(String to, String body) async {
     String receiver = '';
     String groupID = '';
@@ -120,16 +170,25 @@ class MCSIMService {
       bool isPeerRead = false;
       MCSMessageType type = MCSMessageType.unknown;
       MCSTextElem? textElem;
-      if (msgType == plainText) {
-        textElem = (msgData != null)? MCSTextElem.fromJson(msgData): null;
-        type = MCSMessageType.text;
+      MCSAudioElem? audioElem;
+      switch (msgType) {
+        case plainText: {
+          textElem = (msgData != null)? MCSTextElem.fromJson(msgData): null;
+          type = MCSMessageType.text;
+          break;
+        }
+        case audioText: {
+          audioElem = (msgData != null)? MCSAudioElem.fromJson(msgData): null;
+          type = MCSMessageType.audio;
+          break;
+        }
       }
       if ((msgID == null || msgID.isEmpty) ||
           (sender == null || sender.isEmpty) ||
           (receiver == null || receiver.isEmpty) ||
           (peerID == null || peerID.isEmpty) ||
           timestamp == null ||
-          (textElem == null)) {
+          (textElem == null && audioElem == null)) {
         return null;
       }
       MCSMessage message = MCSMessage(
@@ -144,7 +203,8 @@ class MCSIMService {
           receiverName: receiverName,
           isRead: isRead,
           isPeerRead: isPeerRead,
-          textElem: textElem
+          textElem: textElem,
+          audioElem: audioElem
       );
       MessageDao dao = MessageDao();
       dao.saveMessage(message);

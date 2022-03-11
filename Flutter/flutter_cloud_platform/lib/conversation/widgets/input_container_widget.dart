@@ -5,6 +5,7 @@ import 'package:flutter_cloud_platform/base/widgets/mcs_asset_image.dart';
 import 'package:flutter_cloud_platform/base/widgets/mcs_button.dart';
 import 'package:flutter_cloud_platform/base/widgets/mcs_title.dart';
 import 'package:flutter_cloud_platform/conversation/providers/input_status_provider.dart';
+import 'package:oktoast/oktoast.dart';
 import 'package:provider/provider.dart';
 
 class InputContainerWidget extends StatefulWidget {
@@ -13,12 +14,14 @@ class InputContainerWidget extends StatefulWidget {
     this.sendTextMessage,
     this.switchKeyboard,
     this.switchFoldStatus,
+    this.sendAudioMessage,
     this.focusNode
   }) : super(key: key);
 
   final ValueChanged<String>? sendTextMessage;
   final ValueChanged<bool>? switchKeyboard;
   final ValueChanged<bool>? switchFoldStatus;
+  final void Function(String path, int duration)? sendAudioMessage;
   final FocusNode? focusNode;
 
   @override
@@ -149,6 +152,9 @@ class _InputContainerWidgetState extends State<InputContainerWidget> {
           return GestureDetector(
             onLongPressStart: (_) {
               MCSSoundService.singleton.startRecorder();
+              MCSSoundService.singleton.onVolume = (volume) {
+                provider.recordVolume = volume ~/ 20 + 1;
+              };
               provider.recordStatus = RecordStatus.recording;
             },
             onLongPressMoveUpdate: (detail) {
@@ -169,8 +175,11 @@ class _InputContainerWidgetState extends State<InputContainerWidget> {
                   int duration = await MCSSoundService.singleton.getDuration(path);
                   if (duration == 0) {
                     // tip: record duration too short
+                    showToast('录制时间过短');
                   } else {
-                    // send
+                    if (widget.sendAudioMessage != null) {
+                      widget.sendAudioMessage!(path, duration);
+                    }
                   }
                 }
               } else {

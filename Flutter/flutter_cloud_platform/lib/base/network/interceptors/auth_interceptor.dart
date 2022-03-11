@@ -38,57 +38,58 @@ class AuthInterceptor extends Interceptor {
 
   @override
   void onResponse(Response response, ResponseInterceptorHandler handler) {
-    print(response);
     super.onResponse(response, handler);
   }
 
   @override
   void onError(DioError err, ErrorInterceptorHandler handler) async {
-    FormatException exception = err.error;
-    dynamic source = exception.source;
-    if (source is String && source == _invalidateToken) {
-      // 重新获取accessToken
-      AccountDao dao = AccountDao();
-      Account? account = await dao.fetchLastTimeAccount();
-      String userId = account?.userId ?? '';
-      String password = account?.password ?? '';
-      if (userId.isNotEmpty && password.isNotEmpty) {
-        account = await AuthApi.singleton.login(userId, password);
-        String accessToken = account?.accessToken ?? '';
-        if (accessToken.isNotEmpty) {
-          // 添加认证
-          String auth = 'Bearer ' + accessToken;
-          RequestOptions requestOptions = err.requestOptions;
-          requestOptions.headers['Authorization'] = auth;
-          BaseOptions baseOptions = BaseOptions(baseUrl: requestOptions.baseUrl);
-          Dio dio = Dio(baseOptions);
-          Options? options = Options(
-              method: requestOptions.method,
-              sendTimeout: requestOptions.sendTimeout,
-              receiveTimeout: requestOptions.receiveTimeout,
-              extra: requestOptions.extra,
-              headers: requestOptions.headers,
-              responseType: requestOptions.responseType,
-              contentType: requestOptions.contentType,
-              validateStatus: requestOptions.validateStatus,
-              receiveDataWhenStatusError: requestOptions.receiveDataWhenStatusError,
-              followRedirects: requestOptions.followRedirects,
-              maxRedirects: requestOptions.maxRedirects,
-              requestEncoder: requestOptions.requestEncoder,
-              responseDecoder: requestOptions.responseDecoder,
-              listFormat: requestOptions.listFormat
-          );
-          // 重新发送请求
-          Response<dynamic> response = await dio.request(requestOptions.path,
-              data: requestOptions.data,
-              queryParameters: requestOptions.queryParameters,
-              cancelToken: requestOptions.cancelToken,
-              onSendProgress: requestOptions.onSendProgress,
-              onReceiveProgress: requestOptions.onReceiveProgress,
-              options: options
-          );
-          handler.resolve(response);
-          return;
+    dynamic exception = err.error;
+    if (exception is FormatException) {
+      dynamic source = exception.source;
+      if (source is String && source == _invalidateToken) {
+        // 重新获取accessToken
+        AccountDao dao = AccountDao();
+        Account? account = await dao.fetchLastTimeAccount();
+        String userId = account?.userId ?? '';
+        String password = account?.password ?? '';
+        if (userId.isNotEmpty && password.isNotEmpty) {
+          account = await AuthApi.singleton.login(userId, password);
+          String accessToken = account?.accessToken ?? '';
+          if (accessToken.isNotEmpty) {
+            // 添加认证
+            String auth = 'Bearer ' + accessToken;
+            RequestOptions requestOptions = err.requestOptions;
+            requestOptions.headers['Authorization'] = auth;
+            BaseOptions baseOptions = BaseOptions(baseUrl: requestOptions.baseUrl);
+            Dio dio = Dio(baseOptions);
+            Options? options = Options(
+                method: requestOptions.method,
+                sendTimeout: requestOptions.sendTimeout,
+                receiveTimeout: requestOptions.receiveTimeout,
+                extra: requestOptions.extra,
+                headers: requestOptions.headers,
+                responseType: requestOptions.responseType,
+                contentType: requestOptions.contentType,
+                validateStatus: requestOptions.validateStatus,
+                receiveDataWhenStatusError: requestOptions.receiveDataWhenStatusError,
+                followRedirects: requestOptions.followRedirects,
+                maxRedirects: requestOptions.maxRedirects,
+                requestEncoder: requestOptions.requestEncoder,
+                responseDecoder: requestOptions.responseDecoder,
+                listFormat: requestOptions.listFormat
+            );
+            // 重新发送请求
+            Response<dynamic> response = await dio.request(requestOptions.path,
+                data: requestOptions.data,
+                queryParameters: requestOptions.queryParameters,
+                cancelToken: requestOptions.cancelToken,
+                onSendProgress: requestOptions.onSendProgress,
+                onReceiveProgress: requestOptions.onReceiveProgress,
+                options: options
+            );
+            handler.resolve(response);
+            return;
+          }
         }
       }
     }

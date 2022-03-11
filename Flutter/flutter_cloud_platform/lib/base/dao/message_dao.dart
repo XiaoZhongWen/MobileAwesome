@@ -5,7 +5,7 @@ import 'package:flutter_cloud_platform/conversation/models/mcs_message.dart';
 
 class MessageDao {
 
-  final int _limit = 20;
+  static const int limit = 20;
 
   void saveMessage(MCSMessage message) {
     Map<String, dynamic> map = _toRecord(message);
@@ -35,7 +35,7 @@ class MessageDao {
         whereArgs: [peerID],
         orderBy: 'timestamp DESC',
         offset: offset,
-        limit: _limit);
+        limit: limit);
     if (list.isEmpty) {
       return [];
     } else {

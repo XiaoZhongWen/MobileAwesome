@@ -1,4 +1,5 @@
 import 'package:flutter_cloud_platform/base/constant/mcs_message_type.dart';
+import 'package:flutter_cloud_platform/conversation/models/mcs_audio_elem.dart';
 import 'package:flutter_cloud_platform/conversation/models/mcs_text_elem.dart';
 import 'package:uuid/uuid.dart';
 import 'package:uuid/uuid_util.dart';
@@ -6,7 +7,8 @@ import 'package:uuid/uuid_util.dart';
 enum MCSMessageType {
   unknown,
   text,
-  time
+  time,
+  audio
 }
 
 enum MCSMessageStatus {
@@ -32,7 +34,8 @@ class MCSMessage {
         this.receiverName,
         this.isRead,
         this.isPeerRead,
-        this.textElem
+        this.textElem,
+        this.audioElem,
       });
 
   factory MCSMessage.fromJson(Map<String, dynamic> map) {
@@ -60,7 +63,8 @@ class MCSMessage {
       receiverName: receiverName,
       isRead: isRead,
       isPeerRead: isPeerRead,
-      textElem: (type == MCSMessageType.text.index && json != null)? MCSTextElem.fromJson(json): null
+      textElem: (type == MCSMessageType.text.index && json != null)? MCSTextElem.fromJson(json): null,
+      audioElem: (type == MCSMessageType.audio.index && json != null)? MCSAudioElem.fromJson(json): null
     );
   }
 
@@ -87,8 +91,21 @@ class MCSMessage {
     'receiverName': receiverName,
     'isRead': isRead,
     'isPeerRead': isPeerRead,
-    'body': textElem?.toJson()
+    'body': textElem?.toJson() ?? audioElem?.toJson()
   };
+
+  Map<String, dynamic> toBody() {
+    return {
+      'type': audioText,
+      'header': {
+        'sender':sender,
+        'receiver': receiver,
+        'senderName': senderName,
+        'receiverName': receiverName,
+      },
+      'data': textElem?.toJson() ?? audioElem?.toJson()
+    };
+  }
 
   final String msgID;
   final String sender;
@@ -102,10 +119,11 @@ class MCSMessage {
   bool? isRead;
   bool? isPeerRead;
   MCSTextElem? textElem;
+  MCSAudioElem? audioElem;
 }
 
 extension ExMCSMessageType on MCSMessageType {
-  String get value => [unknown, plainText, timeText][index];
+  String get value => [unknown, plainText, timeText, audioText][index];
 }
 
 extension ExMCSMessageStatus on MCSMessageStatus {

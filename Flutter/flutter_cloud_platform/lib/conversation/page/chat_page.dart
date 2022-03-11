@@ -8,6 +8,7 @@ import 'package:flutter_cloud_platform/base/models/platform_visual/mcs_route.dar
 import 'package:flutter_cloud_platform/base/providers/account_provider.dart';
 import 'package:flutter_cloud_platform/base/providers/im_provider.dart';
 import 'package:flutter_cloud_platform/base/providers/visual_provider.dart';
+import 'package:flutter_cloud_platform/base/service/mcs_sound_service.dart';
 import 'package:flutter_cloud_platform/base/widgets/mcs_asset_image.dart';
 import 'package:flutter_cloud_platform/base/widgets/mcs_button.dart';
 import 'package:flutter_cloud_platform/base/widgets/mcs_image.dart';
@@ -19,6 +20,7 @@ import 'package:flutter_cloud_platform/conversation/providers/chat_provider.dart
 import 'package:flutter_cloud_platform/conversation/providers/input_status_provider.dart';
 import 'package:flutter_cloud_platform/conversation/widgets/input_container_widget.dart';
 import 'package:flutter_cloud_platform/conversation/widgets/message_container_widget.dart';
+import 'package:flutter_cloud_platform/conversation/widgets/record_status_widget.dart';
 import 'package:provider/provider.dart';
 
 class ChatPage extends StatefulWidget {
@@ -33,11 +35,13 @@ class ChatPage extends StatefulWidget {
 class _ChatPageState extends State<ChatPage> with SingleTickerProviderStateMixin {
 
   late ChatProvider _chatProvider;
-  final InputStatusProvider _inputStatusProvider = InputStatusProvider();
   late Animation<double> _animation;
   late AnimationController _animationController;
+  final InputStatusProvider _inputStatusProvider = InputStatusProvider();
   final ScrollController _scrollController = ScrollController();
   final FocusNode _focusNode = FocusNode();
+  final double loadingOffset = 100.0;
+  int _offset = 0;
 
   /*
   * 从左到右
@@ -64,6 +68,7 @@ class _ChatPageState extends State<ChatPage> with SingleTickerProviderStateMixin
     _animationController.dispose();
     _scrollController.dispose();
     _focusNode.dispose();
+    MCSSoundService.singleton.stopPlay();
     super.dispose();
   }
 
@@ -105,11 +110,7 @@ class _ChatPageState extends State<ChatPage> with SingleTickerProviderStateMixin
                         shouldRebuild: (prev, next) => prev != next,
                         builder: (_, status, __) {
                           return Visibility(
-                            child: Container(
-                              width: 100,
-                              height: 100,
-                              color: Colors.amber,
-                            ),
+                            child: const RecordStatusWidget(),
                             visible: (status == RecordStatus.recording ||
                                 status == RecordStatus.canceling),
                           );
@@ -125,20 +126,53 @@ class _ChatPageState extends State<ChatPage> with SingleTickerProviderStateMixin
   Widget _buildChatList() {
     IMProvider imProvider = Provider.of<IMProvider>(context, listen: false);
     imProvider.peerID = widget.userId;
-    imProvider.fetchMessageList(async: true);
 
-    return Align(
-      alignment: Alignment.topCenter,
-      child: Consumer<IMProvider>(builder: (_, imProvider, __) {
-        List<MCSMessage> datasource = imProvider.fetchMessageList();
-        return ListView.builder(
-          reverse: true,
-          shrinkWrap: true,
-          controller: _scrollController,
-          itemBuilder: (_, index) => MessageContainerWidget(datasource[index]),
-          itemCount: datasource.length,
-        );
-      })
+    return FutureBuilder(
+      future: imProvider.loadMessageList(_offset),
+      builder: (_, snapshot) {
+        switch(snapshot.connectionState) {
+          case ConnectionState.done: {
+            return NotificationListener(
+                onNotification: (notification) {
+                  if (notification is ScrollEndNotification) {
+                    double maxScrollExtent = _scrollController.position.maxScrollExtent;
+                    double offset = _scrollController.offset;
+                    if (maxScrollExtent - offset < loadingOffset) {
+                      imProvider.loadMessageList(_offset);
+                    }
+                  }
+                  return false;
+                },
+                child: Align(
+                    alignment: Alignment.topCenter,
+                    child: Selector<IMProvider, List<MCSMessage>>(
+                      selector: (_, provider) => provider.fetchMessageList(_offset),
+                      shouldRebuild: (prev, next) => prev.length != next.length,
+                      builder: (_, datasource, __) {
+                        int count = 0;
+                        for (var element in datasource) {
+                          if (element.type != MCSMessageType.time) {
+                            count++;
+                          }
+                        }
+                        _offset = count;
+                        return ListView.builder(
+                          reverse: true,
+                          shrinkWrap: true,
+                          controller: _scrollController,
+                          itemBuilder: (_, index) => MessageContainerWidget(datasource[index]),
+                          itemCount: datasource.length,
+                        );
+                      },
+                    )
+                )
+            );
+          }
+          default: {
+            return MCSLayout.hGap0;
+          }
+        }
+      },
     );
   }
 
@@ -171,6 +205,15 @@ class _ChatPageState extends State<ChatPage> with SingleTickerProviderStateMixin
         },
         switchFoldStatus: (isFold) {
           isFold? _animationController.reverse(): _animationController.forward();
+        },
+        sendAudioMessage: (String path, int duration) {
+          imProvider.sendMessage(
+            widget.userId,
+            MCSMessageType.audio,
+            localPath: path,
+            duration: duration,
+            receiverName: contactsProvider.fetchNickname(widget.userId)
+          );
         },
         focusNode: _focusNode,
       ),

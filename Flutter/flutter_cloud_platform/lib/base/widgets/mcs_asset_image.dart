@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_cloud_platform/base/image/mcs_format.dart';
 
 class MCSAssetImage extends StatelessWidget {
-  const MCSAssetImage(this.image, {
+  MCSAssetImage(this.image, {
     Key? key,
     this.width,
     this.height,

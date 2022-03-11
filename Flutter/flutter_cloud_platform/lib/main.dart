@@ -8,6 +8,7 @@ import 'package:flutter_cloud_platform/base/providers/provider.dart';
 import 'package:flutter_cloud_platform/contacts/providers/contacts_provider.dart';
 import 'package:provider/provider.dart';
 import 'routes/router.dart';
+import 'package:oktoast/oktoast.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -51,9 +52,11 @@ class Assassin extends StatelessWidget {
       ],
       child: Consumer2<ThemeProvider, LaunchProvider>(
         builder: (_, themeProvider, launchProvider, __) {
-          return MaterialApp(
-            theme: themeProvider.getTheme(),
-            home: launchProvider.launchPage(),
+          return OKToast(
+            child: MaterialApp(
+              theme: themeProvider.getTheme(),
+              home: launchProvider.launchPage()
+            )
           );
         },
       )

@@ -25,6 +25,7 @@ class MCSLayout {
   static double listIndent = 60.0;
 
   static SizedBox hGap0 = const SizedBox(width: 0.0);
+  static SizedBox hGap3 = const SizedBox(width: 3.0);
   static SizedBox hGap5 = const SizedBox(width: 5.0);
   static SizedBox hGap10 = const SizedBox(width: 10.0);
 
