@@ -1,19 +1,24 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter/semantics.dart';
 import 'package:flutter_cloud_platform/base/cache/mcs_memory_cache.dart';
+import 'package:flutter_cloud_platform/base/constant/mcs_constant.dart';
 import 'package:flutter_cloud_platform/base/constant/mcs_message_type.dart';
 import 'package:flutter_cloud_platform/base/dao/message_dao.dart';
 import 'package:flutter_cloud_platform/base/network/clouddisk_api.dart';
 import 'package:flutter_cloud_platform/base/service/mcs_im_service.dart';
+import 'package:flutter_cloud_platform/base/service/mcs_image_service.dart';
 import 'package:flutter_cloud_platform/base/service/mcs_sound_service.dart';
 import 'package:flutter_cloud_platform/conversation/models/mcs_message.dart';
 import 'package:flutter_cloud_platform/base/extension/string_extension.dart';
+import 'package:mcs_photo_picker/m_file.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 
 enum MessageStatusType {
   audioPlay,
   videoPlay,
   send,
-  receive
+  progress
 }
 
 class IMProvider extends ChangeNotifier {
@@ -70,18 +75,33 @@ class IMProvider extends ChangeNotifier {
     }
   }
 
-  void updateMessageStatus(String msgId, MessageStatusType type) {
+  List<Map<String, String?>> fetchAllImageMessage() {
+    List<Map<String, String?>> list = [];
+    List<MCSMessage> cache = _datasource[_peerID]?.values.toList() ?? [];
+    cache.sort((a, b) => a.timestamp.compareTo(b.timestamp));
+    for (var message in cache) {
+      if (message.type == MCSMessageType.image) {
+        list.add({
+          fileNameKey:message.imageElem?.fileName,
+          urlKey:message.imageElem?.url
+        });
+      }
+    }
+    return list;
+  }
+
+  void updateMessageStatus(String msgId, MessageStatusType type, {int? value}) {
     Map<MessageStatusType, int>? map = _statusMap[msgId];
     if (map == null) {
       _statusMap[msgId] = {
-        type: 1
+        type: value ?? 1
       };
     } else {
       int? status = map[type];
       if (status == null) {
-        map[type] = 1;
+        map[type] = value ?? 1;
       } else {
-        map[type] = status + 1;
+        map[type] = value ?? status + 1;
       }
     }
     notifyListeners();
@@ -143,17 +163,6 @@ class IMProvider extends ChangeNotifier {
     }
   }
 
-  void updateMessage(String peerId, String msgId, MCSMessage message) {
-    Map<String, MCSMessage>? map = _datasource[peerId];
-    if (map != null && map[msgId] != null) {
-      map.remove(msgId);
-      map[message.msgID] = message;
-      MessageDao dao = MessageDao();
-      dao.deleteMessage(msgId);
-      notifyListeners();
-    }
-  }
-
   /*
   * 发送消息
   * receiver: 接收方id
@@ -166,7 +175,8 @@ class IMProvider extends ChangeNotifier {
         String? receiverName,
         String? text,
         String? localPath,
-        int? duration
+        int? duration,
+        MFile? file
       }) {
     switch (type) {
       case MCSMessageType.text: {
@@ -179,6 +189,10 @@ class IMProvider extends ChangeNotifier {
         _sendAudioMessage(receiver, localPath, duration, receiverName: receiverName);
         break;
       }
+      case MCSMessageType.image: {
+        _sendImageMessage(receiver, file, receiverName: receiverName);
+        break;
+      }
     }
   }
 
@@ -187,7 +201,11 @@ class IMProvider extends ChangeNotifier {
   * receiver: 接收方id
   * type: 消息类型
   * */
-  void _sendTextMessage(String receiver, String text, {String? receiverName}) async {
+  void _sendTextMessage(
+      String receiver,
+      String text, {
+        String? receiverName
+      }) async {
     String? sender = MCSMemoryCache.singleton.fetchAccountId();
     String? senderName = MCSMemoryCache.singleton.fetchAccountDisplayName();
     Map<String, dynamic> map = {
@@ -208,30 +226,112 @@ class IMProvider extends ChangeNotifier {
     }
   }
 
-  void _sendAudioMessage(String receiver, String? path, int? duration, {String? receiverName}) async {
+  void _sendAudioMessage(
+      String receiver,
+      String? path,
+      int? duration, {
+        String? receiverName
+      }) async {
     if (path == null || duration == null) {
       return;
     }
+    _sendFileMessage(
+        receiver,
+        audioText,
+        receiverName: receiverName,
+        path: path,
+        duration: duration);
+  }
+
+  void _sendImageMessage(
+      String receiver,
+      MFile? file, {
+        String? receiverName
+      }) async {
+    if (file == null) {
+      return;
+    }
+    // 1. 生成预览图
+    MFile mFile = await MCSImageService.singleton.generateThumbnail(file);
+    // 2. 发送消息
+    // 将图片的原始宽高改为经过计算得到的显示在消息界面图片消息视图的宽高
+    file.width = mFile.width;
+    file.height = mFile.height;
+    _sendFileMessage(
+        receiver,
+        imageText,
+        receiverName: receiverName,
+        file: file);
+  }
+
+  void _sendFileMessage(
+      String receiver,
+      String type, {
+        String? receiverName,
+        String? path,
+        int? duration,
+        MFile? file}
+      ) {
     String? sender = MCSMemoryCache.singleton.fetchAccountId();
     String? senderName = MCSMemoryCache.singleton.fetchAccountDisplayName();
-    String fileName = path.split('/').last;
+
+    String? filePath;
+    Map<String, dynamic> data = {};
+    switch (type) {
+      case audioText: {
+        if (path != null) {
+          String fileName = path.split('/').last;
+          filePath = path;
+          data = {
+            'duration':duration,
+            'fileName':fileName
+          };
+        }
+        break;
+      }
+      case imageText: {
+        filePath = file?.path;
+        String? fileName = filePath?.split('/').last;
+        data = {
+          'fileName':fileName,
+          'width':file?.width,
+          'height':file?.height,
+        };
+        break;
+      }
+      default: {
+
+      }
+    }
+
     Map<String, dynamic> map = {
-      'type': audioText,
+      'type': type,
       'header': {
         'sender':sender,
         'receiver':receiver,
         'senderName':senderName,
         'receiverName':receiverName,
       },
-      'data': {
-        'duration': duration,
-        'fileName': fileName
-      }
+      'data': data
     };
+
+    if (filePath == null) {
+      return;
+    }
+
     MCSMessage? message = MCSIMService.singleton.createMessage(map);
     if (message != null) {
       addMessages([message]);
-      CloudDiskApi.singleton.sendFile(message.msgID, receiver, path).then((response) async {
+      CloudDiskApi.singleton.sendFile(
+          message.msgID,
+          receiver,
+          filePath,
+          onSendProgress: (progress) {
+            if (message.type == MCSMessageType.image) {
+              int value = (progress * 100).toInt();
+              updateMessageStatus(message.msgID, MessageStatusType.progress, value: value);
+            }
+      }).then((response) async {
         String? id = response.extra['id'];
         String? receiver = response.extra['receiver'];
         String url = response.data['url'];
@@ -240,16 +340,38 @@ class IMProvider extends ChangeNotifier {
           Map<String, MCSMessage>? map = _datasource[receiver];
           MCSMessage? msg = map?[id];
           if (msg != null) {
-            msg.audioElem?.url = url;
-            msg.audioElem?.expires = expires;
-            String prev = msg.audioElem!.fileName!;
-            String next = url.md5String()+'.amr';
-            msg.audioElem?.fileName = next;
-            MCSSoundService.singleton.modifyFileName(prev, next);
+            switch (msg.type) {
+              case MCSMessageType.audio: {
+                msg.audioElem?.url = url;
+                msg.audioElem?.expires = expires;
+                String prev = msg.audioElem!.fileName!;
+                String next = url.md5String()+'.amr';
+                msg.audioElem?.fileName = next;
+                MCSSoundService.singleton.modifyFileName(prev, next);
+                break;
+              }
+              case MCSMessageType.image: {
+                msg.imageElem?.url = url;
+                msg.imageElem?.expires = expires;
+                String prev = msg.imageElem!.fileName!;
+                String next = url.md5String();
+                msg.imageElem?.fileName = next;
+                MCSImageService.singleton.modifyFileName(prev, next);
+                break;
+              }
+            }
+
             Map<String, dynamic> body = msg.toBody();
             MCSMessage? newMsg = await MCSIMService.singleton.sendMessage(receiver, json.encode(body));
             if (newMsg != null) {
-              updateMessage(receiver, id, newMsg);
+              updateMessageStatus(id, MessageStatusType.send);
+              Map<String, MCSMessage>? map = _datasource[receiver];
+              if (map != null && map[id] != null) {
+                map.remove(id);
+                map[message.msgID] = message;
+                MessageDao dao = MessageDao();
+                dao.deleteMessage(id);
+              }
             }
           }
         }

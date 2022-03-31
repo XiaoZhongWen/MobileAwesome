@@ -1,5 +1,10 @@
 PODS:
   - Flutter (1.0.0)
+  - flutter_image_compress (0.0.1):
+    - Flutter
+    - Mantle
+    - SDWebImage
+    - SDWebImageWebPCoder
   - flutter_sound (8.5.0):
     - Flutter
     - flutter_sound_core (= 8.5.0)
@@ -8,10 +13,34 @@ PODS:
   - FMDB (2.7.5):
     - FMDB/standard (= 2.7.5)
   - FMDB/standard (2.7.5)
+  - HXPhotoPicker (3.3.1):
+    - HXPhotoPicker/Default (= 3.3.1)
+  - HXPhotoPicker/Default (3.3.1)
   - HydraAsync (2.0.6)
+  - libwebp (1.2.1):
+    - libwebp/demux (= 1.2.1)
+    - libwebp/mux (= 1.2.1)
+    - libwebp/webp (= 1.2.1)
+  - libwebp/demux (1.2.1):
+    - libwebp/webp
+  - libwebp/mux (1.2.1):
+    - libwebp/demux
+  - libwebp/webp (1.2.1)
+  - Mantle (2.2.0):
+    - Mantle/extobjc (= 2.2.0)
+  - Mantle/extobjc (2.2.0)
+  - mcs_photo_picker (0.0.1):
+    - Flutter
+    - HXPhotoPicker
   - mobile-ffmpeg-audio (4.4.LTS)
   - path_provider_ios (0.0.1):
     - Flutter
+  - SDWebImage (5.12.3):
+    - SDWebImage/Core (= 5.12.3)
+  - SDWebImage/Core (5.12.3)
+  - SDWebImageWebPCoder (0.8.4):
+    - libwebp (~> 1.0)
+    - SDWebImage/Core (~> 5.10)
   - shared_preferences_ios (0.0.1):
     - Flutter
   - sqflite (0.0.2):
@@ -25,7 +54,9 @@ PODS:
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
+  - flutter_image_compress (from `.symlinks/plugins/flutter_image_compress/ios`)
   - flutter_sound (from `.symlinks/plugins/flutter_sound/ios`)
+  - mcs_photo_picker (from `.symlinks/plugins/mcs_photo_picker/ios`)
   - path_provider_ios (from `.symlinks/plugins/path_provider_ios/ios`)
   - shared_preferences_ios (from `.symlinks/plugins/shared_preferences_ios/ios`)
   - sqflite (from `.symlinks/plugins/sqflite/ios`)
@@ -35,15 +66,24 @@ SPEC REPOS:
   trunk:
     - flutter_sound_core
     - FMDB
+    - HXPhotoPicker
     - HydraAsync
+    - libwebp
+    - Mantle
     - mobile-ffmpeg-audio
+    - SDWebImage
+    - SDWebImageWebPCoder
     - TXIMSDK_Plus_iOS
 
 EXTERNAL SOURCES:
   Flutter:
     :path: Flutter
+  flutter_image_compress:
+    :path: ".symlinks/plugins/flutter_image_compress/ios"
   flutter_sound:
     :path: ".symlinks/plugins/flutter_sound/ios"
+  mcs_photo_picker:
+    :path: ".symlinks/plugins/mcs_photo_picker/ios"
   path_provider_ios:
     :path: ".symlinks/plugins/path_provider_ios/ios"
   shared_preferences_ios:
@@ -55,12 +95,19 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   Flutter: 50d75fe2f02b26cc09d224853bb45737f8b3214a
+  flutter_image_compress: fd2b476345226e1a10ea352fa306af95704642c1
   flutter_sound: ba7daf658dea78e9f18b79657338bfc222489f4f
   flutter_sound_core: d9396f10752a0df9aa3197f4c431d62d934918cc
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
+  HXPhotoPicker: f1274d0c931ad8564e0f23f33fe8b6110b639bd7
   HydraAsync: 8d589bd725b0224f899afafc9a396327405f8063
+  libwebp: 98a37e597e40bfdb4c911fc98f2c53d0b12d05fc
+  Mantle: c5aa8794a29a022dfbbfc9799af95f477a69b62d
+  mcs_photo_picker: 0bdeb32744a5cd4e141754f2eee32a94b23a6ec5
   mobile-ffmpeg-audio: 1e0a053f8a6de57114e50ff48b3a85ff1c60f902
   path_provider_ios: 7d7ce634493af4477d156294792024ec3485acd5
+  SDWebImage: 53179a2dba77246efa8a9b85f5c5b21f8f43e38f
+  SDWebImageWebPCoder: f93010f3f6c031e2f8fb3081ca4ee6966c539815
   shared_preferences_ios: aef470a42dc4675a1cdd50e3158b42e3d1232b32
   sqflite: 6d358c025f5b867b29ed92fc697fd34924e11904
   tencent_im_sdk_plugin: 5d60e74beb9dafda611bb9bf2aa6ba8ab1ee7b39

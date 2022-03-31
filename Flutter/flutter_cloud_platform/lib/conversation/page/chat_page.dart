@@ -8,6 +8,7 @@ import 'package:flutter_cloud_platform/base/models/platform_visual/mcs_route.dar
 import 'package:flutter_cloud_platform/base/providers/account_provider.dart';
 import 'package:flutter_cloud_platform/base/providers/im_provider.dart';
 import 'package:flutter_cloud_platform/base/providers/visual_provider.dart';
+import 'package:flutter_cloud_platform/base/service/mcs_image_service.dart';
 import 'package:flutter_cloud_platform/base/service/mcs_sound_service.dart';
 import 'package:flutter_cloud_platform/base/widgets/mcs_asset_image.dart';
 import 'package:flutter_cloud_platform/base/widgets/mcs_button.dart';
@@ -22,6 +23,8 @@ import 'package:flutter_cloud_platform/conversation/widgets/input_container_widg
 import 'package:flutter_cloud_platform/conversation/widgets/message_container_widget.dart';
 import 'package:flutter_cloud_platform/conversation/widgets/record_status_widget.dart';
 import 'package:provider/provider.dart';
+import 'package:mcs_photo_picker/mcs_photo_picker.dart';
+import 'package:mcs_photo_picker/m_file.dart';
 
 class ChatPage extends StatefulWidget {
   const ChatPage(this.userId, {Key? key}) : super(key: key);
@@ -41,6 +44,7 @@ class _ChatPageState extends State<ChatPage> with SingleTickerProviderStateMixin
   final ScrollController _scrollController = ScrollController();
   final FocusNode _focusNode = FocusNode();
   final double loadingOffset = 100.0;
+  final McsPhotoPicker _imagePicker = McsPhotoPicker();
   int _offset = 0;
 
   /*
@@ -274,15 +278,21 @@ class _ChatPageState extends State<ChatPage> with SingleTickerProviderStateMixin
               children: subList.map((menuItem) {
                 double iconSize = height * 0.6;
                 return MCSButton(
-                    disabledColor: Colors.transparent,
-                    textPadding: EdgeInsets.symmetric(vertical: MCSLayout.smallPadding),
-                    label: MCSTitle(
-                      menuItem.name ?? '',
-                      type: MCSTitleType.btnTitleGray,
-                    ),
-                    topIcon: (menuItem.url?.isNotEmpty ?? false)?
-                    MCSImage.cached(imageUrl: menuItem.url ?? '', width: iconSize, height: iconSize,):
-                    MCSAssetImage(menuItem.icon ?? '', width: iconSize, height: iconSize)
+                  color: Colors.transparent,
+                  disabledColor: Colors.transparent,
+                  elevation: 0.0,
+                  highlightElevation: 0.0,
+                  textPadding: EdgeInsets.symmetric(vertical: MCSLayout.smallPadding),
+                  label: MCSTitle(
+                    menuItem.name ?? '',
+                    type: MCSTitleType.btnTitleGray,
+                  ),
+                  topIcon: (menuItem.url?.isNotEmpty ?? false)?
+                  MCSImage.cached(imageUrl: menuItem.url ?? '', width: iconSize, height: iconSize,):
+                  MCSAssetImage(menuItem.icon ?? '', width: iconSize, height: iconSize),
+                  onPressed: () {
+                    _onTapMenu(menuItem.menuType);
+                  },
                 );
               }).toList(),
             );
@@ -307,6 +317,40 @@ class _ChatPageState extends State<ChatPage> with SingleTickerProviderStateMixin
     if (_focusNode.hasFocus) {
       _focusNode.unfocus();
     }
+  }
+
+  void _onTapMenu(ChatOperationMenuItemType type) {
+    switch (type) {
+      case ChatOperationMenuItemType.picture: {
+        _displayPhotoLibrary();
+        break;
+      }
+    }
+  }
+
+  void _displayPhotoLibrary() {
+    _imagePicker.pickMultiImage().then((result) async {
+      bool? original = result['original'] as bool?;
+      List<MFile>? images = result['images'] as List<MFile>?;
+      if (images != null && images.isNotEmpty) {
+        if (!(original ?? false)) {
+          for (var file in images) {
+            List<String> list = await MCSImageService.singleton.compressImages([file.path]);
+            file.path = list.first;
+          }
+        }
+        IMProvider imProvider = Provider.of<IMProvider>(context, listen: false);
+        ContactsProvider contactsProvider = Provider.of<ContactsProvider>(context, listen: false);
+        for (var file in images) {
+          imProvider.sendMessage(
+              widget.userId,
+              MCSMessageType.image,
+              receiverName: contactsProvider.fetchNickname(widget.userId),
+              file: file
+          );
+        }
+      }
+    });
   }
 }
 

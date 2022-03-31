@@ -1,5 +1,11 @@
 const String keyGuide = 'keyGuide';
 
+const String photoBrowserIndexKey = 'photoBrowserIndex';
+const String photoBrowserDataKey = 'photoBrowserData';
+
+const String fileNameKey = 'fileName';
+const String urlKey = 'url';
+
 const String visualTableName = 'tb_visual';
 const String accountTableName = 'tb_account';
 const String contactsTableName = 'tb_contacts';

@@ -1,5 +1,6 @@
 import 'package:flutter_cloud_platform/base/constant/mcs_message_type.dart';
 import 'package:flutter_cloud_platform/conversation/models/mcs_audio_elem.dart';
+import 'package:flutter_cloud_platform/conversation/models/mcs_image_elem.dart';
 import 'package:flutter_cloud_platform/conversation/models/mcs_text_elem.dart';
 import 'package:uuid/uuid.dart';
 import 'package:uuid/uuid_util.dart';
@@ -8,7 +9,8 @@ enum MCSMessageType {
   unknown,
   text,
   time,
-  audio
+  audio,
+  image
 }
 
 enum MCSMessageStatus {
@@ -36,6 +38,7 @@ class MCSMessage {
         this.isPeerRead,
         this.textElem,
         this.audioElem,
+        this.imageElem
       });
 
   factory MCSMessage.fromJson(Map<String, dynamic> map) {
@@ -64,7 +67,8 @@ class MCSMessage {
       isRead: isRead,
       isPeerRead: isPeerRead,
       textElem: (type == MCSMessageType.text.index && json != null)? MCSTextElem.fromJson(json): null,
-      audioElem: (type == MCSMessageType.audio.index && json != null)? MCSAudioElem.fromJson(json): null
+      audioElem: (type == MCSMessageType.audio.index && json != null)? MCSAudioElem.fromJson(json): null,
+      imageElem: (type == MCSMessageType.image.index && json != null)? MCSImageElem.fromJson(json): null
     );
   }
 
@@ -91,19 +95,38 @@ class MCSMessage {
     'receiverName': receiverName,
     'isRead': isRead,
     'isPeerRead': isPeerRead,
-    'body': textElem?.toJson() ?? audioElem?.toJson()
+    'body': textElem?.toJson() ?? audioElem?.toJson() ?? imageElem?.toJson()
   };
 
   Map<String, dynamic> toBody() {
+    String? msgType;
+    switch (type) {
+      case MCSMessageType.time: {
+        msgType = timeText;
+        break;
+      }
+      case MCSMessageType.text: {
+        msgType = plainText;
+        break;
+      }
+      case MCSMessageType.audio: {
+        msgType = audioText;
+        break;
+      }
+      case MCSMessageType.image: {
+        msgType = imageText;
+        break;
+      }
+    }
     return {
-      'type': audioText,
+      'type': msgType,
       'header': {
         'sender':sender,
         'receiver': receiver,
         'senderName': senderName,
         'receiverName': receiverName,
       },
-      'data': textElem?.toJson() ?? audioElem?.toJson()
+      'data': textElem?.toJson() ?? audioElem?.toJson() ?? imageElem?.toJson()
     };
   }
 
@@ -120,10 +143,11 @@ class MCSMessage {
   bool? isPeerRead;
   MCSTextElem? textElem;
   MCSAudioElem? audioElem;
+  MCSImageElem? imageElem;
 }
 
 extension ExMCSMessageType on MCSMessageType {
-  String get value => [unknown, plainText, timeText, audioText][index];
+  String get value => [unknown, plainText, timeText, audioText, imageText][index];
 }
 
 extension ExMCSMessageStatus on MCSMessageStatus {

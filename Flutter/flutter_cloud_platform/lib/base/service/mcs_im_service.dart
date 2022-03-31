@@ -5,6 +5,7 @@ import 'package:flutter_cloud_platform/base/constant/mcs_setting.dart';
 import 'package:flutter_cloud_platform/base/dao/message_dao.dart';
 import 'package:flutter_cloud_platform/base/utils/generate_user_sig.dart';
 import 'package:flutter_cloud_platform/conversation/models/mcs_audio_elem.dart';
+import 'package:flutter_cloud_platform/conversation/models/mcs_image_elem.dart';
 import 'package:flutter_cloud_platform/conversation/models/mcs_message.dart';
 import 'package:flutter_cloud_platform/conversation/models/mcs_text_elem.dart';
 import 'package:tencent_im_sdk_plugin/enum/V2TimAdvancedMsgListener.dart';
@@ -93,6 +94,7 @@ class MCSIMService {
     MCSMessageType type = MCSMessageType.unknown;
     MCSTextElem? textElem;
     MCSAudioElem? audioElem;
+    MCSImageElem? imageElem;
     switch (msgType) {
       case plainText: {
         textElem = (msgData != null)? MCSTextElem.fromJson(msgData): null;
@@ -103,6 +105,10 @@ class MCSIMService {
         audioElem = (msgData != null)? MCSAudioElem.fromJson(msgData): null;
         type = MCSMessageType.audio;
         break;
+      }
+      case imageText: {
+        imageElem = (msgData != null)? MCSImageElem.fromJson(msgData): null;
+        type = MCSMessageType.image;
       }
     }
     if (sender != null && receiver != null && msgType != null) {
@@ -119,7 +125,8 @@ class MCSIMService {
           isRead: true,
           isPeerRead: false,
           textElem: textElem,
-          audioElem: audioElem
+          audioElem: audioElem,
+          imageElem:imageElem
       );
       MessageDao dao = MessageDao();
       dao.saveMessage(message);
@@ -158,7 +165,7 @@ class MCSIMService {
       String? msgType = map?['type'] as String?;
       Map<String, dynamic>? msgData = map?['data'] as Map<String, dynamic>?;
       Map<String, dynamic>? header = map?['header'] as Map<String, dynamic>?;
-      MCSMessageStatus status = (msg.status == 2)?
+      MCSMessageStatus status = (msg.status == 2 || msg.status == 3)?
         (isSelf? MCSMessageStatus.sendSuccess: MCSMessageStatus.receivingSuccess):
         (isSelf? MCSMessageStatus.sending: MCSMessageStatus.receiving);
       String? sender = header?['sender'];
@@ -171,6 +178,7 @@ class MCSIMService {
       MCSMessageType type = MCSMessageType.unknown;
       MCSTextElem? textElem;
       MCSAudioElem? audioElem;
+      MCSImageElem? imageElem;
       switch (msgType) {
         case plainText: {
           textElem = (msgData != null)? MCSTextElem.fromJson(msgData): null;
@@ -182,13 +190,17 @@ class MCSIMService {
           type = MCSMessageType.audio;
           break;
         }
+        case imageText: {
+          imageElem = (msgData != null)? MCSImageElem.fromJson(msgData): null;
+          type = MCSMessageType.image;
+        }
       }
       if ((msgID == null || msgID.isEmpty) ||
           (sender == null || sender.isEmpty) ||
           (receiver == null || receiver.isEmpty) ||
           (peerID == null || peerID.isEmpty) ||
           timestamp == null ||
-          (textElem == null && audioElem == null)) {
+          (textElem == null && audioElem == null && imageElem == null)) {
         return null;
       }
       MCSMessage message = MCSMessage(
@@ -204,7 +216,8 @@ class MCSIMService {
           isRead: isRead,
           isPeerRead: isPeerRead,
           textElem: textElem,
-          audioElem: audioElem
+          audioElem: audioElem,
+          imageElem: imageElem
       );
       MessageDao dao = MessageDao();
       dao.saveMessage(message);

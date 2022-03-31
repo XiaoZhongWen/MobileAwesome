@@ -130,7 +130,10 @@ class _ConversationPageState extends State<ConversationPage> with AutomaticKeepA
                         color: Colors.black,
                         fontSize: fontLevel0
                     ),
-                  )
+                  ),
+                  onPressed: (){
+                    print(menu.name);
+                  },
                 )
             );
           }).toList();

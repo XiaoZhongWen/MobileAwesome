@@ -16,14 +16,27 @@ class CloudDiskApi {
     _dio.interceptors.add(AuthInterceptor());
   }
 
-  Future<dynamic> sendFile(String id, String receiver, String path) async {
+  Future<dynamic> sendFile(
+      String id,
+      String receiver,
+      String path, {
+        void Function(double percent)? onSendProgress
+      }) async {
     FormData data = FormData.fromMap({
       'file': await MultipartFile.fromFile(path),
       'receiver': receiver,
       'needSave': false
     });
     try {
-      Response response = await _dio.post(_sendFile, data: data);
+      Response response = await _dio.post(
+          _sendFile,
+          data: data,
+          onSendProgress: (int send, int total) {
+            double progress = send / total;
+            if (onSendProgress != null) {
+              onSendProgress(progress);
+            }
+          });
       response.extra = {'id':id, 'receiver': receiver};
       return response;
     } on DioError catch(e) {}

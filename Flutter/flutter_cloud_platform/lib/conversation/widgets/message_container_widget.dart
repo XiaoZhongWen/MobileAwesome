@@ -7,10 +7,13 @@ import 'package:flutter_cloud_platform/base/providers/im_provider.dart';
 import 'package:flutter_cloud_platform/base/service/mcs_sound_service.dart';
 import 'package:flutter_cloud_platform/base/widgets/mcs_asset_image.dart';
 import 'package:flutter_cloud_platform/base/widgets/mcs_image.dart';
+import 'package:flutter_cloud_platform/base/widgets/photo_browser/mcs_photo_browser_router.dart';
 import 'package:flutter_cloud_platform/contacts/providers/contacts_provider.dart';
 import 'package:flutter_cloud_platform/conversation/models/mcs_message.dart';
 import 'package:flutter_cloud_platform/conversation/widgets/cell/audio_message_cell.dart';
+import 'package:flutter_cloud_platform/conversation/widgets/cell/image_message_cell.dart';
 import 'package:flutter_cloud_platform/conversation/widgets/info_widget.dart';
+import 'package:flutter_cloud_platform/routes/mcs_navigator.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_cloud_platform/base/extension/extension.dart';
 
@@ -48,7 +51,16 @@ class _MessageContainerWidget extends State<MessageContainerWidget> with SingleT
       Widget messageWidget = _buildMessageWidget(isIncoming);
       List<Widget> children = [header, MCSLayout.hGap5, messageWidget];
       if (!isIncoming) {
-        Widget indicator = const CupertinoActivityIndicator(radius: 5,);
+        Widget indicator = Selector<IMProvider, int>(
+          selector: (_, provider) => provider.fetchMessageStatus(widget.message.msgID, MessageStatusType.send),
+          shouldRebuild: (prev, next) => prev != next,
+          builder: (_, status, __) {
+            return Visibility(
+              child: const CupertinoActivityIndicator(radius: 5),
+              visible: status == 0,
+            );
+          },
+        );
         if (widget.message.status == MCSMessageStatus.sending) {
           children.add(indicator);
         }
@@ -98,6 +110,10 @@ class _MessageContainerWidget extends State<MessageContainerWidget> with SingleT
       }
       case MCSMessageType.audio: {
         messageWidget = _buildAudioMessageWidget(isIncoming);
+        break;
+      }
+      case MCSMessageType.image: {
+        messageWidget = _buildImageMessageWidget(isIncoming);
         break;
       }
     }
@@ -168,5 +184,55 @@ class _MessageContainerWidget extends State<MessageContainerWidget> with SingleT
           )
       ),
     );
+  }
+
+  Widget _buildImageMessageWidget(bool isIncoming) {
+    String msgId = widget.message.msgID;
+    int width = widget.message.imageElem!.width!;
+    int height = widget.message.imageElem!.height!;
+    String fileName = widget.message.imageElem!.fileName!;
+
+    return GestureDetector(
+      onTap: _displayImage,
+      child: Bubble(
+        padding: const BubbleEdges.all(0.0),
+        alignment: isIncoming? Alignment.topLeft: Alignment.topRight,
+        nip: isIncoming? BubbleNip.leftCenter: BubbleNip.rightCenter,
+        color: isIncoming? Colors.white: MCSColors.rightMessageBubbleColor,
+        child: ImageMessageCell(
+          msgId,
+          fileName,
+          width,
+          height,
+        ),
+      ),
+    );
+  }
+
+  void _displayImage() {
+    IMProvider provider = Provider.of<IMProvider>(context, listen: false);
+    List<Map<String, String?>> list = provider.fetchAllImageMessage();
+    String? cName = widget.message.imageElem?.fileName;
+    String? cUrl = widget.message.imageElem?.url;
+    int index = -1;
+    for (int i = 0; i < list.length; i++) {
+      Map<String, String?> item = list[i];
+      String? fileName = item[fileNameKey];
+      String? url = item[urlKey];
+      if ((fileName != null && cName != null && fileName == cName) ||
+          url != null && cUrl != null && url == cUrl) {
+        index = i;
+        break;
+      }
+    }
+    if (index != -1) {
+      MCSNavigator.push(
+          context,
+          MCSPhotoBrowserRouter.photoBrowserPage,
+          parameter: {
+            photoBrowserIndexKey:index,
+            photoBrowserDataKey:list
+          });
+    }
   }
 }

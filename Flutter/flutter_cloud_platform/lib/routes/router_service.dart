@@ -1,5 +1,6 @@
 import 'package:fluro/fluro.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_cloud_platform/base/widgets/photo_browser/mcs_photo_browser_router.dart';
 import 'package:flutter_cloud_platform/contacts/contacts_router.dart';
 import 'package:flutter_cloud_platform/conversation/conversation_router.dart';
 import 'package:flutter_cloud_platform/routes/not_found_page.dart';
@@ -24,6 +25,7 @@ class RouterService {
     _listRouter.add(ConversationRouter());
     _listRouter.add(ContactsRouter());
     _listRouter.add(ScanRouter());
+    _listRouter.add(MCSPhotoBrowserRouter());
 
     _listRouter.forEach((routerProvider) {
       routerProvider.initRouter(router);

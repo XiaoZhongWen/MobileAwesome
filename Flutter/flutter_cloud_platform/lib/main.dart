@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_cloud_platform/base/db/mcs_db_service.dart';
 import 'package:flutter_cloud_platform/base/providers/account_provider.dart';
 import 'package:flutter_cloud_platform/base/providers/im_provider.dart';
+import 'package:flutter_cloud_platform/base/service/mcs_image_service.dart';
 import 'package:flutter_cloud_platform/base/service/mcs_sound_service.dart';
 import 'package:flutter_cloud_platform/base/utils/mcs_sp_util.dart';
 import 'package:flutter_cloud_platform/base/providers/provider.dart';
@@ -27,6 +28,7 @@ class Assassin extends StatelessWidget {
     startDB();
     // 开启音频服务
     MCSSoundService.singleton.startService();
+    MCSImageService.singleton.startService();
   }
 
   void startDB() async {
