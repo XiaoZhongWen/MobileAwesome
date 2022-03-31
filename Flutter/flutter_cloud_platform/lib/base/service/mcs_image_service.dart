@@ -123,4 +123,8 @@ class MCSImageService {
   String pathForThumbnail(String fileName) {
     return _thumbnailDirPath + '/' + fileName;
   }
+
+  String pathForOriginal(String fileName) {
+    return _rootDirPath + '/' + fileName;
+  }
 }
