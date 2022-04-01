@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_cloud_platform/base/cache/mcs_memory_cache.dart';
 import 'package:flutter_cloud_platform/base/constant/mcs_constant.dart';
 import 'package:flutter_cloud_platform/base/providers/im_provider.dart';
+import 'package:flutter_cloud_platform/base/service/mcs_image_service.dart';
 import 'package:flutter_cloud_platform/base/service/mcs_sound_service.dart';
 import 'package:flutter_cloud_platform/base/widgets/mcs_asset_image.dart';
 import 'package:flutter_cloud_platform/base/widgets/mcs_image.dart';
@@ -187,10 +188,15 @@ class _MessageContainerWidget extends State<MessageContainerWidget> with SingleT
   }
 
   Widget _buildImageMessageWidget(bool isIncoming) {
+    IMProvider provider = Provider.of<IMProvider>(context, listen: false);
     String msgId = widget.message.msgID;
     int width = widget.message.imageElem!.width!;
     int height = widget.message.imageElem!.height!;
     String fileName = widget.message.imageElem!.fileName!;
+    bool isExist = MCSImageService.singleton.isExist(fileName);
+    if (!isExist) {
+      provider.download(msgId);
+    }
 
     return GestureDetector(
       onTap: _displayImage,

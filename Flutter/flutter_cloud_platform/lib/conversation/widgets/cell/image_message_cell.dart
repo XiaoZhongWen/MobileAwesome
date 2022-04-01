@@ -26,15 +26,27 @@ class _ImageMessageCellState extends State<ImageMessageCell> {
   @override
   Widget build(BuildContext context) {
     String path = MCSImageService.singleton.pathForThumbnail(widget.fileName);
+    double width = widget.width.toDouble();
+    double height = widget.height.toDouble();
     return Stack(
       alignment: Alignment.center,
       children: [
-        ClipRRect(
-            borderRadius: imageBorderRadius,
-            child: MCSLocalImage(
-              path,
-              width: widget.width.toDouble(),
-              height: widget.height.toDouble(),)
+        Selector<IMProvider, int>(
+          selector: (_, provider) => provider.fetchMessageStatus(widget.msgId, MessageStatusType.receive),
+          shouldRebuild: (prev, next) => prev != next,
+          builder: (_, status, __) {
+            bool isExist = MCSImageService.singleton.isExist(widget.fileName);
+            return ClipRRect(
+                borderRadius: imageBorderRadius,
+                child: isExist?
+                MCSLocalImage(path, width: width, height: height,) :
+                Container(
+                  color: Colors.grey,
+                  width: width,
+                  height: height,
+                )
+            );
+          },
         ),
         Selector<IMProvider, int>(
             selector: (_, provider) => provider.fetchMessageStatus(widget.msgId, MessageStatusType.progress),

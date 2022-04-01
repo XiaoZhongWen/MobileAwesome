@@ -1,10 +1,12 @@
 import 'dart:io';
 import 'dart:typed_data';
+import 'package:flutter_cloud_platform/base/network/download.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:mcs_photo_picker/mcs_photo_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart';
 import 'package:mcs_photo_picker/m_file.dart';
+import 'package:flutter_cloud_platform/base/extension/string_extension.dart';
 
 class MCSImageService {
   static final MCSImageService singleton = MCSImageService._();
@@ -126,5 +128,20 @@ class MCSImageService {
 
   String pathForOriginal(String fileName) {
     return _rootDirPath + '/' + fileName;
+  }
+
+  bool isExist(String filename) {
+    String path = pathForThumbnail(filename);
+    File file = File(path);
+    return file.existsSync();
+  }
+
+  void download(String url, {void Function(double progress)? onProgress}) {
+    String savePath = _rootDirPath + '/' + url.md5String();
+    Download.singleton.download(
+        url,
+        savePath: savePath,
+        onProgress: onProgress
+    );
   }
 }
