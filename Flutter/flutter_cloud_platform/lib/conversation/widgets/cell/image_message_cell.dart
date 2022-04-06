@@ -11,12 +11,14 @@ class ImageMessageCell extends StatefulWidget {
       this.msgId,
       this.fileName,
       this.width,
-      this.height, {Key? key,}) : super(key: key);
+      this.height,
+      this.url, {Key? key,}) : super(key: key);
 
   String msgId;
   String fileName;
   int width;
   int height;
+  String url;
 
   @override
   _ImageMessageCellState createState() => _ImageMessageCellState();
@@ -39,7 +41,7 @@ class _ImageMessageCellState extends State<ImageMessageCell> {
             return ClipRRect(
                 borderRadius: imageBorderRadius,
                 child: isExist?
-                MCSLocalImage(path, width: width, height: height,) :
+                MCSLocalImage(path, width: width, height: height,fit: BoxFit.contain,) :
                 Container(
                   color: Colors.grey,
                   width: width,
@@ -52,7 +54,12 @@ class _ImageMessageCellState extends State<ImageMessageCell> {
             selector: (_, provider) => provider.fetchMessageStatus(widget.msgId, MessageStatusType.progress),
             shouldRebuild: (prev, next) => prev != next,
             builder: (_, progress, __) {
-              return MCSLoading(progress);
+              int value = MCSImageService.singleton.progress(widget.url);
+              if (value == 0) {
+                return MCSLoading(progress);
+              } else {
+                return MCSLoading(value);
+              }
             }),
       ],
     );

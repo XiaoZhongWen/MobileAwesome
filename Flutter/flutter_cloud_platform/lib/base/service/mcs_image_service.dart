@@ -20,6 +20,7 @@ class MCSImageService {
   final int thumbnailMinHeight = 42;
   final int quality = 50;
   final McsPhotoPicker _imagePicker = McsPhotoPicker();
+  final Map<String, double> downloadingUrlMap = {};
   late String _rootDirPath;
   late String _thumbnailDirPath;
 
@@ -137,11 +138,34 @@ class MCSImageService {
   }
 
   void download(String url, {void Function(double progress)? onProgress}) {
+    downloadingUrlMap[url] = 0.0;
     String savePath = _rootDirPath + '/' + url.md5String();
     Download.singleton.download(
         url,
         savePath: savePath,
-        onProgress: onProgress
+        onProgress: (double progress) {
+          if (onProgress != null) {
+            onProgress(progress);
+          }
+          if (progress == 1.0) {
+            downloadingUrlMap.remove(url);
+          } else {
+            downloadingUrlMap[url] = progress;
+          }
+        }
     );
+  }
+
+  bool isDownloading(String url) {
+    return downloadingUrlMap.keys.contains(url);
+  }
+
+  int progress(String url) {
+    double? progress = downloadingUrlMap[url];
+    if (progress != null) {
+      return (progress * 100).toInt();
+    } else {
+      return 0;
+    }
   }
 }

@@ -389,19 +389,21 @@ class IMProvider extends ChangeNotifier {
           String? url = msg.imageElem?.url;
           if (url != null) {
             msg.imageElem?.fileName = url.md5String();
-            MCSImageService.singleton.download(url, onProgress: (progress) async {
-              int value = (progress * 100).toInt();
-              if (value == 100) {
-                String path = MCSImageService.singleton.pathForOriginal(msg.imageElem!.fileName!);
-                MFile mFile = MFile(
-                    path,
-                    width: msg.imageElem?.width,
-                    height: msg.imageElem?.height);
-                await MCSImageService.singleton.generateThumbnail(mFile);
-                updateMessageStatus(msgId, MessageStatusType.receive);
-              }
-              updateMessageStatus(msgId, MessageStatusType.progress, value: value);
-            });
+            if (!MCSImageService.singleton.isDownloading(url)) {
+              MCSImageService.singleton.download(url, onProgress: (progress) async {
+                int value = (progress * 100).toInt();
+                if (value == 100) {
+                  String path = MCSImageService.singleton.pathForOriginal(msg.imageElem!.fileName!);
+                  MFile mFile = MFile(
+                      path,
+                      width: msg.imageElem?.width,
+                      height: msg.imageElem?.height);
+                  await MCSImageService.singleton.generateThumbnail(mFile);
+                  updateMessageStatus(msgId, MessageStatusType.receive);
+                }
+                updateMessageStatus(msgId, MessageStatusType.progress, value: value);
+              });
+            }
           }
           break;
         }

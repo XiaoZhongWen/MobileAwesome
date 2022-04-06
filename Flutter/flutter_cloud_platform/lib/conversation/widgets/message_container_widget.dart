@@ -193,6 +193,7 @@ class _MessageContainerWidget extends State<MessageContainerWidget> with SingleT
     int width = widget.message.imageElem!.width!;
     int height = widget.message.imageElem!.height!;
     String fileName = widget.message.imageElem!.fileName!;
+    String url = widget.message.imageElem!.url!;
     bool isExist = MCSImageService.singleton.isExist(fileName);
     if (!isExist) {
       provider.download(msgId);
@@ -210,6 +211,7 @@ class _MessageContainerWidget extends State<MessageContainerWidget> with SingleT
           fileName,
           width,
           height,
+          url
         ),
       ),
     );
