@@ -2,7 +2,7 @@ import Flutter
 import UIKit
 import HXPhotoPicker
 
-public class SwiftMcsPhotoPickerPlugin: NSObject, FlutterPlugin, HXCustomNavigationControllerDelegate {
+public class SwiftMcsPhotoPickerPlugin: NSObject, FlutterPlugin, HXCustomNavigationControllerDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
 
     var result_: FlutterResult?
 
@@ -40,6 +40,8 @@ public class SwiftMcsPhotoPickerPlugin: NSObject, FlutterPlugin, HXCustomNavigat
                   reRenderImage(path: path, width: width, height: height)
               }
           }
+      case "takePicture":
+          takePicture()
       default:
           result("iOS " + UIDevice.current.systemVersion)
           break;
@@ -69,7 +71,7 @@ public class SwiftMcsPhotoPickerPlugin: NSObject, FlutterPlugin, HXCustomNavigat
         photoManager?.configuration.statusBarStyle = .default
         if let manager = photoManager {
             if let nav = HXCustomNavigationController.init(manager: manager, delegate: self) {
-                let rootVc = UIApplication.shared.keyWindow?.rootViewController;
+                let rootVc = UIApplication.shared.keyWindow?.rootViewController
                 rootVc?.present(nav, animated: true, completion: nil)
             }
         }
@@ -88,6 +90,22 @@ public class SwiftMcsPhotoPickerPlugin: NSObject, FlutterPlugin, HXCustomNavigat
                     try HX_UIImageJPEGRepresentation(img)?.write(to: url)
                     self.result_?(filePath)
                 } catch {}
+            }
+        }
+    }
+
+    public func takePicture() {
+        ApplyPermission.requestCompetence(type: .camera) { enable in
+            if enable {
+                let imageVc = UIImagePickerController.init()
+                imageVc.delegate = self
+                imageVc.sourceType = UIImagePickerController.SourceType.camera
+                if imageVc.presentingViewController == nil {
+                    let rootVc = UIApplication.shared.keyWindow?.rootViewController
+                    rootVc?.present(imageVc, animated: true, completion: nil)
+                }
+            } else {
+                ApplyPermission.openSystemSetting(type: .camera)
             }
         }
     }
@@ -133,8 +151,12 @@ public class SwiftMcsPhotoPickerPlugin: NSObject, FlutterPlugin, HXCustomNavigat
                         if let uuid = String.uuid() {
                             let imgPath = base + "/" + uuid
                             let url = URL.init(fileURLWithPath: imgPath)
-                            try data.write(to: url)
-                            imagePaths.append(imgPath)
+                            let img = UIImage.init(data: data)
+                            if let fixImg = img?.fixOrientation() {
+                                let fixData = HX_UIImageJPEGRepresentation(fixImg)
+                                try fixData?.write(to: url)
+                                imagePaths.append(imgPath)
+                            }
                         }
                     }
                 } catch {}
@@ -219,5 +241,32 @@ public class SwiftMcsPhotoPickerPlugin: NSObject, FlutterPlugin, HXCustomNavigat
             }
         }
         handleAsset(imageAssets: imageAssets, videoAssets: videoAssets, imageList: imageList, original)
+    }
+
+    // Mark:- UIImagePickerControllerDelegate
+    public func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        picker.dismiss(animated: true, completion: nil)
+    }
+
+    public func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info:[UIImagePickerController.InfoKey : Any]) {
+        var img = info[UIImagePickerController.InfoKey.editedImage]
+        if img == nil {
+            img = info[UIImagePickerController.InfoKey.originalImage]
+        }
+
+        if let image = img as? UIImage?, let fixImg = image?.fixOrientation(), let uuid = String.uuid() {
+            let path = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
+            let imageDir = "/image"
+            let base = path + imageDir
+            let imgPath = base + "/" + uuid
+            let url = URL.init(fileURLWithPath: imgPath)
+            let fixData = HX_UIImageJPEGRepresentation(fixImg)
+            do {
+                try fixData?.write(to: url)
+                let data = ["path": imgPath, "width": Int(image!.size.width), "height": Int(image!.size.height)] as [String : Any]
+                self.result_?(data)
+            } catch {}
+        }
+        picker.dismiss(animated: true, completion: nil)
     }
 }

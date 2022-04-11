@@ -67,4 +67,10 @@ class McsPhotoPicker {
     return result;
   }
 
+  Future<MFile> takePicture() async {
+    Map<dynamic, dynamic> result = await _channel.invokeMethod('takePicture');
+    MFile mFile = MFile.fromJson(result);
+    return mFile;
+  }
+
 }

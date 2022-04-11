@@ -18,7 +18,7 @@ class ImageMessageCell extends StatefulWidget {
   String fileName;
   int width;
   int height;
-  String url;
+  String? url;
 
   @override
   _ImageMessageCellState createState() => _ImageMessageCellState();
@@ -54,7 +54,7 @@ class _ImageMessageCellState extends State<ImageMessageCell> {
             selector: (_, provider) => provider.fetchMessageStatus(widget.msgId, MessageStatusType.progress),
             shouldRebuild: (prev, next) => prev != next,
             builder: (_, progress, __) {
-              int value = MCSImageService.singleton.progress(widget.url);
+              int value = widget.url != null? MCSImageService.singleton.progress(widget.url!): 0;
               if (value == 0) {
                 return MCSLoading(progress);
               } else {

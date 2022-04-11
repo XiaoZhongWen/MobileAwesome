@@ -144,6 +144,7 @@ class _ChatPageState extends State<ChatPage> with SingleTickerProviderStateMixin
                     if (maxScrollExtent - offset < loadingOffset) {
                       imProvider.loadMessageList(_offset);
                     }
+                    print("maxScrollExtent: " + maxScrollExtent.toString() + " - offset: " + offset.toString());
                   }
                   return false;
                 },
@@ -325,6 +326,10 @@ class _ChatPageState extends State<ChatPage> with SingleTickerProviderStateMixin
         _displayPhotoLibrary();
         break;
       }
+      case ChatOperationMenuItemType.camera: {
+        _takePicture();
+        break;
+      }
     }
   }
 
@@ -350,6 +355,19 @@ class _ChatPageState extends State<ChatPage> with SingleTickerProviderStateMixin
           );
         }
       }
+    });
+  }
+
+  void _takePicture() {
+    _imagePicker.takePicture().then((mFile) {
+      IMProvider imProvider = Provider.of<IMProvider>(context, listen: false);
+      ContactsProvider contactsProvider = Provider.of<ContactsProvider>(context, listen: false);
+      imProvider.sendMessage(
+          widget.userId,
+          MCSMessageType.image,
+          receiverName: contactsProvider.fetchNickname(widget.userId),
+          file: mFile
+      );
     });
   }
 }
