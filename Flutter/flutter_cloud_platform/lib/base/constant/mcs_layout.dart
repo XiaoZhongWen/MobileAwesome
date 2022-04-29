@@ -23,6 +23,8 @@ class MCSLayout {
   static double listHeaderHeight = 40.0;
   static double listTileHeight = 60.0;
   static double listIndent = 60.0;
+  static double inputFieldMaxHeight = 125.0;
+  static double chatMenuFieldHeight = 195.0;
 
   static SizedBox hGap0 = const SizedBox(width: 0.0);
   static SizedBox hGap3 = const SizedBox(width: 3.0);

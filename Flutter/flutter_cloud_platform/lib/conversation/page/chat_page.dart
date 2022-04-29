@@ -106,7 +106,18 @@ class _ChatPageState extends State<ChatPage> with SingleTickerProviderStateMixin
                         Expanded(
                           child: _buildChatList(),
                         ),
-                        _buildChatFooter()
+                        Container(
+                          constraints: BoxConstraints(
+                            maxHeight: MCSLayout.inputFieldMaxHeight,
+                          ),
+                          child: _buildInputContainer(),
+                        ),
+                        Container(
+                          constraints: BoxConstraints(
+                            maxHeight: MCSLayout.chatMenuFieldHeight
+                          ),
+                          child: _buildOperationMenu(),
+                        )
                       ],
                     ),
                     Selector<InputStatusProvider, RecordStatus>(
@@ -144,7 +155,6 @@ class _ChatPageState extends State<ChatPage> with SingleTickerProviderStateMixin
                     if (maxScrollExtent - offset < loadingOffset) {
                       imProvider.loadMessageList(_offset);
                     }
-                    print("maxScrollExtent: " + maxScrollExtent.toString() + " - offset: " + offset.toString());
                   }
                   return false;
                 },
@@ -184,7 +194,6 @@ class _ChatPageState extends State<ChatPage> with SingleTickerProviderStateMixin
   Widget _buildChatFooter() {
     return Column(
       children: [
-        _buildInputContainer(),
         _buildOperationMenu()
       ],
     );
